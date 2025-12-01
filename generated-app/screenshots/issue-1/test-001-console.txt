@@ -1,0 +1,4 @@
+ERRORS:
+WebSocket connection to 'ws://localhost:443/?token=FrUidrlcJSmK' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+WebSocket closed without opened.

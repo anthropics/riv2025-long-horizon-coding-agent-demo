@@ -1,0 +1,5 @@
+ERRORS:
+WebSocket connection to 'ws://localhost:443/?token=HTxOA4QlKa4w' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[vite] failed to connect to websocket (Error: WebSocket closed without opened.). 
+WebSocket closed without opened.
+A <Select.Item /> must have a value prop that is not an empty string. This is because the Select value can be set to an empty string to clear the selection and show the placeholder.

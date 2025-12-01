@@ -1,0 +1,3076 @@
+[
+  {
+    "id": "test-001",
+    "category": "style",
+    "description": "Home page loads with beautiful forest-inspired design when no projects exist",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify the page displays a welcome message with forest-inspired color palette (greens, earth tones, amber accents)",
+      "Verify Space Grotesk font is used for headers",
+      "Verify DM Sans font is used for body text",
+      "Verify there's a prominent 'Create your first project' CTA button",
+      "Verify the design avoids generic AI slop aesthetics (no purple gradients, no Inter font)"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-002",
+    "category": "style",
+    "description": "Global header navigation has correct styling and layout",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify header has height 56px and forest green (#1B4332) background",
+      "Verify Canopy logo with leaf icon on left side",
+      "Verify global search input with Cmd+K hint exists",
+      "Verify Create button exists and uses amber accent color (#D4A373)",
+      "Verify user avatar dropdown on right side"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-003",
+    "category": "style",
+    "description": "Sidebar has correct styling, sections, and navigation items",
+    "steps": [
+      "Navigate to http://localhost:6174 (after creating a project)",
+      "Take a screenshot",
+      "Verify sidebar width is 240px",
+      "Verify sidebar has warm off-white background (#F5F3EF)",
+      "Verify Planning section with Roadmap, Backlog, Active Sprints links",
+      "Verify Board section with Board link",
+      "Verify Reports section with Burndown Chart, Velocity Chart, Sprint Report links",
+      "Verify Project section with Project Settings, Components, Labels links",
+      "Verify collapse toggle at bottom"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-004",
+    "category": "functional",
+    "description": "User can create a new project",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Click 'Create your first project' or Create Project button",
+      "Verify project creation modal/form appears",
+      "Enter project name 'Canopy Core'",
+      "Enter project key 'CAN'",
+      "Select a project color",
+      "Click Create/Save button",
+      "Verify project is created and user is redirected to project board"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-005",
+    "category": "functional",
+    "description": "Project key is auto-generated from project name",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Open create project modal",
+      "Enter project name 'My Test Project'",
+      "Verify project key auto-generates to 'MTP' or similar abbreviation",
+      "Verify user can override the auto-generated key"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-006",
+    "category": "functional",
+    "description": "User can view and switch between projects using project selector",
+    "steps": [
+      "Create project 'Project Alpha' with key 'PA'",
+      "Create project 'Project Beta' with key 'PB'",
+      "Click project selector dropdown in header",
+      "Verify both projects appear in dropdown",
+      "Verify projects show icon, name, and key",
+      "Click 'Project Beta' to switch",
+      "Verify the current project changes to Project Beta"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-007",
+    "category": "functional",
+    "description": "User can create a new issue from the board",
+    "steps": [
+      "Navigate to project board view",
+      "Click '+ Create' button or press 'C' key",
+      "Verify issue creation modal appears",
+      "Enter summary 'First test issue'",
+      "Select type 'Task'",
+      "Select priority 'High'",
+      "Click Create",
+      "Verify issue appears in 'To Do' column with correct key (e.g., CAN-1)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-008",
+    "category": "functional",
+    "description": "Issue keys are auto-incremented correctly",
+    "steps": [
+      "Create first issue in project - verify key is 'CAN-1'",
+      "Create second issue - verify key is 'CAN-2'",
+      "Create third issue - verify key is 'CAN-3'",
+      "Verify keys persist after page refresh"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-009",
+    "category": "functional",
+    "description": "User can drag issues between board columns",
+    "steps": [
+      "Create issue in 'To Do' column",
+      "Drag issue card to 'In Progress' column",
+      "Verify card moves to new column",
+      "Verify issue status updates",
+      "Refresh page and verify status persists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-010",
+    "category": "style",
+    "description": "Board columns have correct styling and layout",
+    "steps": [
+      "Navigate to board view",
+      "Take a screenshot",
+      "Verify column width is 300px",
+      "Verify 16px gap between columns",
+      "Verify column headers show name and issue count",
+      "Verify horizontal scrolling works if many columns",
+      "Verify default columns: To Do, In Progress, In Review, Done"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-011",
+    "category": "style",
+    "description": "Issue cards have correct styling on the board",
+    "steps": [
+      "Navigate to board with issues",
+      "Take a screenshot",
+      "Verify cards have white background (#FFFFFF)",
+      "Verify 8px border radius",
+      "Verify subtle shadow (0 1px 3px rgba(0,0,0,0.1))",
+      "Verify issue type icon and key displayed",
+      "Verify summary text (max 2 lines, truncated)",
+      "Verify story points badge if set",
+      "Verify assignee avatar at bottom"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-012",
+    "category": "functional",
+    "description": "User can open issue detail panel by clicking issue card",
+    "steps": [
+      "Navigate to board with issues",
+      "Click on an issue card",
+      "Verify issue detail panel slides in from right",
+      "Verify panel width is 680px",
+      "Verify panel shows issue summary, description, status, assignee",
+      "Click X or press Escape to close",
+      "Verify panel slides out"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-013",
+    "category": "style",
+    "description": "Issue detail panel has correct styling and layout",
+    "steps": [
+      "Open issue detail panel",
+      "Take a screenshot",
+      "Verify panel has white background",
+      "Verify proper header with issue type icon, key, and close button",
+      "Verify summary field is large and editable",
+      "Verify status dropdown is visible",
+      "Verify description area with markdown support",
+      "Verify right sidebar with assignee, priority, labels fields"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-014",
+    "category": "functional",
+    "description": "User can edit issue summary in detail panel",
+    "steps": [
+      "Open issue detail panel",
+      "Click on summary field",
+      "Edit the summary text",
+      "Click outside to save",
+      "Verify summary updates",
+      "Close and reopen panel",
+      "Verify summary change persisted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-015",
+    "category": "functional",
+    "description": "User can edit issue description with markdown",
+    "steps": [
+      "Open issue detail panel",
+      "Click on description field",
+      "Enter markdown: '## Heading\n- Item 1\n- Item 2\n**bold text**'",
+      "Save description",
+      "Verify markdown renders correctly with heading, list, bold"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-016",
+    "category": "functional",
+    "description": "User can change issue status from detail panel",
+    "steps": [
+      "Open issue detail panel for 'To Do' issue",
+      "Click status dropdown",
+      "Select 'In Progress'",
+      "Verify status updates in panel",
+      "Close panel and verify card moved to 'In Progress' column on board"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-017",
+    "category": "functional",
+    "description": "User can assign issue to a user",
+    "steps": [
+      "Open issue detail panel",
+      "Click assignee field in sidebar",
+      "Select a user from dropdown",
+      "Verify assignee avatar and name appear",
+      "Verify assignee shows on issue card on board"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-018",
+    "category": "functional",
+    "description": "User can change issue priority",
+    "steps": [
+      "Open issue detail panel",
+      "Click priority dropdown",
+      "Select 'Highest'",
+      "Verify priority icon updates to red arrow up",
+      "Select 'Lowest'",
+      "Verify priority icon updates to gray arrow down"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-019",
+    "category": "functional",
+    "description": "User can add and remove labels from issues",
+    "steps": [
+      "First create labels 'frontend' and 'backend' in project settings",
+      "Open issue detail panel",
+      "Click labels field",
+      "Select 'frontend' label",
+      "Verify label pill appears on issue",
+      "Select 'backend' label",
+      "Verify both labels visible",
+      "Remove 'frontend' label",
+      "Verify only 'backend' label remains"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-020",
+    "category": "functional",
+    "description": "User can set story points on issue",
+    "steps": [
+      "Open issue detail panel",
+      "Find story points field",
+      "Enter '5'",
+      "Verify story points saved",
+      "Verify story points badge appears on issue card"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-021",
+    "category": "functional",
+    "description": "User can navigate to backlog view",
+    "steps": [
+      "Navigate to project",
+      "Click 'Backlog' in sidebar",
+      "Verify backlog view loads",
+      "Verify all unscheduled issues appear in backlog section"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-022",
+    "category": "style",
+    "description": "Backlog view has correct layout and styling",
+    "steps": [
+      "Navigate to backlog view",
+      "Take a screenshot",
+      "Verify view title 'Backlog' at top",
+      "Verify sprint sections at top (if sprints exist)",
+      "Verify backlog section with issue count",
+      "Verify story points total displayed",
+      "Verify issue rows have correct formatting"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-023",
+    "category": "functional",
+    "description": "User can create a new sprint",
+    "steps": [
+      "Navigate to backlog view",
+      "Click 'Create Sprint' button",
+      "Verify sprint creation form appears",
+      "Enter sprint name 'Sprint 1'",
+      "Enter sprint goal 'Complete core features'",
+      "Set start and end dates",
+      "Click Create",
+      "Verify sprint section appears in backlog"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-024",
+    "category": "functional",
+    "description": "User can drag issues from backlog to sprint",
+    "steps": [
+      "Create sprint 'Sprint 1'",
+      "Create 3 issues in backlog",
+      "Drag first issue into Sprint 1 section",
+      "Verify issue moves to sprint",
+      "Verify backlog count decreases",
+      "Verify sprint count increases"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-025",
+    "category": "functional",
+    "description": "User can reorder issues in backlog by dragging",
+    "steps": [
+      "Create 3 issues in backlog",
+      "Note the order (1, 2, 3)",
+      "Drag issue 3 above issue 1",
+      "Verify new order (3, 1, 2)",
+      "Refresh page and verify order persists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-026",
+    "category": "functional",
+    "description": "User can start a sprint",
+    "steps": [
+      "Create sprint with issues",
+      "Click 'Start Sprint' button on sprint",
+      "Verify sprint status changes to 'active'",
+      "Verify sprint section shows as active",
+      "Navigate to board",
+      "Verify only active sprint issues appear"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-027",
+    "category": "functional",
+    "description": "User can complete a sprint",
+    "steps": [
+      "Start a sprint with issues",
+      "Move some issues to Done",
+      "Click 'Complete Sprint' button",
+      "Verify completion dialog shows stats",
+      "Verify option to move incomplete issues to backlog or next sprint",
+      "Click confirm",
+      "Verify sprint status changes to 'completed'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-028",
+    "category": "functional",
+    "description": "Sprint shows story point totals correctly",
+    "steps": [
+      "Create sprint",
+      "Add issue with 3 story points",
+      "Add issue with 5 story points",
+      "Add issue with 8 story points",
+      "Verify sprint shows 16 total story points",
+      "Move one issue out",
+      "Verify total updates"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-029",
+    "category": "functional",
+    "description": "User can create an epic",
+    "steps": [
+      "Click Create issue",
+      "Select type 'Epic'",
+      "Enter summary 'User Authentication Epic'",
+      "Add description",
+      "Click Create",
+      "Verify epic is created with purple icon",
+      "Verify epic key (e.g., CAN-4)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-030",
+    "category": "functional",
+    "description": "User can link issues to an epic",
+    "steps": [
+      "Create epic 'User Authentication'",
+      "Create story 'Login page'",
+      "Open story detail panel",
+      "Click Epic field",
+      "Select 'User Authentication' epic",
+      "Verify story is linked to epic",
+      "Open epic detail panel",
+      "Verify 'Login page' appears in child issues"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-031",
+    "category": "functional",
+    "description": "Epic shows progress based on child issues",
+    "steps": [
+      "Create epic with 3 child stories",
+      "Open epic detail panel",
+      "Verify progress shows 0 of 3 (0%)",
+      "Move one story to Done",
+      "Verify progress shows 1 of 3 (33%)",
+      "Move all stories to Done",
+      "Verify progress shows 3 of 3 (100%)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-032",
+    "category": "functional",
+    "description": "User can create sub-tasks on a story",
+    "steps": [
+      "Create a story issue",
+      "Open story detail panel",
+      "Find sub-tasks section",
+      "Click 'Add sub-task'",
+      "Enter sub-task summary 'Design login form'",
+      "Press Enter",
+      "Verify sub-task appears in list",
+      "Add 2 more sub-tasks"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-033",
+    "category": "functional",
+    "description": "User can complete sub-tasks with checkbox",
+    "steps": [
+      "Create story with 3 sub-tasks",
+      "Open story detail panel",
+      "Click checkbox on first sub-task",
+      "Verify sub-task shows as complete",
+      "Verify progress indicator shows 1/3",
+      "Complete all sub-tasks",
+      "Verify progress shows 3/3"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-034",
+    "category": "functional",
+    "description": "User can add comments to issues",
+    "steps": [
+      "Open issue detail panel",
+      "Navigate to Activity section",
+      "Click comment input",
+      "Enter comment 'Starting work on this issue'",
+      "Click Post/Submit",
+      "Verify comment appears with timestamp",
+      "Verify author name/avatar shown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-035",
+    "category": "functional",
+    "description": "Comments support markdown formatting",
+    "steps": [
+      "Open issue detail panel",
+      "Add comment with markdown: '**Bold** and _italic_ text'",
+      "Submit comment",
+      "Verify markdown renders (bold and italic visible)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-036",
+    "category": "functional",
+    "description": "Activity log tracks issue changes",
+    "steps": [
+      "Create new issue",
+      "Open detail panel and click Activity tab",
+      "Verify 'Created' activity logged",
+      "Change status to 'In Progress'",
+      "Verify status change logged",
+      "Change assignee",
+      "Verify assignee change logged",
+      "Change priority",
+      "Verify priority change logged"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-037",
+    "category": "functional",
+    "description": "User can search for issues using global search (Cmd+K)",
+    "steps": [
+      "Create issue 'Implement login feature'",
+      "Press Cmd+K to open search",
+      "Type 'login'",
+      "Verify issue appears in search results",
+      "Click result to navigate to issue",
+      "Verify issue detail opens"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-038",
+    "category": "functional",
+    "description": "Search returns results from summary, description, and comments",
+    "steps": [
+      "Create issue with summary 'User settings'",
+      "Add description containing 'authentication flow'",
+      "Add comment containing 'remember to test edge cases'",
+      "Search for 'authentication'",
+      "Verify issue found",
+      "Search for 'edge cases'",
+      "Verify issue found"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-039",
+    "category": "style",
+    "description": "Global search modal has correct styling",
+    "steps": [
+      "Press Cmd+K to open search",
+      "Take a screenshot",
+      "Verify modal has centered overlay",
+      "Verify large search input with icon",
+      "Verify search results grouped by type",
+      "Verify keyboard navigation hint visible"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-040",
+    "category": "functional",
+    "description": "Quick filter on board filters by text",
+    "steps": [
+      "Navigate to board with multiple issues",
+      "Use quick filter input",
+      "Type part of an issue summary",
+      "Verify only matching issues displayed",
+      "Clear filter",
+      "Verify all issues return"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-041",
+    "category": "functional",
+    "description": "User can filter board by assignee",
+    "steps": [
+      "Create issues with different assignees",
+      "Open filter dropdown on board",
+      "Select specific assignee",
+      "Verify only that assignee's issues shown",
+      "Clear filter",
+      "Verify all issues return"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-042",
+    "category": "functional",
+    "description": "User can filter board by priority",
+    "steps": [
+      "Create issues with different priorities",
+      "Open filter dropdown",
+      "Select 'High' priority",
+      "Verify only High priority issues shown",
+      "Clear filter"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-043",
+    "category": "functional",
+    "description": "JQL-like filter syntax works for complex queries",
+    "steps": [
+      "Create multiple issues with varied attributes",
+      "Open advanced filter",
+      "Enter query: 'priority = High AND type = Bug'",
+      "Verify only matching issues shown",
+      "Try query: 'assignee = EMPTY'",
+      "Verify unassigned issues shown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-044",
+    "category": "functional",
+    "description": "User can save filters for reuse",
+    "steps": [
+      "Create complex filter query",
+      "Click 'Save filter' button",
+      "Enter filter name 'High Priority Bugs'",
+      "Save filter",
+      "Clear current filter",
+      "Open saved filters",
+      "Click 'High Priority Bugs'",
+      "Verify filter applied"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-045",
+    "category": "functional",
+    "description": "User can navigate to roadmap view",
+    "steps": [
+      "Click 'Roadmap' in sidebar",
+      "Verify roadmap view loads",
+      "Verify timeline displayed with weeks/months"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-046",
+    "category": "style",
+    "description": "Roadmap view has correct timeline layout",
+    "steps": [
+      "Navigate to roadmap view",
+      "Take a screenshot",
+      "Verify horizontal timeline at top",
+      "Verify epic list on left side",
+      "Verify epic bars show on timeline",
+      "Verify zoom controls (day/week/month)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-047",
+    "category": "functional",
+    "description": "Epics appear on roadmap timeline based on dates",
+    "steps": [
+      "Create epic with start and due dates",
+      "Navigate to roadmap",
+      "Verify epic bar appears at correct position",
+      "Verify bar length matches date range"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-048",
+    "category": "functional",
+    "description": "User can navigate to burndown chart report",
+    "steps": [
+      "Complete a sprint with issues",
+      "Click 'Burndown Chart' in reports section",
+      "Verify burndown chart loads",
+      "Select completed sprint from dropdown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-049",
+    "category": "style",
+    "description": "Burndown chart has correct visualization",
+    "steps": [
+      "Navigate to burndown chart with completed sprint",
+      "Take a screenshot",
+      "Verify X-axis shows sprint days",
+      "Verify Y-axis shows story points remaining",
+      "Verify ideal burndown line (dashed gray)",
+      "Verify actual progress line (accent color)",
+      "Verify hover tooltips work"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-050",
+    "category": "functional",
+    "description": "Velocity chart shows multiple sprint data",
+    "steps": [
+      "Complete 2-3 sprints",
+      "Navigate to Velocity Chart",
+      "Verify bar chart shows all completed sprints",
+      "Verify committed vs completed comparison",
+      "Verify average velocity line displayed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-051",
+    "category": "functional",
+    "description": "Sprint report shows completion stats",
+    "steps": [
+      "Complete a sprint with mixed results",
+      "Navigate to Sprint Report",
+      "Select completed sprint",
+      "Verify completed issues listed",
+      "Verify incomplete issues listed",
+      "Verify commitment accuracy percentage"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-052",
+    "category": "functional",
+    "description": "User can create and manage labels",
+    "steps": [
+      "Navigate to Project Settings > Labels",
+      "Click 'Create Label'",
+      "Enter name 'frontend'",
+      "Select green color",
+      "Save label",
+      "Verify label appears in list",
+      "Edit label name to 'Frontend'",
+      "Verify change saved"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-053",
+    "category": "functional",
+    "description": "User can create and manage components",
+    "steps": [
+      "Navigate to Project Settings > Components",
+      "Click 'Create Component'",
+      "Enter name 'API'",
+      "Add description 'Backend API services'",
+      "Select component lead",
+      "Save component",
+      "Verify component appears in list"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-054",
+    "category": "functional",
+    "description": "User can edit project settings",
+    "steps": [
+      "Navigate to Project Settings",
+      "Edit project name",
+      "Edit project description",
+      "Change project color",
+      "Save changes",
+      "Verify changes persist after refresh"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-055",
+    "category": "functional",
+    "description": "User can add board columns",
+    "steps": [
+      "Navigate to Project Settings > Workflow",
+      "Add new column 'QA Testing'",
+      "Set column position between 'In Review' and 'Done'",
+      "Save",
+      "Navigate to board",
+      "Verify new column appears"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-056",
+    "category": "functional",
+    "description": "Column WIP limits work correctly",
+    "steps": [
+      "Set WIP limit of 2 on 'In Progress' column",
+      "Add 2 issues to column",
+      "Verify normal display",
+      "Add third issue",
+      "Verify WIP limit warning appears (red indicator)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-057",
+    "category": "functional",
+    "description": "User can toggle swimlanes on board",
+    "steps": [
+      "Navigate to board with issues assigned to different users",
+      "Click swimlane toggle",
+      "Select 'By Assignee'",
+      "Verify cards grouped by assignee swimlanes",
+      "Select 'By Epic'",
+      "Verify cards grouped by epic",
+      "Select 'None' to disable"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-058",
+    "category": "functional",
+    "description": "User can export project data as JSON",
+    "steps": [
+      "Navigate to Project Settings",
+      "Click 'Export Project Data'",
+      "Verify JSON file downloads",
+      "Open file and verify structure includes issues, sprints, labels"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-059",
+    "category": "functional",
+    "description": "User can export all data as JSON backup",
+    "steps": [
+      "Navigate to User Settings > Data Management",
+      "Click 'Export All Data'",
+      "Verify JSON file downloads",
+      "Verify file contains all projects and data"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-060",
+    "category": "functional",
+    "description": "User can import data from JSON backup",
+    "steps": [
+      "Export data first",
+      "Clear all data",
+      "Navigate to User Settings > Data Management",
+      "Click 'Import Data'",
+      "Select exported JSON file",
+      "Verify data imports correctly",
+      "Verify projects and issues restored"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-061",
+    "category": "functional",
+    "description": "Dark theme toggle works correctly",
+    "steps": [
+      "Navigate to User Settings",
+      "Click theme toggle to Dark",
+      "Verify UI changes to dark theme",
+      "Verify background is dark (#1A1F2E)",
+      "Verify text is light",
+      "Refresh page",
+      "Verify dark theme persists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-062",
+    "category": "style",
+    "description": "Dark theme has proper contrast and readability",
+    "steps": [
+      "Enable dark theme",
+      "Navigate to board view",
+      "Take a screenshot",
+      "Verify text has sufficient contrast (WCAG AA)",
+      "Verify cards are visible against background",
+      "Verify accent colors still work",
+      "Navigate to issue detail",
+      "Take screenshot and verify readability"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-063",
+    "category": "functional",
+    "description": "Sidebar can be collapsed and expanded",
+    "steps": [
+      "Verify sidebar is 240px wide",
+      "Click collapse toggle or press Cmd+[",
+      "Verify sidebar collapses to 60px (icons only)",
+      "Verify icons still visible and functional",
+      "Click expand or press Cmd+[",
+      "Verify sidebar expands back to 240px"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-064",
+    "category": "functional",
+    "description": "Keyboard shortcut C creates new issue",
+    "steps": [
+      "Navigate to board (not in text input)",
+      "Press 'C' key",
+      "Verify create issue modal opens",
+      "Press Escape to close"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-065",
+    "category": "functional",
+    "description": "Keyboard shortcut G then B navigates to board",
+    "steps": [
+      "Navigate to backlog",
+      "Press 'G' then 'B'",
+      "Verify navigation to board view"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-066",
+    "category": "functional",
+    "description": "Keyboard shortcut ? shows shortcuts reference",
+    "steps": [
+      "Press '?' key",
+      "Verify keyboard shortcuts modal opens",
+      "Verify all shortcuts listed",
+      "Press Escape to close"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-067",
+    "category": "functional",
+    "description": "User can delete an issue",
+    "steps": [
+      "Open issue detail panel",
+      "Click more menu (three dots)",
+      "Click 'Delete'",
+      "Verify confirmation dialog appears",
+      "Confirm deletion",
+      "Verify issue removed from board",
+      "Refresh page and verify deleted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-068",
+    "category": "functional",
+    "description": "User can clone an issue",
+    "steps": [
+      "Open issue detail panel",
+      "Click more menu",
+      "Click 'Clone'",
+      "Verify new issue created with same data",
+      "Verify new issue has new key (incremented)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-069",
+    "category": "functional",
+    "description": "Data persists across browser sessions",
+    "steps": [
+      "Create project, issues, and sprint",
+      "Close browser/tab",
+      "Reopen browser and navigate to app",
+      "Verify all data persists (projects, issues, sprint)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-070",
+    "category": "functional",
+    "description": "Cross-tab sync works for data changes",
+    "steps": [
+      "Open app in Tab 1",
+      "Open app in Tab 2 (same browser)",
+      "In Tab 1, create new issue",
+      "Switch to Tab 2",
+      "Verify new issue appears (may need refresh or auto-sync)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-071",
+    "category": "functional",
+    "description": "User can set due date on issue",
+    "steps": [
+      "Open issue detail panel",
+      "Click due date field",
+      "Select a date from calendar picker",
+      "Verify due date saved",
+      "Verify due date appears on issue card"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-072",
+    "category": "functional",
+    "description": "Overdue issues show visual warning",
+    "steps": [
+      "Set due date to yesterday on an issue",
+      "Verify issue card shows overdue indicator (red/terracotta color)",
+      "Verify due date text shows as overdue"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-073",
+    "category": "functional",
+    "description": "User can log time spent on issues",
+    "steps": [
+      "Open issue detail panel",
+      "Find time tracking section",
+      "Set time estimate to '4h'",
+      "Click 'Log Work'",
+      "Enter '2h' time spent",
+      "Verify logged time shows '2h of 4h'"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-074",
+    "category": "functional",
+    "description": "Home dashboard shows recent projects",
+    "steps": [
+      "Create 3 projects",
+      "Navigate to home",
+      "Verify recent projects displayed as cards",
+      "Verify project name, key, and issue count shown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-075",
+    "category": "functional",
+    "description": "Home dashboard shows assigned issues across projects",
+    "steps": [
+      "Create issues in different projects assigned to current user",
+      "Navigate to home dashboard",
+      "Verify 'Assigned to me' section shows all assigned issues",
+      "Click issue to navigate to it"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-076",
+    "category": "functional",
+    "description": "Home dashboard shows recent activity",
+    "steps": [
+      "Perform various actions (create issues, move cards, add comments)",
+      "Navigate to home dashboard",
+      "Verify activity feed shows recent actions",
+      "Verify chronological order"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-077",
+    "category": "style",
+    "description": "Home dashboard has beautiful layout",
+    "steps": [
+      "Navigate to home dashboard with data",
+      "Take a screenshot",
+      "Verify cards are well-spaced",
+      "Verify forest color palette applied",
+      "Verify statistics display cleanly",
+      "Verify no visual bugs or misalignments"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-078",
+    "category": "functional",
+    "description": "Bulk selection on backlog works",
+    "steps": [
+      "Navigate to backlog with multiple issues",
+      "Click checkbox on first issue",
+      "Shift-click checkbox on third issue",
+      "Verify issues 1-3 selected",
+      "Verify selection count indicator shows 3"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-079",
+    "category": "functional",
+    "description": "Bulk update assignee works",
+    "steps": [
+      "Select multiple issues in backlog",
+      "Open bulk actions menu",
+      "Click 'Change Assignee'",
+      "Select a user",
+      "Verify all selected issues updated"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-080",
+    "category": "functional",
+    "description": "Bulk add to sprint works",
+    "steps": [
+      "Select multiple issues in backlog",
+      "Open bulk actions menu",
+      "Click 'Move to Sprint'",
+      "Select a sprint",
+      "Verify all selected issues moved to sprint"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-081",
+    "category": "functional",
+    "description": "Issue type icon and color are correct",
+    "steps": [
+      "Create issue of type Story",
+      "Verify green bookmark icon",
+      "Create issue of type Bug",
+      "Verify terracotta bug icon",
+      "Create issue of type Task",
+      "Verify blue checkbox icon",
+      "Create issue of type Epic",
+      "Verify purple lightning icon"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-082",
+    "category": "style",
+    "description": "Priority icons have correct colors and direction",
+    "steps": [
+      "Create issues with each priority level",
+      "Verify Highest: red up arrow",
+      "Verify High: amber up arrow",
+      "Verify Medium: green equals",
+      "Verify Low: blue down arrow",
+      "Verify Lowest: gray down arrow"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-083",
+    "category": "style",
+    "description": "Create issue modal has correct styling",
+    "steps": [
+      "Open create issue modal",
+      "Take a screenshot",
+      "Verify 500px width",
+      "Verify proper field layout",
+      "Verify primary Create button with amber accent",
+      "Verify Cancel button with secondary styling",
+      "Verify 'Create another' checkbox present"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-084",
+    "category": "functional",
+    "description": "Create another checkbox allows multiple issue creation",
+    "steps": [
+      "Open create issue modal",
+      "Check 'Create another' checkbox",
+      "Fill in issue and click Create",
+      "Verify modal stays open and clears fields",
+      "Create another issue",
+      "Uncheck 'Create another' and create",
+      "Verify modal closes"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-085",
+    "category": "functional",
+    "description": "Cmd+Enter submits create issue modal",
+    "steps": [
+      "Open create issue modal",
+      "Enter summary",
+      "Press Cmd+Enter",
+      "Verify issue created and modal closes"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-086",
+    "category": "style",
+    "description": "Labels have correct pill styling with colors",
+    "steps": [
+      "Create labels with different colors",
+      "Add labels to issue",
+      "Open issue detail or view on card",
+      "Verify labels display as colored pills",
+      "Verify text readable on colored background"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-087",
+    "category": "style",
+    "description": "Avatars have correct styling",
+    "steps": [
+      "View issue card with assignee",
+      "Verify avatar is circular (24px small, 32px medium)",
+      "Verify initials shown if no image",
+      "Verify background color applied"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-088",
+    "category": "style",
+    "description": "Buttons have correct styling and hover states",
+    "steps": [
+      "Navigate to any page with buttons",
+      "Verify primary buttons have amber (#D4A373) background",
+      "Hover over primary button",
+      "Verify hover darkens color slightly",
+      "Verify secondary buttons have white background with border"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-089",
+    "category": "style",
+    "description": "Input fields have correct focus states",
+    "steps": [
+      "Click into any input field",
+      "Verify border changes to amber (#D4A373)",
+      "Verify focus ring appears",
+      "Tab to next input",
+      "Verify focus moves correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-090",
+    "category": "style",
+    "description": "Page transitions are smooth",
+    "steps": [
+      "Navigate between different views (board, backlog, roadmap)",
+      "Verify smooth crossfade transition (200ms)",
+      "Verify no jarring layout shifts"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-091",
+    "category": "style",
+    "description": "Drag and drop has proper visual feedback",
+    "steps": [
+      "Start dragging an issue card",
+      "Verify card lifts with shadow increase",
+      "Verify slight rotation effect",
+      "Drag over column",
+      "Verify drop zone highlights",
+      "Drop card",
+      "Verify smooth snap animation"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-092",
+    "category": "style",
+    "description": "Loading states show skeleton placeholders",
+    "steps": [
+      "Force slow load or inspect loading states",
+      "Verify skeleton placeholders show shimmer animation",
+      "Verify placeholders match content shape"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-093",
+    "category": "functional",
+    "description": "Toast notifications appear for actions",
+    "steps": [
+      "Create new issue",
+      "Verify success toast appears 'Issue created'",
+      "Delete an issue",
+      "Verify toast appears with undo option",
+      "Perform invalid action",
+      "Verify error toast appears"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-094",
+    "category": "functional",
+    "description": "Project archive functionality works",
+    "steps": [
+      "Navigate to Project Settings > Danger Zone",
+      "Click 'Archive Project'",
+      "Verify confirmation dialog",
+      "Confirm archive",
+      "Verify project no longer appears in active list",
+      "Verify can unarchive from settings"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-095",
+    "category": "functional",
+    "description": "Project delete functionality works",
+    "steps": [
+      "Navigate to Project Settings > Danger Zone",
+      "Click 'Delete Project'",
+      "Verify confirmation dialog requires typing project name",
+      "Type project name",
+      "Confirm deletion",
+      "Verify project completely removed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-096",
+    "category": "functional",
+    "description": "Clear all data functionality works",
+    "steps": [
+      "Navigate to User Settings > Data Management",
+      "Click 'Clear All Data'",
+      "Verify confirmation dialog",
+      "Confirm",
+      "Verify all data cleared",
+      "Verify app shows fresh/empty state"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-097",
+    "category": "functional",
+    "description": "User profile can be edited",
+    "steps": [
+      "Navigate to User Settings",
+      "Edit display name",
+      "Change avatar color",
+      "Save changes",
+      "Verify changes reflected in header avatar"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-098",
+    "category": "functional",
+    "description": "Multiple users can be created for simulation",
+    "steps": [
+      "Navigate to User Settings",
+      "Create additional user 'Jane Developer'",
+      "Create user 'Bob Designer'",
+      "Verify users appear in assignee dropdowns",
+      "Assign issues to different users"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-099",
+    "category": "functional",
+    "description": "Issue links work to copy URL",
+    "steps": [
+      "Open issue detail panel",
+      "Click issue key (e.g., CAN-1)",
+      "Verify link copied to clipboard notification",
+      "Paste and verify URL format"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-100",
+    "category": "functional",
+    "description": "Filter by label works on backlog",
+    "steps": [
+      "Create issues with different labels",
+      "Navigate to backlog",
+      "Filter by specific label",
+      "Verify only labeled issues shown",
+      "Clear filter"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-101",
+    "category": "functional",
+    "description": "Group by epic works on backlog",
+    "steps": [
+      "Create epic and link several issues",
+      "Navigate to backlog",
+      "Select 'Group by Epic'",
+      "Verify issues grouped under epic headers",
+      "Verify 'No Epic' group for unlinked issues"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-102",
+    "category": "functional",
+    "description": "Group by assignee works on backlog",
+    "steps": [
+      "Create issues with different assignees",
+      "Navigate to backlog",
+      "Select 'Group by Assignee'",
+      "Verify issues grouped by assignee",
+      "Verify 'Unassigned' group exists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-103",
+    "category": "functional",
+    "description": "Sprint edit works",
+    "steps": [
+      "Create a sprint",
+      "Click to edit sprint name inline",
+      "Change name to 'Sprint Alpha'",
+      "Edit sprint goal",
+      "Edit dates",
+      "Verify changes saved"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-104",
+    "category": "functional",
+    "description": "Sprint delete works",
+    "steps": [
+      "Create sprint with issues",
+      "Click delete sprint",
+      "Verify confirmation dialog",
+      "Confirm delete",
+      "Verify issues moved to backlog",
+      "Verify sprint removed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-105",
+    "category": "functional",
+    "description": "Completed sprint issues show in Done on board",
+    "steps": [
+      "Create and complete sprint with issues",
+      "Navigate to board",
+      "Verify completed issues in Done column",
+      "Verify proper status"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-106",
+    "category": "style",
+    "description": "Sprint sections have correct styling in backlog",
+    "steps": [
+      "Create sprints in different states",
+      "Navigate to backlog",
+      "Take screenshot",
+      "Verify active sprint highlighted",
+      "Verify future sprints display correctly",
+      "Verify completed sprints styled differently"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-107",
+    "category": "functional",
+    "description": "Empty state shows on new project board",
+    "steps": [
+      "Create new project",
+      "Navigate to board",
+      "Verify empty state message displayed",
+      "Verify 'Create your first issue' CTA",
+      "Click CTA and verify modal opens"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-108",
+    "category": "functional",
+    "description": "Empty state shows on empty backlog",
+    "steps": [
+      "Create new project",
+      "Navigate to backlog",
+      "Verify empty state message",
+      "Verify create issue CTA"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-109",
+    "category": "style",
+    "description": "Empty states have proper illustrations",
+    "steps": [
+      "View various empty states",
+      "Verify minimal illustrations present",
+      "Verify helpful text guidance",
+      "Verify CTAs are prominent"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-110",
+    "category": "functional",
+    "description": "Issue card shows correct preview info",
+    "steps": [
+      "Create issue with summary, priority, labels, story points, assignee",
+      "View card on board",
+      "Verify type icon visible",
+      "Verify key visible",
+      "Verify summary (truncated to 2 lines)",
+      "Verify story points badge",
+      "Verify labels (max 3)",
+      "Verify assignee avatar"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-111",
+    "category": "functional",
+    "description": "Long summaries truncate properly",
+    "steps": [
+      "Create issue with very long summary (100+ chars)",
+      "View on board card",
+      "Verify text truncates with ellipsis",
+      "View in detail panel",
+      "Verify full summary visible"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-112",
+    "category": "functional",
+    "description": "Backlog issue row shows correct info",
+    "steps": [
+      "Create issues with full attributes",
+      "Navigate to backlog",
+      "Verify row shows: checkbox, type icon, key, summary, story points, priority, labels, assignee, due date",
+      "Verify proper truncation and spacing"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-113",
+    "category": "style",
+    "description": "Backlog rows have correct hover states",
+    "steps": [
+      "Navigate to backlog",
+      "Hover over issue row",
+      "Verify background highlights",
+      "Verify drag handle appears",
+      "Verify row is clearly interactive"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-114",
+    "category": "functional",
+    "description": "Project color is used in UI",
+    "steps": [
+      "Create project with specific color",
+      "Navigate to project",
+      "Verify project color used in project icon",
+      "Verify color visible in project selector"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-115",
+    "category": "functional",
+    "description": "Reporter is auto-set on issue creation",
+    "steps": [
+      "Create new issue",
+      "Open issue detail",
+      "Verify reporter field shows current user",
+      "Verify reporter is read-only"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-116",
+    "category": "functional",
+    "description": "Issue timestamps update correctly",
+    "steps": [
+      "Create issue",
+      "Note created timestamp",
+      "Edit issue",
+      "Verify updated timestamp changes",
+      "Verify created timestamp unchanged"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-117",
+    "category": "functional",
+    "description": "Resolution date set when moved to Done",
+    "steps": [
+      "Create issue",
+      "Move to Done",
+      "Open detail panel",
+      "Verify resolved date is set",
+      "Move back to In Progress",
+      "Verify resolved date is cleared"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-118",
+    "category": "functional",
+    "description": "Dropdown search filters long lists",
+    "steps": [
+      "Create 10+ labels",
+      "Open label dropdown on issue",
+      "Type in search input",
+      "Verify dropdown filters to match"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-119",
+    "category": "style",
+    "description": "Dropdown menus have correct styling",
+    "steps": [
+      "Open any dropdown (status, assignee, etc.)",
+      "Take screenshot",
+      "Verify white background",
+      "Verify shadow",
+      "Verify max-height with scroll",
+      "Verify selected item has checkmark",
+      "Verify hover states on items"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-120",
+    "category": "functional",
+    "description": "Escape key closes modals and panels",
+    "steps": [
+      "Open create issue modal",
+      "Press Escape",
+      "Verify modal closes",
+      "Open issue detail panel",
+      "Press Escape",
+      "Verify panel closes"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-121",
+    "category": "functional",
+    "description": "Tab navigation works for accessibility",
+    "steps": [
+      "Navigate to create issue modal",
+      "Press Tab repeatedly",
+      "Verify focus moves through form fields",
+      "Verify focus visible on each element",
+      "Press Shift+Tab",
+      "Verify focus moves backward"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-122",
+    "category": "functional",
+    "description": "Arrow keys navigate board cards",
+    "steps": [
+      "Navigate to board with cards",
+      "Click a card to select",
+      "Press arrow keys",
+      "Verify selection moves between cards",
+      "Press Enter",
+      "Verify detail panel opens"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-123",
+    "category": "functional",
+    "description": "M key assigns issue to self",
+    "steps": [
+      "Select an issue on board",
+      "Press M key",
+      "Verify issue assigned to current user",
+      "Verify avatar updates"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-124",
+    "category": "functional",
+    "description": "Sprint velocity calculated on completion",
+    "steps": [
+      "Create sprint with issues totaling 20 story points",
+      "Complete 15 story points worth of issues",
+      "Complete sprint",
+      "Verify velocity recorded as 15",
+      "Check velocity chart shows this data"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-125",
+    "category": "functional",
+    "description": "Average velocity calculated correctly",
+    "steps": [
+      "Complete Sprint 1 with velocity 10",
+      "Complete Sprint 2 with velocity 15",
+      "Complete Sprint 3 with velocity 20",
+      "Navigate to velocity chart",
+      "Verify average line shows 15"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-126",
+    "category": "functional",
+    "description": "Burndown chart calculates correctly",
+    "steps": [
+      "Create sprint with 20 story points",
+      "Start sprint",
+      "Complete 5 points day 1",
+      "Complete 8 points day 2",
+      "View burndown chart",
+      "Verify points remaining shown correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-127",
+    "category": "functional",
+    "description": "Recent searches shown in search modal",
+    "steps": [
+      "Open global search",
+      "Search for 'login'",
+      "Close and reopen search",
+      "Verify 'login' shown in recent searches",
+      "Click recent search",
+      "Verify search performed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-128",
+    "category": "functional",
+    "description": "Search keyboard navigation works",
+    "steps": [
+      "Open global search",
+      "Type search query",
+      "Use arrow keys to navigate results",
+      "Press Enter on highlighted result",
+      "Verify correct navigation"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-129",
+    "category": "functional",
+    "description": "Filter syntax supports relative dates",
+    "steps": [
+      "Create issue with due date in 7 days",
+      "Open filter",
+      "Enter query: 'due < +7d'",
+      "Verify issue found",
+      "Enter query: 'created >= -1d'",
+      "Verify recent issues found"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-130",
+    "category": "functional",
+    "description": "Filter syntax supports story point comparison",
+    "steps": [
+      "Create issues with varied story points",
+      "Filter: 'storyPoints > 5'",
+      "Verify only larger estimates shown",
+      "Filter: 'storyPoints <= 3'",
+      "Verify only smaller estimates shown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-131",
+    "category": "functional",
+    "description": "Filter syntax ORDER BY works",
+    "steps": [
+      "Create multiple issues",
+      "Filter: 'type = Task ORDER BY priority DESC'",
+      "Verify tasks sorted by priority high to low",
+      "Filter: 'ORDER BY created ASC'",
+      "Verify oldest first"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-132",
+    "category": "functional",
+    "description": "Issue detail shows time tracking",
+    "steps": [
+      "Open issue detail",
+      "Set estimate to '8h'",
+      "Log work: '2h 30m'",
+      "Verify remaining shows approximately '5h 30m'",
+      "Log more work: '3h'",
+      "Verify remaining updates"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-133",
+    "category": "functional",
+    "description": "Time formats parse correctly",
+    "steps": [
+      "Set estimate '1d' (should equal 8h)",
+      "Set estimate '2h 30m'",
+      "Set estimate '1d 4h'",
+      "Verify all formats accepted and display correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-134",
+    "category": "style",
+    "description": "Date picker has correct styling",
+    "steps": [
+      "Click due date field",
+      "Take screenshot of calendar picker",
+      "Verify calendar grid layout",
+      "Verify current date highlighted",
+      "Verify navigation arrows",
+      "Verify selection styling"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-135",
+    "category": "functional",
+    "description": "Components can be assigned to issues",
+    "steps": [
+      "Create components: API, UI, Database",
+      "Open issue detail",
+      "Add 'API' component",
+      "Add 'Database' component",
+      "Verify components saved",
+      "Verify can filter by component"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-136",
+    "category": "functional",
+    "description": "Component lead is tracked",
+    "steps": [
+      "Create component with lead user",
+      "Open component settings",
+      "Verify lead user shown",
+      "Change lead user",
+      "Verify change saved"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-137",
+    "category": "functional",
+    "description": "Label deletion warns about impact",
+    "steps": [
+      "Create label and add to several issues",
+      "Navigate to Labels management",
+      "Click delete on label",
+      "Verify warning shows number of affected issues",
+      "Confirm delete",
+      "Verify label removed from issues"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-138",
+    "category": "functional",
+    "description": "Custom fields can be created",
+    "steps": [
+      "Navigate to Project Settings > Custom Fields",
+      "Create text field 'Environment'",
+      "Create select field 'Severity' with options",
+      "Create number field 'Impact Score'",
+      "Verify fields saved"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-139",
+    "category": "functional",
+    "description": "Custom fields appear on issues",
+    "steps": [
+      "Create custom fields",
+      "Open issue detail",
+      "Verify custom fields appear in sidebar",
+      "Fill in custom field values",
+      "Verify values saved"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-140",
+    "category": "style",
+    "description": "Project settings page has clean layout",
+    "steps": [
+      "Navigate to Project Settings",
+      "Take screenshot",
+      "Verify sections are clearly organized",
+      "Verify forms have proper spacing",
+      "Verify danger zone is visually distinct"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-141",
+    "category": "functional",
+    "description": "Workflow columns can be reordered",
+    "steps": [
+      "Navigate to workflow settings",
+      "Drag 'In Review' column before 'In Progress'",
+      "Save changes",
+      "Navigate to board",
+      "Verify column order updated"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-142",
+    "category": "functional",
+    "description": "Column status category assignment works",
+    "steps": [
+      "Create new column",
+      "Set status category to 'In Progress'",
+      "Save",
+      "Move issue to new column",
+      "Verify issue counts as 'in progress' for reports"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-143",
+    "category": "functional",
+    "description": "Edit comment works",
+    "steps": [
+      "Add comment to issue",
+      "Click edit on comment",
+      "Change text",
+      "Save",
+      "Verify 'edited' indicator appears",
+      "Verify text updated"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-144",
+    "category": "functional",
+    "description": "Delete comment works",
+    "steps": [
+      "Add comment to issue",
+      "Click delete on comment",
+      "Verify confirmation",
+      "Confirm delete",
+      "Verify comment removed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-145",
+    "category": "style",
+    "description": "Comments have proper styling",
+    "steps": [
+      "Add comments to issue",
+      "Take screenshot of activity section",
+      "Verify author avatar and name",
+      "Verify timestamp formatting",
+      "Verify comment body styling",
+      "Verify edited indicator subtle but visible"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-146",
+    "category": "functional",
+    "description": "Activity history shows all changes",
+    "steps": [
+      "Create issue",
+      "Change status, assignee, priority, labels",
+      "Add comments",
+      "View History tab in activity",
+      "Verify all changes logged with from/to values"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-147",
+    "category": "functional",
+    "description": "Sprint active filter on board",
+    "steps": [
+      "Create 2 sprints with issues",
+      "Start first sprint",
+      "Navigate to board",
+      "Verify only active sprint issues shown",
+      "Use sprint filter to show all"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-148",
+    "category": "functional",
+    "description": "Roadmap zoom levels work",
+    "steps": [
+      "Navigate to roadmap",
+      "Select day view",
+      "Verify daily granularity",
+      "Select week view",
+      "Verify weekly granularity",
+      "Select month view",
+      "Verify monthly granularity",
+      "Select quarter view",
+      "Verify quarterly granularity"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-149",
+    "category": "functional",
+    "description": "Roadmap scroll to today works",
+    "steps": [
+      "Navigate to roadmap",
+      "Scroll timeline to past dates",
+      "Click 'Today' button",
+      "Verify timeline scrolls to current date"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-150",
+    "category": "functional",
+    "description": "Epic progress shows on roadmap",
+    "steps": [
+      "Create epic with child issues",
+      "Complete some child issues",
+      "Navigate to roadmap",
+      "Verify progress bar visible on epic bar",
+      "Verify percentage accurate"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-151",
+    "category": "style",
+    "description": "Roadmap epic bars have correct colors",
+    "steps": [
+      "Create epics with different colors/status",
+      "Navigate to roadmap",
+      "Verify epic bars colored according to epic color",
+      "Verify bar opacity/style for completed vs in-progress"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-152",
+    "category": "functional",
+    "description": "Quick create issue from board column",
+    "steps": [
+      "Navigate to board",
+      "Click + icon in column header",
+      "Enter quick summary",
+      "Press Enter",
+      "Verify issue created in that column"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-153",
+    "category": "functional",
+    "description": "Right-click context menu on issue",
+    "steps": [
+      "Navigate to board",
+      "Right-click on issue card",
+      "Verify context menu appears",
+      "Verify options: Open, Edit, Assign, Change status, Delete",
+      "Click option and verify action"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-154",
+    "category": "functional",
+    "description": "Undo action via toast",
+    "steps": [
+      "Delete an issue",
+      "Verify undo toast appears",
+      "Click 'Undo' within 5 seconds",
+      "Verify issue restored"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-155",
+    "category": "style",
+    "description": "Toast notifications have correct styling",
+    "steps": [
+      "Trigger success toast",
+      "Verify green/success styling",
+      "Trigger error toast",
+      "Verify red/error styling",
+      "Verify proper position (top of screen)",
+      "Verify auto-dismiss after timeout"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-156",
+    "category": "functional",
+    "description": "Settings preferences persist",
+    "steps": [
+      "Set various preferences (theme, default project, sidebar state)",
+      "Close browser",
+      "Reopen browser",
+      "Verify all preferences persisted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-157",
+    "category": "functional",
+    "description": "Default project auto-loads",
+    "steps": [
+      "Set default project in preferences",
+      "Navigate away to home",
+      "Refresh page",
+      "Verify default project loads automatically"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-158",
+    "category": "style",
+    "description": "User settings page has clean layout",
+    "steps": [
+      "Navigate to User Settings",
+      "Take screenshot",
+      "Verify profile section clear",
+      "Verify preferences section organized",
+      "Verify data management section distinct"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-159",
+    "category": "functional",
+    "description": "Date format preference works",
+    "steps": [
+      "Set date format to 'DD/MM/YYYY'",
+      "View issue with due date",
+      "Verify date displays in chosen format",
+      "Change to 'MM/DD/YYYY'",
+      "Verify format updates"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-160",
+    "category": "style",
+    "description": "Charts render correctly with data",
+    "steps": [
+      "Complete sprints with varied data",
+      "Navigate to burndown chart",
+      "Take screenshot",
+      "Navigate to velocity chart",
+      "Take screenshot",
+      "Verify charts render with proper axes, labels, and data points"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-161",
+    "category": "functional",
+    "description": "Pie charts show issue distribution",
+    "steps": [
+      "Create issues with varied types, priorities, assignees",
+      "Navigate to reports dashboard",
+      "Verify pie chart by type",
+      "Verify pie chart by priority",
+      "Click slice to filter"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-162",
+    "category": "functional",
+    "description": "Cumulative flow diagram works",
+    "steps": [
+      "Have project with sprint history",
+      "Navigate to cumulative flow report",
+      "Verify stacked area chart",
+      "Verify areas by status category",
+      "Verify date range selector works"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-163",
+    "category": "style",
+    "description": "Report page layout is organized",
+    "steps": [
+      "Navigate to reports section",
+      "Take screenshot",
+      "Verify chart centered with controls",
+      "Verify sprint/date selector prominent",
+      "Verify proper spacing around charts"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-164",
+    "category": "functional",
+    "description": "Sprint report shows comprehensive stats",
+    "steps": [
+      "Complete sprint",
+      "Navigate to Sprint Report",
+      "Verify committed vs completed points",
+      "Verify completed issues list",
+      "Verify incomplete issues list",
+      "Verify added during sprint",
+      "Verify removed during sprint"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-165",
+    "category": "functional",
+    "description": "Watch issue functionality",
+    "steps": [
+      "Open issue detail",
+      "Click 'Watch' button",
+      "Verify watching indicator",
+      "Click again to unwatch",
+      "Verify indicator removed"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-166",
+    "category": "functional",
+    "description": "Share issue copies link",
+    "steps": [
+      "Open issue detail",
+      "Click 'Share' button",
+      "Verify link copied to clipboard",
+      "Verify toast notification"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-167",
+    "category": "style",
+    "description": "Mobile responsive basic layout",
+    "steps": [
+      "View app at 375px width (mobile)",
+      "Verify header adapts",
+      "Verify sidebar collapses to hamburger",
+      "Verify main content fills width"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-168",
+    "category": "style",
+    "description": "Tablet responsive layout",
+    "steps": [
+      "View app at 768px width (tablet)",
+      "Verify layout adjusts appropriately",
+      "Verify sidebar toggleable",
+      "Verify cards resize"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-169",
+    "category": "style",
+    "description": "Large screen max-width works",
+    "steps": [
+      "View app at 1920px width",
+      "Verify main content has max-width 1400px",
+      "Verify content centered",
+      "Verify no awkward stretching"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-170",
+    "category": "style",
+    "description": "Animations respect prefers-reduced-motion",
+    "steps": [
+      "Enable prefers-reduced-motion in browser",
+      "Verify animations disabled or reduced",
+      "Navigate between views",
+      "Verify no jarring animations"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-171",
+    "category": "functional",
+    "description": "Build command produces static output",
+    "steps": [
+      "Run npm run build",
+      "Verify dist/ folder created",
+      "Verify index.html present",
+      "Verify assets folder with JS/CSS"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-172",
+    "category": "functional",
+    "description": "Built app works from static server",
+    "steps": [
+      "Build app",
+      "Serve dist/ folder with simple static server",
+      "Navigate to app",
+      "Verify full functionality works",
+      "Create issue, verify persists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-173",
+    "category": "functional",
+    "description": "App works offline after initial load",
+    "steps": [
+      "Load app normally",
+      "Create some data",
+      "Disable network",
+      "Refresh page",
+      "Verify app loads from cache/IndexedDB",
+      "Verify data persists"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-174",
+    "category": "functional",
+    "description": "Browser back/forward navigation works",
+    "steps": [
+      "Navigate: Home > Board > Backlog > Issue detail",
+      "Click browser back",
+      "Verify returns to backlog",
+      "Click back again",
+      "Verify returns to board",
+      "Click forward",
+      "Verify returns to backlog"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-175",
+    "category": "functional",
+    "description": "Direct URL navigation works",
+    "steps": [
+      "Create project and issue",
+      "Copy issue URL",
+      "Open new tab",
+      "Paste and navigate to issue URL",
+      "Verify issue detail loads correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-176",
+    "category": "functional",
+    "description": "404 page for invalid routes",
+    "steps": [
+      "Navigate to invalid URL",
+      "Verify 404/not found page shown",
+      "Verify link to return home"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-177",
+    "category": "style",
+    "description": "Keyboard shortcuts modal has clean layout",
+    "steps": [
+      "Press ? to open shortcuts",
+      "Take screenshot",
+      "Verify categorized sections",
+      "Verify key combinations clearly shown",
+      "Verify descriptions readable"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-178",
+    "category": "functional",
+    "description": "Fullscreen board toggle",
+    "steps": [
+      "Navigate to board",
+      "Click fullscreen toggle",
+      "Verify sidebar and header hidden",
+      "Verify board fills screen",
+      "Click toggle or press Escape",
+      "Verify normal view restored"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-179",
+    "category": "functional",
+    "description": "Sprint goals editable and displayed",
+    "steps": [
+      "Create sprint with goal",
+      "Navigate to backlog",
+      "Verify goal displayed in sprint section",
+      "Edit goal inline",
+      "Verify change saves"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-180",
+    "category": "functional",
+    "description": "Sprint dates displayed correctly",
+    "steps": [
+      "Create sprint with start and end dates",
+      "Navigate to backlog",
+      "Verify dates shown in sprint header",
+      "Verify date range calculated correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-181",
+    "category": "functional",
+    "description": "Complete sprint dialog shows options",
+    "steps": [
+      "Have active sprint with incomplete issues",
+      "Click Complete Sprint",
+      "Verify dialog shows completion stats",
+      "Verify option to move to backlog",
+      "Verify option to move to next sprint",
+      "Complete and verify issues moved correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-182",
+    "category": "style",
+    "description": "Confirmation dialogs have proper styling",
+    "steps": [
+      "Trigger delete confirmation",
+      "Take screenshot",
+      "Verify dialog centered with overlay",
+      "Verify warning text clear",
+      "Verify destructive action button red",
+      "Verify cancel button secondary"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-183",
+    "category": "functional",
+    "description": "Project selector search works",
+    "steps": [
+      "Create multiple projects",
+      "Open project selector",
+      "Type in search input",
+      "Verify projects filter to match",
+      "Clear search",
+      "Verify all projects return"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-184",
+    "category": "functional",
+    "description": "Recently viewed projects shown first",
+    "steps": [
+      "View Project A, then B, then C",
+      "Open project selector",
+      "Verify C shown first (most recent)",
+      "Verify A shown last"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-185",
+    "category": "style",
+    "description": "Project selector dropdown has correct styling",
+    "steps": [
+      "Open project selector",
+      "Take screenshot",
+      "Verify search input at top",
+      "Verify project items show icon, name, key",
+      "Verify hover states",
+      "Verify 'Create new project' option"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-186",
+    "category": "functional",
+    "description": "Issue form validation works",
+    "steps": [
+      "Open create issue modal",
+      "Try to submit without summary",
+      "Verify validation error shown",
+      "Enter summary",
+      "Submit successfully"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-187",
+    "category": "functional",
+    "description": "Project key validation works",
+    "steps": [
+      "Open create project",
+      "Enter key with lowercase letters",
+      "Verify auto-uppercased or error",
+      "Enter key with special characters",
+      "Verify error shown",
+      "Enter valid key",
+      "Verify accepted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-188",
+    "category": "functional",
+    "description": "Duplicate project key prevented",
+    "steps": [
+      "Create project with key 'TEST'",
+      "Try to create another with same key",
+      "Verify error shown",
+      "Use different key",
+      "Verify success"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-189",
+    "category": "style",
+    "description": "Form validation errors styled correctly",
+    "steps": [
+      "Trigger form validation error",
+      "Verify red border on invalid field",
+      "Verify error message text red",
+      "Fix error",
+      "Verify styling returns to normal"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-190",
+    "category": "functional",
+    "description": "Issue type can be changed from detail",
+    "steps": [
+      "Create Story",
+      "Open detail panel",
+      "Click type dropdown",
+      "Change to Task",
+      "Verify type icon updates",
+      "Verify persists after refresh"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-191",
+    "category": "functional",
+    "description": "Changing to Epic type removes parent epic link",
+    "steps": [
+      "Create Story linked to Epic",
+      "Change Story type to Epic",
+      "Verify warning about removing epic link",
+      "Confirm",
+      "Verify story is now epic without parent"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-192",
+    "category": "functional",
+    "description": "Sub-task cannot have sub-tasks",
+    "steps": [
+      "Create Story with sub-task",
+      "Open sub-task detail",
+      "Verify no 'Add sub-task' option",
+      "Verify sub-task section hidden for sub-tasks"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-193",
+    "category": "functional",
+    "description": "Epic cannot be sub-task of another issue",
+    "steps": [
+      "Create Epic",
+      "Verify Epic cannot be linked as sub-task",
+      "Verify Epic parent field not editable"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-194",
+    "category": "functional",
+    "description": "Story points accept decimal values",
+    "steps": [
+      "Open issue detail",
+      "Enter story points: 0.5",
+      "Verify saved",
+      "Enter: 2.5",
+      "Verify saved",
+      "Verify totals calculate correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-195",
+    "category": "functional",
+    "description": "Story points have valid range",
+    "steps": [
+      "Try to enter story points: 0",
+      "Verify error or cleared",
+      "Try: 101",
+      "Verify max limit enforced",
+      "Enter valid range (1-100)",
+      "Verify accepted"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-196",
+    "category": "functional",
+    "description": "Data persists through schema upgrades",
+    "steps": [
+      "Create data with current schema",
+      "Note schema version",
+      "Simulate schema upgrade scenario",
+      "Verify data migrated correctly"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-197",
+    "category": "style",
+    "description": "All icons consistent size and style",
+    "steps": [
+      "Review app for icon consistency",
+      "Verify Lucide icons used throughout",
+      "Verify 20px default size",
+      "Verify 2px stroke width",
+      "Verify colors appropriate to context"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-198",
+    "category": "style",
+    "description": "Typography hierarchy is clear",
+    "steps": [
+      "Review page with content",
+      "Verify h1 headers are 24px Space Grotesk",
+      "Verify body text is 14px DM Sans",
+      "Verify small text is 12px",
+      "Verify proper line heights"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-199",
+    "category": "style",
+    "description": "Spacing follows 8px grid",
+    "steps": [
+      "Inspect element spacing",
+      "Verify margins/padding are multiples of 4/8px",
+      "Verify consistent card padding (16px)",
+      "Verify consistent section gaps (24px)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-200",
+    "category": "functional",
+    "description": "Complete end-to-end workflow: Create project, plan sprint, complete work",
+    "steps": [
+      "Create new project 'E2E Test' with key 'E2E'",
+      "Create Epic 'User Management'",
+      "Create Story 'Login page' linked to epic",
+      "Create Story 'Registration page' linked to epic",
+      "Create Bug 'Fix validation'",
+      "Add labels 'frontend', 'priority'",
+      "Create Sprint 1",
+      "Add all stories to sprint",
+      "Start sprint",
+      "Move Login page to In Progress",
+      "Add comment 'Starting work'",
+      "Add sub-task 'Design form'",
+      "Complete sub-task",
+      "Move Login page to Done",
+      "Move Registration to In Progress then Done",
+      "Complete Sprint",
+      "View burndown chart",
+      "View velocity chart",
+      "Verify epic progress updated",
+      "Export project data"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-201",
+    "category": "functional",
+    "description": "Full search and filter workflow",
+    "steps": [
+      "Create 10 issues with varied attributes",
+      "Assign different users, priorities, labels",
+      "Use global search Cmd+K to find specific issue",
+      "Navigate to board",
+      "Apply quick filter by text",
+      "Apply filter by assignee",
+      "Apply filter by priority",
+      "Open advanced filter",
+      "Enter JQL: 'priority = High AND labels = frontend'",
+      "Save filter as 'High Priority Frontend'",
+      "Clear filters",
+      "Load saved filter",
+      "Verify correct issues shown"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-202",
+    "category": "functional",
+    "description": "Multi-project workflow",
+    "steps": [
+      "Create Project A",
+      "Create issues in Project A",
+      "Create Project B",
+      "Create issues in Project B",
+      "Navigate to home dashboard",
+      "Verify assigned issues from both projects shown",
+      "Use project selector to switch",
+      "Verify correct project loads",
+      "Search across projects",
+      "Verify results from both projects"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-203",
+    "category": "functional",
+    "description": "Complete sprint planning session",
+    "steps": [
+      "Create 15 issues in backlog with varied story points",
+      "Create Sprint 1",
+      "Open sprint planning view",
+      "Drag top priority issues to sprint",
+      "Monitor story point total",
+      "Set sprint capacity/goal",
+      "Verify point total vs capacity",
+      "Drag issue out of sprint back to backlog",
+      "Reorder backlog priorities",
+      "Create Sprint 2",
+      "Plan some issues for Sprint 2",
+      "Start Sprint 1",
+      "Verify only Sprint 1 active"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-204",
+    "category": "functional",
+    "description": "Epic management deep workflow",
+    "steps": [
+      "Create Epic 'Feature Set A'",
+      "Add description with markdown",
+      "Set start and due dates",
+      "Create 5 stories linked to epic",
+      "Create 2 bugs linked to epic",
+      "View epic detail panel",
+      "Verify child issues listed",
+      "Verify progress bar (0%)",
+      "Complete 3 issues",
+      "Verify progress updates (~43%)",
+      "Navigate to roadmap",
+      "Verify epic on timeline",
+      "Verify progress shown on bar",
+      "Create Epic 'Feature Set B'",
+      "Move story from Epic A to Epic B",
+      "Verify progress updates for both"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-205",
+    "category": "functional",
+    "description": "Comprehensive reporting workflow",
+    "steps": [
+      "Complete Sprint 1 (10 points, 8 completed)",
+      "Complete Sprint 2 (12 points, 12 completed)",
+      "Complete Sprint 3 (15 points, 10 completed)",
+      "Navigate to Burndown Chart",
+      "Select Sprint 3",
+      "Verify burndown line accurate",
+      "Navigate to Velocity Chart",
+      "Verify 3 sprints shown",
+      "Verify committed vs completed",
+      "Verify average velocity line",
+      "Navigate to Sprint Report",
+      "Select Sprint 3",
+      "Verify completed list (10 points)",
+      "Verify incomplete list (5 points)",
+      "Verify commitment accuracy (67%)",
+      "View pie charts",
+      "Verify issue distribution accurate"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-206",
+    "category": "functional",
+    "description": "Data backup and restore workflow",
+    "steps": [
+      "Create substantial data: projects, issues, sprints, users, labels",
+      "Navigate to settings",
+      "Export all data to JSON",
+      "Verify file downloads",
+      "Clear all data",
+      "Verify app empty",
+      "Import from downloaded JSON",
+      "Verify all data restored",
+      "Verify projects accessible",
+      "Verify issues present",
+      "Verify sprints intact",
+      "Verify labels and users restored"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-207",
+    "category": "functional",
+    "description": "Keyboard-only navigation complete workflow",
+    "steps": [
+      "Press C to create issue",
+      "Tab through form fields",
+      "Enter issue summary",
+      "Press Cmd+Enter to submit",
+      "Press G then B for board",
+      "Use arrow keys to navigate cards",
+      "Press Enter to open detail",
+      "Press A to open assignee dropdown",
+      "Use arrows to select, Enter to confirm",
+      "Press L for labels",
+      "Press P for priority",
+      "Press C to add comment",
+      "Type comment, Cmd+Enter to submit",
+      "Press Escape to close panel",
+      "Press / to focus filter",
+      "Press Cmd+K for global search",
+      "Press ? for shortcuts reference"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-208",
+    "category": "functional",
+    "description": "Complex issue lifecycle",
+    "steps": [
+      "Create story with full details",
+      "Add sub-tasks",
+      "Link to epic",
+      "Add to sprint",
+      "Start sprint",
+      "Change assignee",
+      "Add comment",
+      "Log time",
+      "Move to In Progress",
+      "Complete sub-tasks",
+      "Move to In Review",
+      "Add review comment",
+      "Move to Done",
+      "Verify resolved date set",
+      "Clone issue",
+      "Verify new key",
+      "Delete original",
+      "Verify clone remains"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-209",
+    "category": "functional",
+    "description": "User management and assignment workflow",
+    "steps": [
+      "Create user 'Developer Alice'",
+      "Create user 'Designer Bob'",
+      "Create user 'Manager Carol'",
+      "Set project lead to Carol",
+      "Create issues",
+      "Assign to different users",
+      "Filter board by Alice",
+      "View home dashboard 'Assigned to me'",
+      "Switch current user",
+      "Verify 'Assigned to me' updates",
+      "Group backlog by assignee",
+      "Verify correct grouping"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-210",
+    "category": "functional",
+    "description": "Board customization complete workflow",
+    "steps": [
+      "Navigate to project settings",
+      "Add column 'Code Review' after In Progress",
+      "Add column 'QA' after Code Review",
+      "Set WIP limit of 3 on Code Review",
+      "Save workflow",
+      "Navigate to board",
+      "Verify new columns exist",
+      "Move issues through new workflow",
+      "Add 4 issues to Code Review",
+      "Verify WIP warning shown",
+      "Enable swimlanes by assignee",
+      "Verify cards grouped",
+      "Switch to swimlanes by priority",
+      "Verify regrouped",
+      "Disable swimlanes"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-211",
+    "category": "style",
+    "description": "Forest color palette consistently applied",
+    "steps": [
+      "Take full page screenshot",
+      "Verify header is #1B4332 forest green",
+      "Verify page background is #FAF9F6 warm off-white",
+      "Verify accent buttons use #D4A373 amber",
+      "Verify sidebar background #F5F3EF",
+      "Verify primary text is #2D3748 charcoal",
+      "Verify no purple gradients or AI slop aesthetics"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-212",
+    "category": "style",
+    "description": "Space Grotesk and DM Sans fonts applied correctly",
+    "steps": [
+      "Inspect page headers",
+      "Verify Space Grotesk font family",
+      "Inspect body text",
+      "Verify DM Sans font family",
+      "Verify monospace JetBrains Mono for code elements"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-213",
+    "category": "style",
+    "description": "Entrance animations on page load",
+    "steps": [
+      "Refresh page with content",
+      "Observe staggered card entrance",
+      "Verify smooth fade + slide up",
+      "Navigate to board",
+      "Verify columns animate in with stagger"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-214",
+    "category": "style",
+    "description": "Micro-interactions throughout app",
+    "steps": [
+      "Hover over buttons",
+      "Verify hover scale and shadow",
+      "Click button",
+      "Verify click feedback",
+      "Hover over cards",
+      "Verify lift effect",
+      "Check checkbox",
+      "Verify checkmark animation"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-215",
+    "category": "style",
+    "description": "Panel and modal transitions smooth",
+    "steps": [
+      "Open create issue modal",
+      "Verify fade + scale transition",
+      "Close modal",
+      "Verify fade out",
+      "Open issue detail panel",
+      "Verify slide in from right",
+      "Close panel",
+      "Verify slide out"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-216",
+    "category": "functional",
+    "description": "No console errors in normal operation",
+    "steps": [
+      "Open browser console",
+      "Navigate through all major views",
+      "Create, edit, delete issues",
+      "Verify no JavaScript errors in console"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-217",
+    "category": "functional",
+    "description": "Performance: Page loads under 2 seconds",
+    "steps": [
+      "Clear cache",
+      "Load app",
+      "Verify initial load under 2 seconds",
+      "Navigate between views",
+      "Verify instant navigation (<200ms)"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-218",
+    "category": "functional",
+    "description": "Performance: Smooth 60fps animations",
+    "steps": [
+      "Enable FPS meter in devtools",
+      "Perform drag and drop",
+      "Verify 60fps maintained",
+      "Navigate between views",
+      "Verify smooth transitions"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-219",
+    "category": "functional",
+    "description": "Graceful handling of IndexedDB quota",
+    "steps": [
+      "Create large amounts of data",
+      "Monitor IndexedDB usage",
+      "Verify app handles storage gracefully",
+      "Verify warning if approaching limits"
+    ],
+    "passes": false
+  },
+  {
+    "id": "test-220",
+    "category": "functional",
+    "description": "Focus management in modals",
+    "steps": [
+      "Open modal",
+      "Verify focus trapped in modal",
+      "Tab through modal elements",
+      "Verify cannot tab outside",
+      "Close modal",
+      "Verify focus returns to trigger element"
+    ],
+    "passes": false
+  }
+]

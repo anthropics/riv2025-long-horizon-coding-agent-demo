@@ -1,0 +1,1 @@
+creating a new issue in the backlog, dragging it into an active sprint, moving it across the board from "To Do" to "Done", and verifying it appears in the sprint report.

@@ -1,0 +1,10 @@
+{
+  "session_id": "gh-issue-14-20251201-190015-19834074203",
+  "current_issue": 14,
+  "backlog_item_id": null,
+  "status": "running",
+  "last_heartbeat": "2025-12-01T19:00:24.866716+00:00",
+  "restart_count": 0,
+  "working_directory": "/app/workspace/agent-runtime",
+  "last_commit": "d408bbdd15a1d1c7a1a5221e37b050a6e47b8184"
+}
