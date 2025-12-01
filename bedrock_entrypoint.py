@@ -107,17 +107,21 @@ def get_anthropic_api_key() -> Optional[str]:
     return get_secret(f"claude-code/{env}/anthropic-api-key")
 
 
-def get_github_token() -> Optional[str]:
+def get_github_token(github_repo: Optional[str] = None) -> Optional[str]:
     """Fetch GitHub token from Secrets Manager.
 
     Checks for org-specific token first (e.g., github-token-anthropics),
     then falls back to the default github-token secret.
+
+    Args:
+        github_repo: GitHub repo in "org/repo" format. If provided, will check
+                     for org-specific token first.
     """
     env = os.environ.get("ENVIRONMENT", "reinvent")
-    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    repo = github_repo or os.environ.get("GITHUB_REPOSITORY", "")
 
     # Try org-specific token first (e.g., claude-code/reinvent/github-token-anthropics)
-    if repo:
+    if repo and "/" in repo:
         org = repo.split("/")[0]
         token = get_secret(f"claude-code/{env}/github-token-{org}")
         if token:
@@ -1846,7 +1850,7 @@ async def handler(payload: Dict[str, Any], context: Any) -> Iterator[Dict[str, A
         print(f"📋 GitHub Mode: Building issue #{issue_number} from {github_repo}")
         print(f"🔧 Using persistent agent-runtime branch (not issue-* branches)")
 
-        github_token = get_github_token()
+        github_token = get_github_token(github_repo)
         if not github_token:
             yield {"event": "error", "message": "GitHub token not found in Secrets Manager"}
             return
@@ -2002,7 +2006,7 @@ Progress will continue from where the previous session left off.""")
         print(f"📋 Legacy GitHub Mode: Building issue #{issue_number}")
         target_branch = f"issue-{issue_number}"  # Legacy mode uses issue-N branches
 
-        github_token = get_github_token()
+        github_token = get_github_token(github_repo)
         if not github_token:
             yield {"event": "error", "message": "GitHub token not found in Secrets Manager"}
             return
@@ -2382,7 +2386,7 @@ Commits should reference this issue: `Ref: #{issue_number}`
                     os.system("git config user.name 'Claude Code Agent'")
                     os.system("git config user.email 'agent@anthropic.com'")
 
-                    gh_token = get_github_token()
+                    gh_token = get_github_token(github_repo)
                     os.system(f"git remote add origin https://x-access-token:{gh_token}@github.com/{github_repo}.git || true")
                     push_result = os.system(f"git push -u origin {target_branch}")
 
@@ -2604,7 +2608,7 @@ Commits should reference this issue: `Ref: #{issue_number}`
             if current_time - last_token_refresh_time >= token_refresh_interval:
                 # Get fresh token and write to file
                 try:
-                    fresh_token = get_github_token()
+                    fresh_token = get_github_token(github_repo)
                 except Exception as e:
                     print(f"⚠️ get_github_token error: {e}")
                     fresh_token = None
