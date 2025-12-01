@@ -151,7 +151,7 @@ export function VelocityPage() {
         </div>
         <div className="bg-muted/50 rounded-lg p-4">
           <p className="text-sm text-muted-foreground">Velocity Trend</p>
-          <p className={`text-2xl font-semibold ${velocityTrend > 0 ? 'text-[#2D6A4F]' : velocityTrend < 0 ? 'text-destructive' : ''}`} style={{ fontFamily: 'var(--font-display)' }}>
+          <p className={`text-2xl font-semibold ${velocityTrend > 0 ? 'text-[#A83B4C]' : velocityTrend < 0 ? 'text-destructive' : ''}`} style={{ fontFamily: 'var(--font-display)' }}>
             {velocityTrend > 0 ? '+' : ''}{velocityTrend}%
           </p>
         </div>
@@ -181,9 +181,9 @@ export function VelocityPage() {
                 }}
               />
               <Legend />
-              <ReferenceLine y={averageVelocity} stroke="#D4A373" strokeDasharray="5 5" label={{ value: 'Avg', fill: '#D4A373' }} />
+              <ReferenceLine y={averageVelocity} stroke="#E8A87C" strokeDasharray="5 5" label={{ value: 'Avg', fill: '#E8A87C' }} />
               <Bar dataKey="committed" name="Committed" fill="#6B7280" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="completed" name="Completed" fill="#2D6A4F" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="completed" name="Completed" fill="#A83B4C" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         ) : (
@@ -210,7 +210,7 @@ export function VelocityPage() {
                 <tr key={index} className="hover:bg-muted/30">
                   <td className="p-3">{data.name}</td>
                   <td className="p-3 text-right">{data.committed} pts</td>
-                  <td className="p-3 text-right text-[#2D6A4F]">{data.completed} pts</td>
+                  <td className="p-3 text-right text-[#A83B4C]">{data.completed} pts</td>
                   <td className="p-3 text-right">
                     {data.committed > 0 ? Math.round((data.completed / data.committed) * 100) : 0}%
                   </td>
@@ -240,7 +240,7 @@ export function VelocityPage() {
             )}
             {velocityTrend > 10 && (
               <li className="flex items-start gap-2">
-                <span className="text-[#2D6A4F]">•</span>
+                <span className="text-[#A83B4C]">•</span>
                 Great progress! Velocity is improving. Consider slightly increasing commitment.
               </li>
             )}
@@ -252,7 +252,7 @@ export function VelocityPage() {
             )}
             {velocityData.length >= 3 && commitmentReliability >= 80 && velocityTrend >= -10 && (
               <li className="flex items-start gap-2">
-                <span className="text-[#2D6A4F]">•</span>
+                <span className="text-[#A83B4C]">•</span>
                 Team velocity is stable. Keep up the good work!
               </li>
             )}
@@ -263,7 +263,7 @@ export function VelocityPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Based on your team's velocity, the recommended commitment for the next sprint:
           </p>
-          <p className="text-3xl font-semibold text-[#2D6A4F]" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-3xl font-semibold text-[#A83B4C]" style={{ fontFamily: 'var(--font-display)' }}>
             {Math.round(averageVelocity * 0.9)} - {Math.round(averageVelocity * 1.1)} pts
           </p>
           <p className="text-xs text-muted-foreground mt-2">

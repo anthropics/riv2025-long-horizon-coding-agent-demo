@@ -24,8 +24,8 @@ import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
 
 const PROJECT_COLORS = [
-  '#1B4332', '#2D6A4F', '#40916C', '#52796F', '#D4A373',
-  '#BC6C25', '#E9C46A', '#2196F3', '#9B59B6', '#F4A261',
+  '#7B2332', '#A83B4C', '#C25B6A', '#B85C6E', '#E8A87C',
+  '#D84315', '#E9C46A', '#2196F3', '#9B59B6', '#F4A261',
 ];
 
 export function ProjectSettingsPage() {
@@ -169,7 +169,7 @@ export function ProjectSettingsPage() {
             </div>
           </div>
 
-          <Button onClick={handleSave} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+          <Button onClick={handleSave} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
             Save Changes
           </Button>
         </CardContent>

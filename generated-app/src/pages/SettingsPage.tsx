@@ -155,7 +155,7 @@ export function SettingsPage() {
               placeholder="your@email.com"
             />
           </div>
-          <Button onClick={handleUpdateProfile} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+          <Button onClick={handleUpdateProfile} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
             Save Profile
           </Button>
         </CardContent>
@@ -174,7 +174,7 @@ export function SettingsPage() {
               <div className="flex gap-2">
                 <Button
                   variant={theme === 'light' ? 'default' : 'outline'}
-                  className={theme === 'light' ? 'bg-[#D4A373] hover:bg-[#c4935f] text-white' : ''}
+                  className={theme === 'light' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
                   onClick={() => setTheme('light')}
                 >
                   <Sun className="w-4 h-4 mr-2" />
@@ -182,7 +182,7 @@ export function SettingsPage() {
                 </Button>
                 <Button
                   variant={theme === 'dark' ? 'default' : 'outline'}
-                  className={theme === 'dark' ? 'bg-[#D4A373] hover:bg-[#c4935f] text-white' : ''}
+                  className={theme === 'dark' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
                   onClick={() => setTheme('dark')}
                 >
                   <Moon className="w-4 h-4 mr-2" />
@@ -190,7 +190,7 @@ export function SettingsPage() {
                 </Button>
                 <Button
                   variant={theme === 'system' ? 'default' : 'outline'}
-                  className={theme === 'system' ? 'bg-[#D4A373] hover:bg-[#c4935f] text-white' : ''}
+                  className={theme === 'system' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
                   onClick={() => setTheme('system')}
                 >
                   <Monitor className="w-4 h-4 mr-2" />

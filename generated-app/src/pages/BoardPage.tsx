@@ -247,7 +247,7 @@ export function BoardPage() {
           </p>
           <Button
             onClick={() => setCreateModalOpen(true)}
-            className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2"
+            className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
           >
             <Plus className="w-4 h-4" />
             Create Issue

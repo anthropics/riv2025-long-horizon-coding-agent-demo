@@ -1,13 +1,44 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #14 - Canopy MVP)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #18 - Red Theme)
 
 ## Summary
 Built a complete JIRA-like project management application called "Canopy" with:
 - Pure static web app (no backend) using IndexedDB via Dexie.js
 - React 18 + Vite 6 + Tailwind CSS v4 + React Router v7
-- Forest-inspired color palette (#1B4332 primary, #D4A373 accent, #FAF9F6 background)
+- **Red color palette (#7B2332 primary ruby red, #E8A87C coral accent, #FAF7F7 background)**
 - Space Grotesk for headers, DM Sans for body text
+
+## Issue #18 - Red Theme Changes
+Changed the entire color palette from forest green to red:
+- Primary: #1B4332 (forest green) → #7B2332 (ruby red)
+- Secondary: #52796F (sage) → #C25B6A (rose)
+- Accent: #D4A373 (amber) → #E8A87C (coral)
+- Background: #FAF9F6 → #FAF7F7 (warm red tint)
+- Sidebar: #F5F3EF → #F5F0F0 (pink tint)
+- Border: #E5E1DB → #E5DBDB (red tint)
+
+### Files Modified for Red Theme:
+- src/styles/globals.css - All CSS custom properties updated
+- src/components/layout/Header.tsx - Header background and button colors
+- src/components/common/IssueTypeIcon.tsx - Story color changed to rose
+- src/components/common/PriorityIcon.tsx - Medium priority color changed
+- src/pages/HomePage.tsx - Stats colors and CTA button
+- src/pages/SprintReportPage.tsx - Chart and status colors
+- src/pages/VelocityPage.tsx - Chart colors
+- src/pages/BurndownPage.tsx - Chart colors
+- src/pages/BacklogPage.tsx - Active badge and buttons
+- src/pages/BoardPage.tsx - Empty state button
+- src/pages/NotFoundPage.tsx - 404 illustration colors
+- src/pages/NewProjectPage.tsx - Color palette for projects
+- src/pages/ProjectSettingsPage.tsx - Color palette
+- src/pages/LabelsPage.tsx - Default label colors
+- src/pages/SprintsPage.tsx - Active sprint badge
+- src/pages/ComponentsPage.tsx - Create button
+- src/pages/ProjectsPage.tsx - Buttons
+- src/pages/SettingsPage.tsx - Theme buttons
+- src/components/modals/CreateSprintModal.tsx - Create button
+- src/lib/db.ts - User color palette
 
 ## Build Status
 - ✅ `npm run build` succeeds without errors or warnings
@@ -114,13 +145,22 @@ All major features verified via Playwright E2E tests:
 3. Final CSS fix moving fonts to index.css
 4. Issue #14 verification - Canopy MVP complete
 
-## Latest Screenshot Verification (Issue #14)
+## Latest Screenshot Verification (Issue #18 - Red Theme)
 All pages verified with playwright-test.cjs showing NO_CONSOLE_ERRORS:
-- test-001-*.png: Home page with forest design ✓
-- test-002-*.png: Header with search, create button, avatar ✓
-- test-003-*.png: Sidebar with navigation ✓
-- test-004-*.png: Project creation form ✓
-- test-settings-*.png: User settings with theme toggle ✓
-- flow-05-board-state.png: Board with columns and issue card ✓
-- flow-07-backlog.png: Backlog with sprint sections ✓
-- flow-13-project-settings.png: Project settings ✓
+- test-001-*.png: Home page with RED design ✓
+- test-002-*.png: Header with ruby red background, coral Create button ✓
+- test-003-*.png: Sidebar with pink-tinted background ✓
+- test-221-*.png: Red theme verification ✓
+- homepage-red-theme-*.png: Full red theme application ✓
+
+### Tests Updated for Red Theme:
+- test-001: Updated color references from green to red
+- test-002: Updated header color from #1B4332 to #7B2332, accent from #D4A373 to #E8A87C
+- test-003: Updated sidebar background from #F5F3EF to #F5F0F0
+- test-081: Updated Story icon color from green to rose
+- test-082: Updated Medium priority color from green to rose
+- test-083: Updated accent color reference to coral
+- test-088: Updated button color from amber to coral
+- test-089: Updated focus ring color from amber to coral
+- test-211: Updated entire color palette description to red theme
+- test-221: NEW - Red color theme verification test

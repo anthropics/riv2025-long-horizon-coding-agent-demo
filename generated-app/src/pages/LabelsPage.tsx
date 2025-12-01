@@ -17,8 +17,8 @@ import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
 
 const LABEL_COLORS = [
-  '#40916C', '#2196F3', '#9B59B6', '#D4A373', '#BC6C25',
-  '#E9C46A', '#1B4332', '#F4A261', '#E63946', '#457B9D',
+  '#C25B6A', '#2196F3', '#9B59B6', '#E8A87C', '#D84315',
+  '#E9C46A', '#7B2332', '#F4A261', '#E63946', '#457B9D',
 ];
 
 export function LabelsPage() {
@@ -105,7 +105,7 @@ export function LabelsPage() {
             Manage labels for {project.name}
           </p>
         </div>
-        <Button onClick={() => setIsCreateOpen(true)} className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2">
+        <Button onClick={() => setIsCreateOpen(true)} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
           <Plus className="w-4 h-4" />
           Create Label
         </Button>
@@ -191,7 +191,7 @@ export function LabelsPage() {
             </div>
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
-              <Button onClick={handleCreate} disabled={!newName.trim()} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+              <Button onClick={handleCreate} disabled={!newName.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
                 Create
               </Button>
             </div>
@@ -231,7 +231,7 @@ export function LabelsPage() {
               </div>
               <div className="flex justify-end gap-2 pt-4">
                 <Button variant="outline" onClick={() => setEditingLabel(null)}>Cancel</Button>
-                <Button onClick={handleUpdate} disabled={!editingLabel.name.trim()} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+                <Button onClick={handleUpdate} disabled={!editingLabel.name.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
                   Save
                 </Button>
               </div>

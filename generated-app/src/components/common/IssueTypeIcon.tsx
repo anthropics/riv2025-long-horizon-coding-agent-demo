@@ -9,8 +9,8 @@ interface IssueTypeIconProps {
 
 const typeConfig: Record<IssueType, { icon: React.ElementType; color: string }> = {
   Epic: { icon: Zap, color: '#9B59B6' },
-  Story: { icon: Bookmark, color: '#40916C' },
-  Bug: { icon: Bug, color: '#BC6C25' },
+  Story: { icon: Bookmark, color: '#C25B6A' },
+  Bug: { icon: Bug, color: '#D84315' },
   Task: { icon: CheckSquare, color: '#2196F3' },
   'Sub-task': { icon: Square, color: '#8896A6' },
 };

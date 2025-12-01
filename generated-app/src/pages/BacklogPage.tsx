@@ -225,7 +225,7 @@ export function BacklogPage() {
             <Button
               size="sm"
               onClick={() => setCreateIssueOpen(true)}
-              className="bg-[#D4A373] hover:bg-[#c4935f] text-white"
+              className="bg-[#E8A87C] hover:bg-[#d4946d] text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
               Issue
@@ -261,7 +261,7 @@ export function BacklogPage() {
                             <div className="flex items-center gap-2">
                               <span className="font-medium">{sprint.name}</span>
                               {sprint.status === 'active' && (
-                                <Badge className="bg-[#40916C] text-white">Active</Badge>
+                                <Badge className="bg-[#C25B6A] text-white">Active</Badge>
                               )}
                             </div>
                             <div className="text-xs text-muted-foreground">

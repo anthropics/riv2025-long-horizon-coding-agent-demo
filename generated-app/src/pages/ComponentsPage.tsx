@@ -127,7 +127,7 @@ export function ComponentsPage() {
             Manage components for {project.name}
           </p>
         </div>
-        <Button onClick={() => setIsCreateOpen(true)} className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2">
+        <Button onClick={() => setIsCreateOpen(true)} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
           <Plus className="w-4 h-4" />
           Create Component
         </Button>
@@ -225,7 +225,7 @@ export function ComponentsPage() {
             </div>
             <div className="flex justify-end gap-2 pt-4">
               <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
-              <Button onClick={handleCreate} disabled={!newName.trim()} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+              <Button onClick={handleCreate} disabled={!newName.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
                 Create
               </Button>
             </div>
@@ -279,7 +279,7 @@ export function ComponentsPage() {
               </div>
               <div className="flex justify-end gap-2 pt-4">
                 <Button variant="outline" onClick={() => setEditingComponent(null)}>Cancel</Button>
-                <Button onClick={handleUpdate} disabled={!editingComponent.name.trim()} className="bg-[#D4A373] hover:bg-[#c4935f] text-white">
+                <Button onClick={handleUpdate} disabled={!editingComponent.name.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
                   Save
                 </Button>
               </div>

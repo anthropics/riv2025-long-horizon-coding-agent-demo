@@ -11,12 +11,12 @@ import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
 
 const PROJECT_COLORS = [
-  '#1B4332', // Forest Green
-  '#2D6A4F', // Deep Teal
-  '#40916C', // Green
-  '#52796F', // Sage
-  '#D4A373', // Amber
-  '#BC6C25', // Terracotta
+  '#7B2332', // Ruby Red
+  '#A83B4C', // Light Ruby
+  '#C25B6A', // Rose
+  '#B85C6E', // Dusty Rose
+  '#E8A87C', // Coral
+  '#D84315', // Deep Orange
   '#E9C46A', // Yellow
   '#2196F3', // Blue
   '#9B59B6', // Purple
@@ -224,7 +224,7 @@ export function NewProjectPage() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-[#D4A373] hover:bg-[#c4935f] text-white"
+                className="bg-[#E8A87C] hover:bg-[#d4946d] text-white"
               >
                 Create Project
               </Button>

@@ -7,21 +7,21 @@ export function NotFoundPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-      {/* Decorative forest illustration */}
+      {/* Decorative illustration */}
       <div className="relative mb-8">
-        <div className="text-[120px] font-bold text-[#1B4332]/10" style={{ fontFamily: 'var(--font-display)' }}>
+        <div className="text-[120px] font-bold text-[#7B2332]/10" style={{ fontFamily: 'var(--font-display)' }}>
           404
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex gap-2">
             {/* Tree icons */}
-            <svg className="w-12 h-12 text-[#2D6A4F]" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-12 h-12 text-[#A83B4C]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L4 12h3v8h4v-6h2v6h4v-8h3L12 2z" />
             </svg>
-            <svg className="w-16 h-16 text-[#1B4332]" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-16 h-16 text-[#7B2332]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L4 12h3v8h4v-6h2v6h4v-8h3L12 2z" />
             </svg>
-            <svg className="w-12 h-12 text-[#40916C]" viewBox="0 0 24 24" fill="currentColor">
+            <svg className="w-12 h-12 text-[#C25B6A]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L4 12h3v8h4v-6h2v6h4v-8h3L12 2z" />
             </svg>
           </div>
@@ -47,7 +47,7 @@ export function NotFoundPage() {
         </Button>
         <Button
           onClick={() => navigate('/')}
-          className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2"
+          className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
         >
           <Home className="w-4 h-4" />
           Return Home

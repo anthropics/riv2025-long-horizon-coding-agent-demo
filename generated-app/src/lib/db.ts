@@ -63,15 +63,15 @@ export const DEFAULT_COLUMNS: BoardColumn[] = [
 
 // User colors for auto-assignment
 export const USER_COLORS = [
-  '#D4A373', // Amber (primary accent)
-  '#40916C', // Green
+  '#E8A87C', // Coral (primary accent)
+  '#C25B6A', // Rose
   '#2196F3', // Blue
   '#9B59B6', // Purple
-  '#BC6C25', // Terracotta
-  '#1B4332', // Forest Green
-  '#52796F', // Sage
+  '#D84315', // Deep Orange
+  '#7B2332', // Ruby Red
+  '#B85C6E', // Dusty Rose
   '#E9C46A', // Yellow
-  '#2D6A4F', // Deep Teal
+  '#A83B4C', // Light Ruby
   '#F4A261', // Orange
 ];
 

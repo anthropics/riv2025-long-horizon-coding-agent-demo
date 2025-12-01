@@ -6,78 +6,78 @@
 :root {
   --font-size: 14px;
 
-  /* Forest Canopy Color Palette - Light Theme */
-  --background: #FAF9F6;
+  /* Canopy Red Color Palette - Light Theme */
+  --background: #FAF7F7;
   --foreground: #2D3748;
   --card: #FFFFFF;
   --card-foreground: #2D3748;
   --popover: #FFFFFF;
   --popover-foreground: #2D3748;
 
-  /* Primary - Forest Green */
-  --primary: #1B4332;
+  /* Primary - Deep Ruby Red */
+  --primary: #7B2332;
   --primary-foreground: #FFFFFF;
 
-  /* Secondary - Sage */
-  --secondary: #52796F;
+  /* Secondary - Rose */
+  --secondary: #C25B6A;
   --secondary-foreground: #FFFFFF;
 
-  /* Accent - Amber */
-  --accent: #D4A373;
-  --accent-foreground: #FFFFFF;
+  /* Accent - Coral/Warm Peach */
+  --accent: #E8A87C;
+  --accent-foreground: #2D3748;
 
   /* Muted */
-  --muted: #F5F3EF;
+  --muted: #F5F0F0;
   --muted-foreground: #5A6578;
 
-  /* Destructive - Terracotta */
-  --destructive: #BC6C25;
+  /* Destructive - Deep Orange */
+  --destructive: #D84315;
   --destructive-foreground: #FFFFFF;
 
   /* Border & Input */
-  --border: #E5E1DB;
+  --border: #E5DBDB;
   --input: transparent;
   --input-background: #FFFFFF;
-  --switch-background: #E5E1DB;
+  --switch-background: #E5DBDB;
 
-  /* Ring - Amber accent */
-  --ring: #D4A373;
+  /* Ring - Coral accent */
+  --ring: #E8A87C;
 
   /* Sidebar */
-  --sidebar: #F5F3EF;
+  --sidebar: #F5F0F0;
   --sidebar-foreground: #2D3748;
-  --sidebar-primary: #1B4332;
+  --sidebar-primary: #7B2332;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: rgba(212, 163, 115, 0.15);
+  --sidebar-accent: rgba(232, 168, 124, 0.15);
   --sidebar-accent-foreground: #2D3748;
-  --sidebar-border: #E5E1DB;
-  --sidebar-ring: #D4A373;
+  --sidebar-border: #E5DBDB;
+  --sidebar-ring: #E8A87C;
 
   /* Status Colors */
-  --success: #40916C;
+  --success: #A83B4C;
   --warning: #E9C46A;
-  --error: #BC6C25;
+  --error: #D84315;
   --info: #2196F3;
 
   /* Priority Colors */
-  --priority-highest: #BC6C25;
+  --priority-highest: #D84315;
   --priority-high: #E9C46A;
-  --priority-medium: #40916C;
+  --priority-medium: #C25B6A;
   --priority-low: #2196F3;
   --priority-lowest: #8896A6;
 
   /* Issue Type Colors */
   --type-epic: #9B59B6;
-  --type-story: #40916C;
-  --type-bug: #BC6C25;
+  --type-story: #C25B6A;
+  --type-bug: #D84315;
   --type-task: #2196F3;
   --type-subtask: #8896A6;
 
   /* Chart Colors */
-  --chart-1: #1B4332;
-  --chart-2: #40916C;
-  --chart-3: #D4A373;
-  --chart-4: #52796F;
+  --chart-1: #7B2332;
+  --chart-2: #C25B6A;
+  --chart-3: #E8A87C;
+  --chart-4: #B85C6E;
   --chart-5: #E9C46A;
 
   /* Font Weights */
@@ -96,16 +96,16 @@
   --popover: #242B3D;
   --popover-foreground: #E8ECF4;
 
-  /* Primary - Lighter forest green for dark mode */
-  --primary: #2D6A4F;
+  /* Primary - Lighter ruby red for dark mode */
+  --primary: #A83B4C;
   --primary-foreground: #FFFFFF;
 
-  /* Secondary */
-  --secondary: #52796F;
+  /* Secondary - Rose */
+  --secondary: #C25B6A;
   --secondary-foreground: #E8ECF4;
 
-  /* Accent - Amber stays similar */
-  --accent: #D4A373;
+  /* Accent - Coral stays similar */
+  --accent: #E8A87C;
   --accent-foreground: #1A1F2E;
 
   /* Muted */
@@ -113,7 +113,7 @@
   --muted-foreground: #9BA4B5;
 
   /* Destructive */
-  --destructive: #D4764A;
+  --destructive: #E84B35;
   --destructive-foreground: #FFFFFF;
 
   /* Border & Input */
@@ -123,24 +123,24 @@
   --switch-background: #3D4556;
 
   /* Ring */
-  --ring: #D4A373;
+  --ring: #E8A87C;
 
   /* Sidebar */
   --sidebar: #151922;
   --sidebar-foreground: #E8ECF4;
-  --sidebar-primary: #D4A373;
+  --sidebar-primary: #E8A87C;
   --sidebar-primary-foreground: #1A1F2E;
-  --sidebar-accent: rgba(212, 163, 115, 0.2);
+  --sidebar-accent: rgba(232, 168, 124, 0.2);
   --sidebar-accent-foreground: #E8ECF4;
   --sidebar-border: #3D4556;
-  --sidebar-ring: #D4A373;
+  --sidebar-ring: #E8A87C;
 
   /* Chart Colors - adjusted for dark mode */
-  --chart-1: #40916C;
-  --chart-2: #D4A373;
-  --chart-3: #52796F;
+  --chart-1: #A83B4C;
+  --chart-2: #E8A87C;
+  --chart-3: #C25B6A;
   --chart-4: #E9C46A;
-  --chart-5: #2D6A4F;
+  --chart-5: #7B2332;
 }
 
 @theme inline {

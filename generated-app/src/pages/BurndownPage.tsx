@@ -170,13 +170,13 @@ export function BurndownPage() {
           </div>
           <div className="bg-muted/50 rounded-lg p-4">
             <p className="text-sm text-muted-foreground">Completed</p>
-            <p className="text-2xl font-semibold text-[#2D6A4F]" style={{ fontFamily: 'var(--font-display)' }}>
+            <p className="text-2xl font-semibold text-[#A83B4C]" style={{ fontFamily: 'var(--font-display)' }}>
               {completedStoryPoints}
             </p>
           </div>
           <div className="bg-muted/50 rounded-lg p-4">
             <p className="text-sm text-muted-foreground">Remaining</p>
-            <p className="text-2xl font-semibold text-[#D4A373]" style={{ fontFamily: 'var(--font-display)' }}>
+            <p className="text-2xl font-semibold text-[#E8A87C]" style={{ fontFamily: 'var(--font-display)' }}>
               {totalStoryPoints - completedStoryPoints}
             </p>
           </div>
@@ -226,10 +226,10 @@ export function BurndownPage() {
               <Line
                 type="monotone"
                 dataKey="actual"
-                stroke="#2D6A4F"
+                stroke="#A83B4C"
                 strokeWidth={3}
                 name="Actual Progress"
-                dot={{ fill: '#2D6A4F', r: 4 }}
+                dot={{ fill: '#A83B4C', r: 4 }}
                 connectNulls={false}
               />
             </LineChart>

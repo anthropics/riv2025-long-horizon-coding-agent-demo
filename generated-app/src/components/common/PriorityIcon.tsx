@@ -8,9 +8,9 @@ interface PriorityIconProps {
 }
 
 const priorityConfig: Record<Priority, { icon: React.ElementType; color: string; rotation?: number }> = {
-  Highest: { icon: ArrowUp, color: '#BC6C25' },
+  Highest: { icon: ArrowUp, color: '#D84315' },
   High: { icon: ArrowUp, color: '#E9C46A' },
-  Medium: { icon: Minus, color: '#40916C' },
+  Medium: { icon: Minus, color: '#C25B6A' },
   Low: { icon: ArrowDown, color: '#2196F3' },
   Lowest: { icon: ArrowDown, color: '#8896A6' },
 };

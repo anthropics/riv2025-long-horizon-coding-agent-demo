@@ -70,8 +70,8 @@ export function HomePage() {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center">
         <div className="text-center max-w-md animate-fade-in">
-          <div className="w-20 h-20 mx-auto mb-6 bg-[#1B4332]/10 rounded-full flex items-center justify-center">
-            <Leaf className="w-10 h-10 text-[#1B4332]" />
+          <div className="w-20 h-20 mx-auto mb-6 bg-[#7B2332]/10 rounded-full flex items-center justify-center">
+            <Leaf className="w-10 h-10 text-[#7B2332]" />
           </div>
           <h1
             className="text-3xl font-semibold mb-3"
@@ -86,7 +86,7 @@ export function HomePage() {
           <Button
             size="lg"
             onClick={() => navigate('/projects/new')}
-            className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2"
+            className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
           >
             <Plus className="w-5 h-5" />
             Create your first project
@@ -115,7 +115,7 @@ export function HomePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="hover-lift">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-[#1B4332]" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="text-3xl font-bold text-[#7B2332]" style={{ fontFamily: 'var(--font-display)' }}>
               {stats?.totalIssues ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Total Issues</p>
@@ -123,7 +123,7 @@ export function HomePage() {
         </Card>
         <Card className="hover-lift">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-[#D4A373]" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="text-3xl font-bold text-[#E8A87C]" style={{ fontFamily: 'var(--font-display)' }}>
               {stats?.openIssues ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Open Issues</p>
@@ -131,7 +131,7 @@ export function HomePage() {
         </Card>
         <Card className="hover-lift">
           <CardContent className="pt-6">
-            <div className="text-3xl font-bold text-[#40916C]" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="text-3xl font-bold text-[#C25B6A]" style={{ fontFamily: 'var(--font-display)' }}>
               {stats?.resolvedThisWeek ?? 0}
             </div>
             <p className="text-sm text-muted-foreground">Resolved This Week</p>
@@ -238,7 +238,7 @@ export function HomePage() {
                       {activity.issue && (
                         <>
                           {' on '}
-                          <span className="font-medium text-[#D4A373]">
+                          <span className="font-medium text-[#E8A87C]">
                             {activity.issue.key}
                           </span>
                         </>

@@ -25,13 +25,13 @@ import type { Sprint, Issue, User } from '@/types';
 const STATUS_COLORS = {
   todo: '#6B7280',
   in_progress: '#2196F3',
-  done: '#2D6A4F',
+  done: '#A83B4C',
 };
 
 const TYPE_COLORS = {
   Epic: '#9B59B6',
-  Story: '#2D6A4F',
-  Bug: '#E74C3C',
+  Story: '#C25B6A',
+  Bug: '#D84315',
   Task: '#2196F3',
   'Sub-task': '#6B7280',
 };
@@ -211,13 +211,13 @@ export function SprintReportPage() {
             </div>
             <div className="bg-muted/50 rounded-lg p-4">
               <p className="text-sm text-muted-foreground">Completed</p>
-              <p className="text-2xl font-semibold text-[#2D6A4F]" style={{ fontFamily: 'var(--font-display)' }}>
+              <p className="text-2xl font-semibold text-[#A83B4C]" style={{ fontFamily: 'var(--font-display)' }}>
                 {stats.byStatus.done.length} issues
               </p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4">
               <p className="text-sm text-muted-foreground">Completion Rate</p>
-              <p className={`text-2xl font-semibold ${stats.completionRate >= 80 ? 'text-[#2D6A4F]' : stats.completionRate >= 50 ? 'text-[#D4A373]' : 'text-destructive'}`} style={{ fontFamily: 'var(--font-display)' }}>
+              <p className={`text-2xl font-semibold ${stats.completionRate >= 80 ? 'text-[#A83B4C]' : stats.completionRate >= 50 ? 'text-[#E8A87C]' : 'text-destructive'}`} style={{ fontFamily: 'var(--font-display)' }}>
                 {stats.completionRate}%
               </p>
             </div>
@@ -286,7 +286,7 @@ export function SprintReportPage() {
                 return (
                   <div key={assigneeId} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#2D6A4F] flex items-center justify-center text-white text-sm font-medium">
+                      <div className="w-8 h-8 rounded-full bg-[#A83B4C] flex items-center justify-center text-white text-sm font-medium">
                         {getUserName(assigneeId).charAt(0)}
                       </div>
                       <div>
@@ -297,7 +297,7 @@ export function SprintReportPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium text-[#2D6A4F]">
+                      <p className="text-sm font-medium text-[#A83B4C]">
                         {completedIssues.length}/{issues.length} completed
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -333,7 +333,7 @@ export function SprintReportPage() {
                       style={{
                         backgroundColor:
                           board?.columns.find(c => c.name === issue.status)?.statusCategory === 'done'
-                            ? '#2D6A4F'
+                            ? '#A83B4C'
                             : board?.columns.find(c => c.name === issue.status)?.statusCategory === 'in_progress'
                             ? '#2196F3'
                             : '#6B7280',

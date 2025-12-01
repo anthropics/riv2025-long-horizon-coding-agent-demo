@@ -2,11 +2,11 @@
   {
     "id": "test-001",
     "category": "style",
-    "description": "Home page loads with beautiful forest-inspired design when no projects exist",
+    "description": "Home page loads with beautiful red-inspired design when no projects exist",
     "steps": [
       "Navigate to http://localhost:6174",
       "Take a screenshot",
-      "Verify the page displays a welcome message with forest-inspired color palette (greens, earth tones, amber accents)",
+      "Verify the page displays a welcome message with red color palette (ruby red, rose, coral accents)",
       "Verify Space Grotesk font is used for headers",
       "Verify DM Sans font is used for body text",
       "Verify there's a prominent 'Create your first project' CTA button",
@@ -21,10 +21,10 @@
     "steps": [
       "Navigate to http://localhost:6174",
       "Take a screenshot",
-      "Verify header has height 56px and forest green (#1B4332) background",
+      "Verify header has height 56px and ruby red (#7B2332) background",
       "Verify Canopy logo with leaf icon on left side",
       "Verify global search input with Cmd+K hint exists",
-      "Verify Create button exists and uses amber accent color (#D4A373)",
+      "Verify Create button exists and uses coral accent color (#E8A87C)",
       "Verify user avatar dropdown on right side"
     ],
     "passes": true
@@ -37,7 +37,7 @@
       "Navigate to http://localhost:6174 (after creating a project)",
       "Take a screenshot",
       "Verify sidebar width is 240px",
-      "Verify sidebar has warm off-white background (#F5F3EF)",
+      "Verify sidebar has warm off-white/pink tinted background (#F5F0F0)",
       "Verify Planning section with Roadmap, Backlog, Active Sprints links",
       "Verify Board section with Board link",
       "Verify Reports section with Burndown Chart, Velocity Chart, Sprint Report links",
@@ -1124,9 +1124,9 @@
     "description": "Issue type icon and color are correct",
     "steps": [
       "Create issue of type Story",
-      "Verify green bookmark icon",
+      "Verify rose (#C25B6A) bookmark icon",
       "Create issue of type Bug",
-      "Verify terracotta bug icon",
+      "Verify deep orange (#D84315) bug icon",
       "Create issue of type Task",
       "Verify blue checkbox icon",
       "Create issue of type Epic",
@@ -1142,7 +1142,7 @@
       "Create issues with each priority level",
       "Verify Highest: red up arrow",
       "Verify High: amber up arrow",
-      "Verify Medium: green equals",
+      "Verify Medium: rose (#C25B6A) equals",
       "Verify Low: blue down arrow",
       "Verify Lowest: gray down arrow"
     ],
@@ -1157,7 +1157,7 @@
       "Take a screenshot",
       "Verify 500px width",
       "Verify proper field layout",
-      "Verify primary Create button with amber accent",
+      "Verify primary Create button with coral (#E8A87C) accent",
       "Verify Cancel button with secondary styling",
       "Verify 'Create another' checkbox present"
     ],
@@ -1221,7 +1221,7 @@
     "description": "Buttons have correct styling and hover states",
     "steps": [
       "Navigate to any page with buttons",
-      "Verify primary buttons have amber (#D4A373) background",
+      "Verify primary buttons have coral (#E8A87C) background",
       "Hover over primary button",
       "Verify hover darkens color slightly",
       "Verify secondary buttons have white background with border"
@@ -1234,7 +1234,7 @@
     "description": "Input fields have correct focus states",
     "steps": [
       "Click into any input field",
-      "Verify border changes to amber (#D4A373)",
+      "Verify border changes to coral (#E8A87C)",
       "Verify focus ring appears",
       "Tab to next input",
       "Verify focus moves correctly"
@@ -2939,13 +2939,13 @@
   {
     "id": "test-211",
     "category": "style",
-    "description": "Forest color palette consistently applied",
+    "description": "Red color palette consistently applied",
     "steps": [
       "Take full page screenshot",
-      "Verify header is #1B4332 forest green",
-      "Verify page background is #FAF9F6 warm off-white",
-      "Verify accent buttons use #D4A373 amber",
-      "Verify sidebar background #F5F3EF",
+      "Verify header is #7B2332 ruby red",
+      "Verify page background is #FAF7F7 warm off-white with red tint",
+      "Verify accent buttons use #E8A87C coral",
+      "Verify sidebar background #F5F0F0 with pink tint",
       "Verify primary text is #2D3748 charcoal",
       "Verify no purple gradients or AI slop aesthetics"
     ],
@@ -3072,5 +3072,21 @@
       "Verify focus returns to trigger element"
     ],
     "passes": false
+  },
+  {
+    "id": "test-221",
+    "category": "style",
+    "description": "Red color theme is applied throughout the Canopy application",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify header background is ruby red (#7B2332)",
+      "Verify Create button and accent elements use coral (#E8A87C)",
+      "Verify sidebar has warm pink-tinted background (#F5F0F0)",
+      "Verify page background has subtle warm red tint (#FAF7F7)",
+      "Verify leaf icon uses coral accent color",
+      "Verify the overall theme feels cohesive with red/coral/rose colors"
+    ],
+    "passes": true
   }
 ]

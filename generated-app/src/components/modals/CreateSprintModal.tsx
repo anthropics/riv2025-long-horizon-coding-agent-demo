@@ -124,7 +124,7 @@ export function CreateSprintModal({ open, onOpenChange, projectId }: CreateSprin
             <Button
               type="submit"
               disabled={isSubmitting || !name.trim()}
-              className="bg-[#D4A373] hover:bg-[#c4935f] text-white"
+              className="bg-[#E8A87C] hover:bg-[#d4946d] text-white"
             >
               Create
             </Button>

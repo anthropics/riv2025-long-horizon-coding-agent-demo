@@ -103,14 +103,14 @@ export function SprintsPage() {
 
       {/* Active Sprint */}
       {activeSprint ? (
-        <Card className="border-[#40916C]">
+        <Card className="border-[#C25B6A]">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CardTitle style={{ fontFamily: 'var(--font-display)' }}>
                   {activeSprint.name}
                 </CardTitle>
-                <Badge className="bg-[#40916C] text-white">Active</Badge>
+                <Badge className="bg-[#C25B6A] text-white">Active</Badge>
               </div>
               <Button size="sm" variant="outline" onClick={() => handleComplete(activeSprint.id)}>
                 <Check className="w-4 h-4 mr-2" />
@@ -152,7 +152,7 @@ export function SprintsPage() {
                   <Progress value={progress} className="h-2" />
                   <Button
                     variant="link"
-                    className="p-0 h-auto text-[#D4A373]"
+                    className="p-0 h-auto text-[#E8A87C]"
                     onClick={() => navigate(`/project/${projectKey}/board`)}
                   >
                     View on Board

@@ -85,10 +85,10 @@ export function Header() {
 
   return (
     <>
-      <header className="h-14 bg-[#1B4332] text-white flex items-center px-4 gap-4 sticky top-0 z-50 shadow-md">
+      <header className="h-14 bg-[#7B2332] text-white flex items-center px-4 gap-4 sticky top-0 z-50 shadow-md">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-semibold text-lg" style={{ fontFamily: 'var(--font-display)' }}>
-          <Leaf className="w-6 h-6 text-[#D4A373]" />
+          <Leaf className="w-6 h-6 text-[#E8A87C]" />
           <span>Canopy</span>
         </Link>
 
@@ -173,7 +173,7 @@ export function Header() {
         {/* Create Button */}
         <Button
           onClick={() => setShowCreateModal(true)}
-          className="bg-[#D4A373] hover:bg-[#c4935f] text-white gap-2"
+          className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
         >
           <Plus className="w-4 h-4" />
           Create
