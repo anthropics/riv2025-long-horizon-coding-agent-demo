@@ -1,0 +1,64 @@
+# AWS Bedrock AgentCore Configuration Template
+#
+# To use this template:
+#   1. Copy this file to .bedrock_agentcore.yaml
+#   2. Replace all YOUR_* placeholders with your actual values
+#
+# Required values:
+#   - YOUR_ACCOUNT_ID: Your AWS account ID (e.g., 123456789012)
+#   - YOUR_EXECUTION_ROLE: IAM role name for AgentCore runtime
+#   - YOUR_PROJECT_NAME: Your project/ECR repository name
+#   - YOUR_AGENT_RUNTIME_ID: AgentCore runtime ID (created after first deployment)
+#   - YOUR_CODEBUILD_ROLE: IAM role name for CodeBuild
+
+default_agent: my_agent
+agents:
+  my_agent:
+    name: my_agent
+    entrypoint: bedrock_entrypoint.py
+    deployment_type: container
+    runtime_type: null
+    platform: linux/arm64
+    container_runtime: docker
+    source_path: .
+    aws:
+      execution_role: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_EXECUTION_ROLE
+      execution_role_auto_create: false
+      account: 'YOUR_ACCOUNT_ID'
+      region: us-west-2
+      ecr_repository: YOUR_ACCOUNT_ID.dkr.ecr.us-west-2.amazonaws.com/YOUR_PROJECT_NAME
+      ecr_auto_create: false
+      s3_path: null
+      s3_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: 300
+        max_lifetime: 3600
+    bedrock_agentcore:
+      agent_id: YOUR_AGENT_RUNTIME_ID
+      agent_arn: arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-my_agent-builder
+      execution_role: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_CODEBUILD_ROLE
+      source_bucket: bedrock-agentcore-codebuild-sources-YOUR_ACCOUNT_ID-us-west-2
+    memory:
+      mode: NO_MEMORY
+      memory_id: null
+      memory_arn: null
+      memory_name: null
+      event_expiry_days: 30
+      first_invoke_memory_check_done: false
+      was_created_by_toolkit: false
+    identity:
+      credential_providers: []
+      workload: null
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null

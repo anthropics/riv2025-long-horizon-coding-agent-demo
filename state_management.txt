@@ -1,0 +1,305 @@
+# Agent State System - Complete Specification
+
+## File Location
+`agent_state.json` in the agent-runtime workspace root (e.g., `/app/workspace/agent-runtime/agent_state.json`)
+
+## File Format
+```json
+{
+  "desired_state": "continuous",
+  "current_state": "continuous",
+  "timestamp": "2025-10-15T22:39:14.372Z",
+  "setBy": "human",
+  "note": "Started via Mission Control (auto mode)"
+}
+```
+
+## State Separation Philosophy
+
+**desired_state** - What Mission Control (the human) wants the agent to do
+- Written by Mission Control when user clicks UI buttons
+- Agent should read this to determine what action to take
+- This is the "command" from the human
+
+**current_state** - What the agent is actually doing right now
+- Managed entirely by the agent
+- Agent should update this to reflect reality
+- Mission Control UI reads this to display status
+- This is the "status report" to the human
+
+## The Four States
+
+### 1. `continuous` - Keep Running Indefinitely
+**When set by Mission Control:**
+- User clicked "Start Agent" button
+- desired_state = "continuous"
+
+**Agent behavior:**
+- Run sessions continuously in a loop
+- After completing one session, immediately start the next
+- Keep going until desired_state changes
+- Update current_state = "continuous" while actively running
+
+**Example workflow:**
+```
+1. User clicks "Start Agent"
+2. Mission Control writes: desired_state = "continuous"
+3. Agent reads file, sees desired_state = "continuous"
+4. Agent begins session loop
+5. Agent updates: current_state = "continuous"
+6. Agent runs session 1, finishes
+7. Agent checks desired_state (still "continuous")
+8. Agent runs session 2, finishes
+9. ... continues indefinitely
+```
+
+### 2. `pause` - Stop and Wait
+**When set by Mission Control:**
+- User clicked "Stop Agent" button
+- desired_state = "pause"
+
+**Agent behavior:**
+- Finish the current session gracefully (don't interrupt mid-session)
+- After session completes, check desired_state
+- If desired_state = "pause", stop and wait
+- Update current_state = "pause"
+- Poll the file periodically (e.g., every 5-10 seconds) to see if desired_state changes
+- When desired_state changes to something else, resume accordingly
+
+**Example workflow:**
+```
+1. Agent is running (current_state = "continuous")
+2. User clicks "Stop Agent"
+3. Mission Control writes: desired_state = "pause"
+4. Agent is mid-session, continues to completion
+5. Agent finishes session, checks desired_state
+6. Agent sees desired_state = "pause"
+7. Agent updates: current_state = "pause"
+8. Agent enters polling loop, checking file every 10s
+9. ... waits until desired_state changes
+```
+
+### 3. `run_once` - Run Exactly One Session
+**When set by Mission Control:**
+- User clicked "Run Single Session" button
+- desired_state = "run_once"
+
+**Agent behavior:**
+- Run exactly one session
+- Update current_state = "run_once" while running
+- After session completes, automatically set desired_state = "pause" AND current_state = "pause"
+- This is a one-shot command
+
+**Example workflow:**
+```
+1. User clicks "Run Single Session"
+2. Mission Control writes: desired_state = "run_once"
+3. Agent reads file, sees desired_state = "run_once"
+4. Agent updates: current_state = "run_once"
+5. Agent runs exactly one session
+6. Agent finishes session
+7. Agent writes: desired_state = "pause", current_state = "pause"
+8. Agent enters pause/wait state
+```
+
+### 4. `run_cleanup` - Run One Cleanup Session
+**When set by Mission Control:**
+- User clicked "Run Cleanup Session" button
+- desired_state = "run_cleanup"
+
+**Agent behavior:**
+- Run exactly one session with the `--cleanup-session` flag
+- Update current_state = "run_cleanup" while running
+- Cleanup session focuses on refactoring, removing dead code, improving test coverage
+- After cleanup session completes, automatically set desired_state = "pause" AND current_state = "pause"
+- This is a one-shot command like run_once
+
+**Example workflow:**
+```
+1. User clicks "Run Cleanup Session"
+2. Mission Control writes: desired_state = "run_cleanup"
+3. Agent reads file, sees desired_state = "run_cleanup"
+4. Agent updates: current_state = "run_cleanup"
+5. Agent runs one cleanup session (refactoring, tidying, etc.)
+6. Agent finishes cleanup session
+7. Agent writes: desired_state = "pause", current_state = "pause"
+8. Agent enters pause/wait state
+```
+
+## State Transition Rules for Agent
+
+**On startup:**
+```python
+if not os.path.exists('agent_state.json'):
+    # No state file, create default
+    write_state(desired='pause', current='pause')
+else:
+    # Read existing state
+    state = read_state()
+    desired = state['desired_state']
+    
+    # Act on desired state
+    if desired == 'continuous':
+        enter_continuous_mode()
+    elif desired == 'run_once':
+        run_single_session()
+    elif desired == 'run_cleanup':
+        run_cleanup_session()
+    elif desired == 'pause':
+        enter_pause_mode()
+```
+
+**During continuous mode:**
+```python
+while True:
+    update_state(current='continuous')
+    run_session()
+    
+    # Check if human changed desired_state
+    state = read_state()
+    if state['desired_state'] != 'continuous':
+        # Human wants something else, exit loop
+        break
+    
+    # Otherwise, continue to next session
+```
+
+**During pause mode:**
+```python
+update_state(current='pause')
+while True:
+    time.sleep(10)  # Poll every 10 seconds
+    state = read_state()
+    
+    if state['desired_state'] == 'continuous':
+        enter_continuous_mode()
+        break
+    elif state['desired_state'] == 'run_once':
+        run_single_session()
+        break
+    elif state['desired_state'] == 'run_cleanup':
+        run_cleanup_session()
+        break
+    # If still 'pause', keep waiting
+```
+
+## UI Status Mapping
+
+Mission Control UI reads `current_state` and displays:
+
+| current_state | UI Status Badge | Agent Controls Shown |
+|---------------|-----------------|----------------------|
+| `continuous` | RUNNING (green) | Stop Agent (red) |
+| `run_once` | RUNNING (green) | Stop Agent (red) |
+| `run_cleanup` | RUNNING (green) | Stop Agent (red) |
+| `pause` | IDLE (gray) | Start Agent (orange) |
+
+## Error Handling
+
+**File doesn't exist:**
+- Agent should create it with default state (pause/pause)
+- Mission Control handles missing files gracefully
+
+**Malformed JSON:**
+- Agent should log error and treat as pause state
+- Recreate file with valid format
+
+**Unknown state value:**
+- Agent should treat as pause and log warning
+
+## Implementation Tips
+
+**File locking:**
+- Not strictly necessary since reads/writes are atomic for small JSON files
+- Mission Control writes rarely (only on button clicks)
+- Agent reads frequently (every 10s during pause, after each session during continuous)
+
+**Polling frequency:**
+- During pause: Check every 5-10 seconds (responsive but not excessive)
+- During continuous: Check after each session completes
+- No need to poll during active session execution
+
+**Graceful shutdown:**
+- Always finish current session before transitioning states
+- Update current_state before exiting
+- Never leave file in inconsistent state
+
+## Complete Example
+
+Here's a simplified agent main loop:
+
+```python
+import json
+import time
+import os
+
+STATE_FILE = 'agent_state.json'
+
+def read_state():
+    if not os.path.exists(STATE_FILE):
+        return {'desired_state': 'pause', 'current_state': 'pause'}
+    with open(STATE_FILE, 'r') as f:
+        return json.load(f)
+
+def write_state(desired=None, current=None):
+    state = read_state()
+    if desired:
+        state['desired_state'] = desired
+    if current:
+        state['current_state'] = current
+    state['timestamp'] = datetime.utcnow().isoformat() + 'Z'
+    with open(STATE_FILE, 'w') as f:
+        json.dump(state, f, indent=2)
+
+def run_session():
+    # Your existing session logic
+    print("Running session...")
+    time.sleep(5)  # Simulate work
+    print("Session complete")
+
+def main():
+    while True:
+        state = read_state()
+        desired = state['desired_state']
+        
+        if desired == 'continuous':
+            write_state(current='continuous')
+            run_session()
+            # Loop continues, will check desired_state again
+            
+        elif desired == 'run_once':
+            write_state(current='run_once')
+            run_session()
+            # Transition to pause
+            write_state(desired='pause', current='pause')
+            
+        elif desired == 'run_cleanup':
+            write_state(current='run_cleanup')
+            run_cleanup_session()  # Your cleanup logic
+            # Transition to pause
+            write_state(desired='pause', current='pause')
+            
+        elif desired == 'pause':
+            write_state(current='pause')
+            print("Agent paused, waiting for commands...")
+            time.sleep(10)  # Poll every 10 seconds
+            # Loop continues, will check desired_state again
+
+if __name__ == '__main__':
+    main()
+```
+
+## Summary
+
+**Mission Control's responsibilities:**
+- ✅ Write `desired_state` when user clicks buttons
+- ✅ Read `current_state` to show UI status
+- ✅ Never modify `current_state`
+
+**Agent's responsibilities:**
+- ✅ Read `desired_state` to know what to do
+- ✅ Write `current_state` to report status
+- ✅ Handle state transitions gracefully
+- ✅ Finish sessions before transitioning
+
+This separation ensures Mission Control and the agent never conflict—they each manage their own field in the file!

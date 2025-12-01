@@ -1,0 +1,71 @@
+name: Bug Report
+description: Report a bug or issue with the application
+title: "[BUG] "
+labels: ["bug", "needs-approval"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Vote to prioritize this fix!
+
+        👍 Give this issue a thumbs up to prioritize it.
+
+        Staff will review and approve with 🚀 to add it to the build queue.
+
+  - type: input
+    id: bug-title
+    attributes:
+      label: Bug Summary
+      description: Short description of the bug
+      placeholder: "e.g., Theme toggle doesn't persist on reload"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What's happening? What should happen instead?
+      placeholder: |
+        When I toggle dark mode and reload the page, it reverts to light mode.
+
+        Expected: Theme preference should persist across page reloads.
+        Actual: Theme resets to light mode every time.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Open the app in light mode
+        2. Click the theme toggle to switch to dark mode
+        3. Reload the page
+        4. Notice theme is back to light mode
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-fix
+    attributes:
+      label: Expected Fix
+      description: What should the agent fix?
+      placeholder: |
+        - Save theme preference to localStorage
+        - Load preference on app startup
+        - Apply saved theme before first render
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How critical is this bug?
+      options:
+        - Low (cosmetic, minor annoyance)
+        - Medium (affects functionality, has workaround)
+        - High (breaks major feature, no workaround)
+        - Critical (app unusable)
+    validations:
+      required: true

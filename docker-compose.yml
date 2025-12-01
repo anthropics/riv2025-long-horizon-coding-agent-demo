@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  claude-code-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: claude-code-agent
+
+    # Command: Pass project, model and ports as CLI arguments
+    command: >
+      python claude_code.py
+      --project ${PROJECT_NAME:-canopy}
+      --model ${DEFAULT_MODEL:-claude-opus-4-5-20251101}
+      --frontend-port ${DEFAULT_FRONTEND_PORT:-6175}
+      --backend-port ${DEFAULT_BACKEND_PORT:-3000}
+
+    # Mount current directory as workspace
+    volumes:
+      - .:/app/workspace
+
+    # Environment variables
+    environment:
+      # Set project root to workspace
+      - PROJECT_ROOT=/app/workspace
+
+      # Anthropic API key (set in your .env file or pass directly)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+
+    # Network configuration
+    network_mode: host
+
+    # Resource limits (simulate ECS Fargate)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 8G
+        reservations:
+          cpus: '1.0'
+          memory: 4G
+
+    # Restart policy
+    restart: unless-stopped
+
+    # Health check (optional)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Optional: Add networks if not using host networking
+# networks:
+#   claude-network:
+#     driver: bridge

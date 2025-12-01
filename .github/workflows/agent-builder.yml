@@ -1,0 +1,391 @@
+# GitHub Actions workflow to trigger AgentCore when admin approves a feature
+#
+# Trigger: Admin adds 🚀 reaction to an issue
+# Action: Invokes AWS Bedrock AgentCore to build the feature
+#
+# Prerequisites:
+# 1. AWS OIDC provider configured for GitHub Actions
+# 2. IAM role with permissions to invoke AgentCore
+# 3. Secrets: AWS_ROLE_ARN (or configure in this file)
+
+name: Agent Builder
+
+on:
+  # Only trigger via workflow_dispatch (from issue-poller or manual)
+  # Removed issue_comment and issues triggers to prevent race conditions
+  # when agent adds labels/comments during issue transitions.
+  # The poller handles all cases: new issues, crash recovery, etc.
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to build'
+        required: true
+        type: number
+      force_rebuild:
+        description: 'Force rebuild even if already building'
+        required: false
+        type: boolean
+        default: false
+      resume_session:
+        description: 'Resume from previous session (reads state from EFS)'
+        required: false
+        type: boolean
+        default: false
+
+# Prevent concurrent builds of the same issue
+concurrency:
+  group: agent-build-${{ github.event.inputs.issue_number || github.event.issue.number }}
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-west-2  # AgentCore deployed in us-west-2
+  AGENTCORE_AGENT_ID: antodo_agent-0UyfaL5NVq
+
+jobs:
+  # Check if the issue is approved and ready to build
+  check-approval:
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
+      should_invoke: ${{ steps.check.outputs.should_invoke }}
+      issue_number: ${{ steps.check.outputs.issue_number }}
+      issue_title: ${{ steps.check.outputs.issue_title }}
+      issue_body: ${{ steps.check.outputs.issue_body }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install PyGithub
+
+      - name: Check issue approval status
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
+          RESUME_SESSION: ${{ github.event.inputs.resume_session || 'false' }}
+          AUTHORIZED_APPROVERS: ${{ vars.AUTHORIZED_APPROVERS }}
+        run: |
+          python << 'EOF'
+          import os
+          import json
+          from github import Github
+
+          # Authorized approvers who can trigger builds with 🚀
+          # Configure via AUTHORIZED_APPROVERS repository variable (comma-separated)
+          _approvers_env = os.environ.get("AUTHORIZED_APPROVERS", "")
+          AUTHORIZED_APPROVERS = set(a.strip() for a in _approvers_env.split(",") if a.strip())
+          LABEL_BUILDING = "agent-building"
+
+          # Check if this is a resume request (skip label checks)
+          resume_session = os.environ.get("RESUME_SESSION", "false").lower() == "true"
+
+          gh = Github(os.environ["GITHUB_TOKEN"])
+          repo = gh.get_repo(os.environ["GITHUB_REPOSITORY"])
+
+          issue_number = os.environ.get("ISSUE_NUMBER")
+          if not issue_number:
+              print("No issue number provided")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=false\n")
+                  f.write("should_invoke=false\n")
+              exit(0)
+
+          issue = repo.get_issue(int(issue_number))
+
+          # For resume requests, skip the "already building" check
+          # The previous session timed out and we need to restart
+          if resume_session:
+              print(f"🔄 Resume mode: Restarting session for issue #{issue_number}")
+              # Output issue details and proceed
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=true\n")
+                  f.write("should_invoke=true\n")
+                  f.write(f"issue_number={issue_number}\n")
+                  title = issue.title.replace('\n', ' ')
+                  f.write(f"issue_title={title}\n")
+                  body = issue.body or ""
+                  body_escaped = body.replace('%', '%25').replace('\n', '%0A').replace('\r', '%0D')
+                  f.write(f"issue_body={body_escaped}\n")
+              exit(0)
+
+          # Check if issue is still open
+          if issue.state != 'open':
+              print(f"Issue #{issue_number} is closed - skipping")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=false\n")
+                  f.write("should_invoke=false\n")
+              exit(0)
+
+          # Check if THIS issue already has building or complete label
+          labels = [l.name for l in issue.labels]
+          if LABEL_BUILDING in labels:
+              print(f"Issue #{issue_number} is already being built")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=false\n")
+                  f.write("should_invoke=false\n")
+              exit(0)
+
+          if "agent-complete" in labels:
+              print(f"Issue #{issue_number} is already complete")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=false\n")
+                  f.write("should_invoke=false\n")
+              exit(0)
+
+          # Check for staff approval (🚀 reaction)
+          approved = False
+          approvers = []
+          for reaction in issue.get_reactions():
+              if reaction.content == "rocket" and reaction.user.login in AUTHORIZED_APPROVERS:
+                  approved = True
+                  approvers.append(reaction.user.login)
+
+          if not approved:
+              print(f"Issue #{issue_number} not approved by staff (needs 🚀 from {AUTHORIZED_APPROVERS})")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("should_build=false\n")
+                  f.write("should_invoke=false\n")
+              exit(0)
+
+          print(f"Issue #{issue_number} approved by: {approvers}")
+
+          # Check if ANY OTHER issue has agent-building label (session already running)
+          # If so, we don't need to invoke AgentCore - the running agent will pick up this issue
+          session_already_running = False
+          for other_issue in repo.get_issues(state='open', labels=[LABEL_BUILDING]):
+              if other_issue.number != int(issue_number):
+                  print(f"Session already running for issue #{other_issue.number}")
+                  print(f"The running agent will pick up issue #{issue_number} automatically")
+                  session_already_running = True
+                  break
+
+          # Output issue details for the build job
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("should_build=true\n")
+              # Only invoke AgentCore if no session is running
+              f.write(f"should_invoke={'false' if session_already_running else 'true'}\n")
+              f.write(f"issue_number={issue_number}\n")
+              # Escape newlines for GitHub Actions
+              title = issue.title.replace('\n', ' ')
+              f.write(f"issue_title={title}\n")
+              # Body needs special handling for multiline
+              body = issue.body or ""
+              body_escaped = body.replace('%', '%25').replace('\n', '%0A').replace('\r', '%0D')
+              f.write(f"issue_body={body_escaped}\n")
+
+          EOF
+
+  # Acquire a global lock to prevent race conditions
+  # Only one workflow can be in this job at a time across ALL issues
+  acquire-runtime-lock:
+    needs: check-approval
+    if: needs.check-approval.outputs.should_build == 'true' && needs.check-approval.outputs.should_invoke == 'true'
+    runs-on: ubuntu-latest
+    # GLOBAL concurrency group - only one workflow can be in this job at a time
+    concurrency:
+      group: agentcore-runtime-global-lock
+      cancel-in-progress: false
+    outputs:
+      lock_acquired: ${{ steps.acquire.outputs.lock_acquired }}
+
+    steps:
+      - name: Acquire runtime lock and set label atomically
+        id: acquire
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ needs.check-approval.outputs.issue_number }}
+        run: |
+          # CRITICAL: Check for label AND set label atomically while holding the global lock
+          # This prevents race condition where two workflows both pass the check before either sets label
+
+          # Re-check if any other issue has agent-building label NOW (inside the lock)
+          BUILDING_ISSUES=$(gh api repos/$GITHUB_REPOSITORY/issues \
+            -q '.[] | select(.labels[].name == "agent-building") | .number' \
+            2>/dev/null || echo "")
+
+          if [ -n "$BUILDING_ISSUES" ]; then
+            # Check if any building issue is NOT our issue
+            for ISSUE in $BUILDING_ISSUES; do
+              if [ "$ISSUE" != "$ISSUE_NUMBER" ]; then
+                echo "Another issue #$ISSUE is already building (detected inside lock)"
+                echo "The running agent will pick up issue #$ISSUE_NUMBER automatically"
+                echo "lock_acquired=false" >> $GITHUB_OUTPUT
+                echo "label_set=false" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            done
+          fi
+
+          # No other issue is building - SET THE LABEL NOW while we hold the lock
+          # This is the atomic operation that prevents races
+          echo "Lock acquired - setting agent-building label while holding lock"
+          gh issue edit $ISSUE_NUMBER --add-label "agent-building" --repo $GITHUB_REPOSITORY
+
+          echo "lock_acquired=true" >> $GITHUB_OUTPUT
+          echo "label_set=true" >> $GITHUB_OUTPUT
+
+  # Post comment about build status
+  # Label is set atomically in acquire-runtime-lock for should_invoke=true cases
+  # For should_invoke=false (queued), we set the label here
+  mark-building:
+    needs: [check-approval, acquire-runtime-lock]
+    if: |
+      needs.check-approval.outputs.should_build == 'true' &&
+      (needs.check-approval.outputs.should_invoke == 'false' || needs.acquire-runtime-lock.outputs.lock_acquired == 'true')
+    runs-on: ubuntu-latest
+    # Same global concurrency group to maintain lock during operations
+    concurrency:
+      group: agentcore-runtime-global-lock
+      cancel-in-progress: false
+
+    steps:
+      - name: Add label (if queued) and post comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ needs.check-approval.outputs.issue_number }}
+          SHOULD_INVOKE: ${{ needs.check-approval.outputs.should_invoke }}
+        run: |
+          # Add comment depending on whether we're starting a new session or queuing
+          if [ "$SHOULD_INVOKE" = "true" ]; then
+            # Label already set in acquire-runtime-lock (atomically while holding lock)
+            gh issue comment $ISSUE_NUMBER --repo $GITHUB_REPOSITORY --body "🤖 **Agent Build Started**
+
+          Workflow: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          Started: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          The agent is now building this feature. Progress will be posted here.
+
+          Commits will be pushed to branch \`agent-runtime\`."
+          else
+            # Queued case: acquire-runtime-lock didn't run, so we need to set the label here
+            gh issue edit $ISSUE_NUMBER --add-label "agent-building" --repo $GITHUB_REPOSITORY
+            gh issue comment $ISSUE_NUMBER --repo $GITHUB_REPOSITORY --body "🤖 **Issue Queued for Build**
+
+          Workflow: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          Queued: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          An agent session is already running. This issue has been added to the queue and will be picked up automatically when the current issue completes.
+
+          Commits will be pushed to branch \`agent-runtime\`."
+          fi
+
+  # Invoke AWS Bedrock AgentCore to build the feature
+  # Only invoke if no session is already running AND we acquired the lock
+  invoke-agent:
+    needs: [check-approval, acquire-runtime-lock, mark-building]
+    if: |
+      needs.check-approval.outputs.should_build == 'true' &&
+      needs.check-approval.outputs.should_invoke == 'true' &&
+      needs.acquire-runtime-lock.outputs.lock_acquired == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      session_id: ${{ steps.invoke.outputs.session_id }}
+      success: ${{ steps.invoke.outputs.success }}
+
+    # Set timeout for long-running agent (8 hours max)
+    timeout-minutes: 480
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_AGENTCORE_ROLE_ARN }}
+          role-duration-seconds: 28800  # 8 hours for long agent runs
+
+      - name: Verify issue still open before invoke
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ needs.check-approval.outputs.issue_number }}
+        run: |
+          # Re-check issue state right before invoking (may have been closed during queue wait)
+          STATE=$(gh issue view $ISSUE_NUMBER --repo $GITHUB_REPOSITORY --json state --jq '.state')
+          if [ "$STATE" != "OPEN" ]; then
+            echo "Issue #$ISSUE_NUMBER is $STATE - aborting invoke"
+            # Remove the agent-building label since we're not building
+            gh issue edit $ISSUE_NUMBER --repo $GITHUB_REPOSITORY --remove-label "agent-building" || true
+            exit 1
+          fi
+          echo "Issue #$ISSUE_NUMBER is still open - proceeding with invoke"
+
+      - name: Invoke AgentCore
+        id: invoke
+        env:
+          ISSUE_NUMBER: ${{ needs.check-approval.outputs.issue_number }}
+          ISSUE_TITLE: ${{ needs.check-approval.outputs.issue_title }}
+          ISSUE_BODY: ${{ needs.check-approval.outputs.issue_body }}
+          RESUME_SESSION: ${{ github.event.inputs.resume_session || 'false' }}
+        run: |
+          # Generate a unique session ID (min 33 chars required by AWS)
+          SESSION_ID="gh-issue-${ISSUE_NUMBER}-$(date +%Y%m%d-%H%M%S)-${GITHUB_RUN_ID}"
+          echo "session_id=$SESSION_ID" >> $GITHUB_OUTPUT
+
+          # Prepare the payload for AgentCore
+          # Decode the escaped body
+          DECODED_BODY=$(echo "$ISSUE_BODY" | sed 's/%0A/\n/g' | sed 's/%0D/\r/g' | sed 's/%25/%/g')
+
+          # Convert resume_session to boolean for JSON
+          if [ "$RESUME_SESSION" = "true" ]; then
+            RESUME_FLAG="true"
+          else
+            RESUME_FLAG="false"
+          fi
+
+          PAYLOAD=$(cat << EOFPAYLOAD
+          {
+            "mode": "build-from-issue",
+            "issue_number": $ISSUE_NUMBER,
+            "issue_title": "$ISSUE_TITLE",
+            "issue_body": $(echo "$DECODED_BODY" | jq -Rs .),
+            "github_repo": "$GITHUB_REPOSITORY",
+            "branch_name": "agent-runtime",
+            "session_id": "$SESSION_ID",
+            "resume_session": $RESUME_FLAG
+          }
+          EOFPAYLOAD
+          )
+
+          echo "Invoking AgentCore with payload:"
+          echo "$PAYLOAD" | jq .
+
+          # Invoke AgentCore using boto3 Python script
+          # The agent will:
+          # 1. Clone/pull the agent-runtime branch on EFS
+          # 2. Build the feature based on issue description
+          # 3. Run tests
+          # 4. Push commits to agent-runtime branch (with Ref: #N)
+
+          # Note: Using direct boto3 API call instead of CLI
+          # This eliminates dependency on .bedrock_agentcore.yaml
+
+          # Upgrade boto3 to ensure bedrock-agentcore service is available
+          echo "📦 Upgrading boto3 to latest version..."
+          pip install --upgrade boto3 -q
+
+          python3 .github/scripts/invoke_agent.py \
+            --agent-arn "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq" \
+            --session-id "$SESSION_ID" \
+            --payload "$PAYLOAD" \
+            --region us-west-2
+
+          # Check exit code
+          if [ $? -eq 0 ]; then
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Agent invocation failed"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
