@@ -9,9 +9,9 @@
     "test:e2e:report": "playwright show-report playwright-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.2",
-    "@types/node": "^22.10.2",
-    "typescript": "^5.7.2"
+    "@playwright/test": "1.48.2",
+    "@types/node": "22.10.2",
+    "typescript": "5.7.2"
   },
   "engines": {
     "node": ">=20.0.0",

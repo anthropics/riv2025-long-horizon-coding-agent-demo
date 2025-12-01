@@ -1,5 +1,5 @@
 // Copyright 2025-present Anthropic PBC.
-// Licensed under [LICENSE TBD]
+// Licensed under Apache 2.0
 
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
