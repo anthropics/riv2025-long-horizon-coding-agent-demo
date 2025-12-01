@@ -108,8 +108,23 @@ def get_anthropic_api_key() -> Optional[str]:
 
 
 def get_github_token() -> Optional[str]:
-    """Fetch GitHub token from Secrets Manager."""
+    """Fetch GitHub token from Secrets Manager.
+
+    Checks for org-specific token first (e.g., github-token-anthropics),
+    then falls back to the default github-token secret.
+    """
     env = os.environ.get("ENVIRONMENT", "reinvent")
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+
+    # Try org-specific token first (e.g., claude-code/reinvent/github-token-anthropics)
+    if repo:
+        org = repo.split("/")[0]
+        token = get_secret(f"claude-code/{env}/github-token-{org}")
+        if token:
+            print(f"✅ Using org-specific GitHub token for {org}")
+            return token
+
+    # Fall back to default token
     return get_secret(f"claude-code/{env}/github-token")
 
 
