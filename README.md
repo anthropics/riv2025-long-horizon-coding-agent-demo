@@ -80,8 +80,7 @@ Configure in Settings → Secrets and variables → Actions → Variables:
 │   ├── github_integration.py  # GitHub API operations
 │   └── git_operations.py      # Git commit/push logic
 ├── prompts/                 # Build plans and system prompts
-│   ├── canopy/              # Pokemon game build plan
-│   └── antodo/              # Todo app build plan
+│   └── canopy/              # Project Management app build plan
 ├── frontend-scaffold-template/  # React + Vite + Tailwind scaffold
 └── .github/workflows/       # GitHub Actions
     ├── issue-poller.yml     # Polls for approved issues
