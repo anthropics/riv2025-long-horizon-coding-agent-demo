@@ -44,7 +44,7 @@
       "Verify Project section with Project Settings, Components, Labels links",
       "Verify collapse toggle at bottom"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "test-004",
@@ -73,7 +73,7 @@
       "Verify project key auto-generates to 'MTP' or similar abbreviation",
       "Verify user can override the auto-generated key"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": "test-006",
