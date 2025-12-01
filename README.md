@@ -70,6 +70,23 @@ Configure in Settings → Secrets and variables → Actions → Variables:
 | `PREVIEWS_CDN_DOMAIN` | CloudFront domain for previews |
 | `PREVIEWS_DISTRIBUTION_ID` | CloudFront distribution ID for cache invalidation |
 
+### GitHub Repository Labels
+
+The following labels must exist for the workflows to function properly:
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `agent-building` | `#FBCA04` (yellow) | Agent is actively working on this issue |
+| `agent-complete` | `#0E8A16` (green) | Agent has completed this issue |
+| `tests-failed` | `#D93F0B` (red) | Tests failed during agent build |
+
+Create these at Settings → Labels, or via CLI:
+```bash
+gh api repos/OWNER/REPO/labels -f name="agent-building" -f color="FBCA04" -f description="Agent is actively working on this issue"
+gh api repos/OWNER/REPO/labels -f name="agent-complete" -f color="0E8A16" -f description="Agent has completed this issue"
+gh api repos/OWNER/REPO/labels -f name="tests-failed" -f color="D93F0B" -f description="Tests failed during agent build"
+```
+
 ## Project Structure
 
 ```
