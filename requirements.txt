@@ -1,0 +1,26 @@
+# Core dependencies
+claude-agent-sdk>=0.1.6
+
+# AWS SDK (optional, for CloudWatch metrics in production)
+boto3>=1.28.0
+
+# GitHub integration
+PyGithub>=2.8.1
+
+# Async support (if needed by SDK)
+aiofiles>=23.0.0
+
+# Additional utilities
+python-dotenv>=1.0.0
+
+# OpenTelemetry API for session ID propagation
+# Note: Full instrumentation provided by AWS Distro for OpenTelemetry (ADOT)
+# via OTEL_PYTHON_DISTRO=aws_distro environment variable
+opentelemetry-api>=1.20.0
+
+# AWS Distro for OpenTelemetry (ADOT) for trace generation
+# Required for AgentCore observability - enables X-Ray trace delivery to CloudWatch
+aws-opentelemetry-distro>=0.13.0
+
+# Documentation - architecture diagrams
+diagrams>=0.23.0

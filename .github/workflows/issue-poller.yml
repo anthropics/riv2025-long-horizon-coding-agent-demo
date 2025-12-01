@@ -1,0 +1,251 @@
+name: Issue Poller
+
+# Polls for approved issues every 5 minutes and triggers agent builds
+# This enables reaction-based approval without requiring webhooks
+# Also checks session health and restarts dead sessions
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:  # Manual trigger for testing
+
+# Prevent multiple pollers from running simultaneously
+concurrency:
+  group: issue-poller-singleton
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-west-2
+
+jobs:
+  # Job 1: Check if an agent session died and needs restart
+  check-session-health:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_restart: ${{ steps.health.outputs.needs_restart }}
+      issue_number: ${{ steps.state.outputs.issue_number }}
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Check session heartbeat via CloudWatch
+        id: health
+        run: |
+          # Debug: show time range
+          echo "Query time range:"
+          echo "  Start: $(date -u -d '15 minutes ago' +%Y-%m-%dT%H:%M:%SZ)"
+          echo "  End:   $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          # Query latest SessionHeartbeat metric (last 15 min window)
+          # Uses only Environment dimension so we can query without knowing issue number
+          RESULT=$(aws cloudwatch get-metric-statistics \
+            --namespace ClaudeCodeAgent \
+            --metric-name SessionHeartbeat \
+            --dimensions Name=Environment,Value=reinvent \
+            --start-time "$(date -u -d '15 minutes ago' +%Y-%m-%dT%H:%M:%SZ)" \
+            --end-time "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --period 60 \
+            --statistics Maximum \
+            --output json)
+
+          echo "CloudWatch response: $RESULT"
+
+          DATAPOINTS=$(echo "$RESULT" | jq '.Datapoints | length')
+
+          if [ "$DATAPOINTS" -eq "0" ]; then
+            echo "status=no_session" >> $GITHUB_OUTPUT
+            echo "needs_restart=false" >> $GITHUB_OUTPUT
+            echo "📭 No active session detected (no heartbeat metrics)"
+          else
+            LATEST=$(echo "$RESULT" | jq -r '.Datapoints | sort_by(.Timestamp) | last | .Timestamp')
+            echo "Latest heartbeat: $LATEST"
+
+            # Check if heartbeat is stale (configurable via repo variable)
+            STALENESS_THRESHOLD=${{ vars.HEARTBEAT_STALENESS_SECONDS || '300' }}
+            LATEST_EPOCH=$(date -d "$LATEST" +%s)
+            NOW_EPOCH=$(date +%s)
+            AGE_SECONDS=$((NOW_EPOCH - LATEST_EPOCH))
+
+            if [ $AGE_SECONDS -gt $STALENESS_THRESHOLD ]; then
+              echo "status=stale" >> $GITHUB_OUTPUT
+              echo "needs_restart=true" >> $GITHUB_OUTPUT
+              echo "💀 Session heartbeat stale (${AGE_SECONDS}s old) - needs restart"
+            else
+              echo "status=healthy" >> $GITHUB_OUTPUT
+              echo "needs_restart=false" >> $GITHUB_OUTPUT
+              echo "💚 Session healthy (heartbeat ${AGE_SECONDS}s old)"
+            fi
+          fi
+
+      - name: Get current issue from SSM
+        if: steps.health.outputs.needs_restart == 'true'
+        id: state
+        run: |
+          ISSUE=$(aws ssm get-parameter --name /claude-code/current-issue --query 'Parameter.Value' --output text 2>/dev/null || echo "")
+          if [ -n "$ISSUE" ] && [ "$ISSUE" != "None" ]; then
+            echo "issue_number=$ISSUE" >> $GITHUB_OUTPUT
+            echo "📋 Found current issue: #$ISSUE"
+          else
+            echo "issue_number=" >> $GITHUB_OUTPUT
+            echo "⚠️ No current issue found in SSM"
+          fi
+
+      - name: Verify issue is open with agent-building label
+        if: steps.health.outputs.needs_restart == 'true' && steps.state.outputs.issue_number != ''
+        id: verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE="${{ steps.state.outputs.issue_number }}"
+
+          # Get issue state and labels
+          ISSUE_DATA=$(gh issue view "$ISSUE" -R ${{ github.repository }} --json state,labels 2>/dev/null || echo '{"state":"unknown"}')
+          STATE=$(echo "$ISSUE_DATA" | jq -r '.state')
+          HAS_BUILDING_LABEL=$(echo "$ISSUE_DATA" | jq -r '.labels[]?.name' | grep -q "agent-building" && echo "true" || echo "false")
+
+          echo "Issue #$ISSUE: state=$STATE, has_agent-building=$HAS_BUILDING_LABEL"
+
+          if [ "$STATE" != "OPEN" ]; then
+            echo "should_restart=false" >> $GITHUB_OUTPUT
+            echo "⏭️ Issue #$ISSUE is not open (state: $STATE) - skipping restart"
+          elif [ "$HAS_BUILDING_LABEL" != "true" ]; then
+            echo "should_restart=false" >> $GITHUB_OUTPUT
+            echo "⏭️ Issue #$ISSUE doesn't have agent-building label - skipping restart"
+          else
+            echo "should_restart=true" >> $GITHUB_OUTPUT
+            echo "✅ Issue #$ISSUE is open with agent-building label - will restart"
+          fi
+
+      - name: Trigger restart workflow
+        if: steps.health.outputs.needs_restart == 'true' && steps.state.outputs.issue_number != '' && steps.verify.outputs.should_restart == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔄 Triggering restart for issue #${{ steps.state.outputs.issue_number }}..."
+
+          gh workflow run agent-builder.yml \
+            -R ${{ github.repository }} \
+            -f issue_number=${{ steps.state.outputs.issue_number }} \
+            -f resume_session=true
+
+          echo "✅ Triggered agent-builder with resume_session=true"
+
+  # Job 2: Poll for new approved issues
+  poll-and-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install PyGithub
+
+      - name: Find approved issues and trigger builds
+        id: poll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AUTHORIZED_APPROVERS: ${{ vars.AUTHORIZED_APPROVERS }}
+        run: |
+          python << 'EOF'
+          import os
+          import json
+          from github import Github
+
+          # Authorized approvers who can trigger builds with 🚀
+          # Configure via AUTHORIZED_APPROVERS repository variable (comma-separated)
+          _approvers_env = os.environ.get("AUTHORIZED_APPROVERS", "")
+          AUTHORIZED_APPROVERS = set(a.strip() for a in _approvers_env.split(",") if a.strip())
+          ROCKET_EMOJI = "rocket"
+          LABEL_BUILDING = "agent-building"
+          LABEL_COMPLETE = "agent-complete"
+          LABEL_FAILED = "tests-failed"
+
+          gh = Github(os.environ["GITHUB_TOKEN"])
+          repo = gh.get_repo(os.environ["GITHUB_REPOSITORY"])
+
+          # Get all open issues
+          open_issues = list(repo.get_issues(state='open'))
+
+          # First check if ANY issue has agent-building label (agent already running)
+          for issue in open_issues:
+              labels = [l.name for l in issue.labels]
+              if LABEL_BUILDING in labels:
+                  print(f"⏸️ Agent already running on issue #{issue.number} - skipping trigger")
+                  print("   The running agent will pick up new issues from the backlog")
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                      f.write("approved_issues=[]\n")
+                      f.write("has_issues=false\n")
+                  exit(0)
+
+          approved_issues = []
+
+          for issue in open_issues:
+              # Skip if complete or failed
+              labels = [l.name for l in issue.labels]
+              if LABEL_COMPLETE in labels:
+                  continue
+
+              # Check for rocket reaction from authorized staff
+              reactions = issue.get_reactions()
+              has_approval = False
+
+              for reaction in reactions:
+                  if reaction.content == ROCKET_EMOJI:
+                      if reaction.user.login in AUTHORIZED_APPROVERS:
+                          has_approval = True
+                          print(f"✅ Issue #{issue.number}: Approved by {reaction.user.login}")
+                          break
+
+              if has_approval:
+                  approved_issues.append({
+                      "number": issue.number,
+                      "title": issue.title,
+                      "votes": sum(1 for r in issue.get_reactions() if r.content == "+1")
+                  })
+
+          # Sort by votes (highest first), then by issue number as tiebreaker
+          approved_issues.sort(key=lambda x: (-x["votes"], x["number"]))
+
+          print(f"\nFound {len(approved_issues)} approved issues to build:")
+          for issue in approved_issues:
+              print(f"  - Issue #{issue['number']}: {issue['title']} ({issue['votes']} votes)")
+
+          # Output for next step
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"approved_issues={json.dumps([i['number'] for i in approved_issues])}\n")
+              f.write(f"has_issues={'true' if approved_issues else 'false'}\n")
+          EOF
+
+      - name: Trigger agent-builder for approved issues
+        if: steps.poll.outputs.has_issues == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPROVED_ISSUES: ${{ steps.poll.outputs.approved_issues }}
+        run: |
+          # Only trigger for the FIRST approved issue
+          # The running agent will pick up additional issues via its polling mechanism
+          # This prevents race conditions and reduces unnecessary workflow runs
+          FIRST_ISSUE=$(echo "$APPROVED_ISSUES" | jq -r '.[0]')
+
+          if [ -n "$FIRST_ISSUE" ] && [ "$FIRST_ISSUE" != "null" ]; then
+            echo "Triggering build for issue #$FIRST_ISSUE..."
+            echo "(Other approved issues will be picked up by the running agent)"
+
+            gh workflow run agent-builder.yml \
+              -f issue_number=$FIRST_ISSUE \
+              -f force_rebuild=false
+
+            echo "✅ Triggered agent-builder for issue #$FIRST_ISSUE"
+          fi

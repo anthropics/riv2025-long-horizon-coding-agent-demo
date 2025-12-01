@@ -1,0 +1,60 @@
+name: Feature Request
+description: Request a new feature for the antodo task manager
+title: "[FEATURE] "
+labels: ["feature-request", "needs-approval"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Vote for this feature!
+
+        👍 Give this issue a thumbs up to vote for it.
+
+        Staff will review and approve with 🚀 to add it to the build queue.
+
+  - type: input
+    id: feature-name
+    attributes:
+      label: Feature Name
+      description: Short, descriptive name for the feature
+      placeholder: "e.g., Dark mode toggle"
+    validations:
+      required: true
+
+  - type: textarea
+    id: specification
+    attributes:
+      label: Feature Specification
+      description: Detailed description of what this feature should do
+      placeholder: |
+        Users should be able to switch between light and dark themes.
+
+        The toggle should:
+        - Appear in the header
+        - Save preference to localStorage
+        - Apply immediately without page reload
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know the feature is complete?
+      placeholder: |
+        - [ ] Theme toggle visible in header
+        - [ ] Clicking toggle changes theme
+        - [ ] Preference persists on reload
+        - [ ] No console errors
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: Rough estimate of implementation effort
+      options:
+        - Small (< 1 hour)
+        - Medium (1-3 hours)
+        - Large (3+ hours)
+    validations:
+      required: true

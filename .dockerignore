@@ -1,0 +1,38 @@
+# Git files
+.git
+.gitignore
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local testing artifacts
+*.log
+.env
+
+# Documentation
+README.md
+*.md
+
+# Docker files (don't need these in the image)
+Dockerfile
+.dockerignore
+docker-compose.yml

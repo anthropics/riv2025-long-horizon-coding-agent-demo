@@ -1,0 +1,1 @@
+creating a new task, setting a due date, and verifying that it appears in the 'Today' view.

@@ -1,0 +1,20 @@
+{
+  "name": "long-horizon-coding-agent-demo",
+  "version": "1.0.0",
+  "description": "AWS re:Invent 2025 - Long Horizon Coding Agent Demo",
+  "private": true,
+  "scripts": {
+    "test:e2e": "playwright test --config=playwright.config.staging.ts",
+    "test:e2e:ui": "playwright test --config=playwright.config.staging.ts --ui",
+    "test:e2e:report": "playwright show-report playwright-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}

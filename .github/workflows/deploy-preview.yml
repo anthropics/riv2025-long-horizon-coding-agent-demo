@@ -1,0 +1,220 @@
+name: Deploy App Preview
+
+on:
+  # Triggered by harness when issue is complete
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number that was completed'
+        required: false
+        default: ''
+  # Deploy on push to agent-runtime branch
+  push:
+    branches:
+      - 'agent-runtime'
+      - 'issue-*'  # Keep legacy support
+    paths:
+      - 'generated-app/**'
+
+env:
+  AWS_REGION: us-west-2
+  NODE_VERSION: '20'
+
+# Cancel any in-progress deploy for the same branch
+concurrency:
+  group: preview-deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
+      issue_number: ${{ steps.extract.outputs.issue_number }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract issue number
+        id: extract
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if triggered via workflow_dispatch with issue_number input
+          if [ -n "${{ github.event.inputs.issue_number }}" ]; then
+            ISSUE_NUMBER="${{ github.event.inputs.issue_number }}"
+            echo "Issue number from workflow_dispatch: $ISSUE_NUMBER"
+          else
+            # Extract from branch name (legacy: issue-27 -> 27)
+            BRANCH_NAME="${GITHUB_REF_NAME}"
+            if [[ "$BRANCH_NAME" == issue-* ]]; then
+              ISSUE_NUMBER="${BRANCH_NAME#issue-}"
+            else
+              # agent-runtime branch - find the most recent issue with agent-building or agent-complete label
+              # Check agent-building first (still in progress)
+              ISSUE_NUMBER=$(gh issue list --label "agent-building" --state open --limit 1 --json number --jq '.[0].number // empty')
+              if [ -z "$ISSUE_NUMBER" ]; then
+                # Check agent-complete (just finished - may have removed agent-building label)
+                ISSUE_NUMBER=$(gh issue list --label "agent-complete" --state open --limit 1 --json number --jq '.[0].number // empty')
+              fi
+              if [ -z "$ISSUE_NUMBER" ]; then
+                # Fallback: find most recent closed issue with agent-complete label
+                ISSUE_NUMBER=$(gh issue list --label "agent-complete" --state closed --limit 1 --json number --jq '.[0].number // empty')
+              fi
+              if [ -z "$ISSUE_NUMBER" ]; then
+                echo "No issue found with agent-building label, using 'latest' for S3 path only"
+                ISSUE_NUMBER="latest"
+                echo "skip_comment=true" >> $GITHUB_OUTPUT
+              fi
+            fi
+            echo "Issue number from branch: $ISSUE_NUMBER"
+          fi
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Find generated app directory
+        id: check
+        run: |
+          if [ -d "generated-app" ] && [ -f "generated-app/package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "app_dir=generated-app" >> $GITHUB_OUTPUT
+            echo "Found app in generated-app/"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "No generated app found, skipping deployment"
+          fi
+
+      - name: Setup Node.js
+        if: steps.check.outputs.exists == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        if: steps.check.outputs.exists == 'true'
+        working-directory: ${{ steps.check.outputs.app_dir }}
+        run: |
+          # Use npm ci if lockfile exists, otherwise npm install
+          if [ -f "package-lock.json" ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Configure for subdirectory deployment
+        if: steps.check.outputs.exists == 'true'
+        working-directory: ${{ steps.check.outputs.app_dir }}
+        run: |
+          ISSUE_NUMBER="${{ steps.extract.outputs.issue_number }}"
+          BASE_PATH="/previews/issue-${ISSUE_NUMBER}/"
+
+          # Update vite base path for assets
+          if [ -f "vite.config.ts" ]; then
+            sed -i "s|base: '\\./'|base: '${BASE_PATH}'|g" vite.config.ts
+            echo "Updated vite.config.ts base path to ${BASE_PATH}"
+          fi
+
+          # Update BrowserRouter basename for React Router
+          if [ -f "src/App.tsx" ]; then
+            sed -i "s|<BrowserRouter>|<BrowserRouter basename=\"${BASE_PATH}\">|g" src/App.tsx
+            echo "Updated BrowserRouter basename"
+          fi
+
+          # Also handle main.tsx in case router is there
+          if [ -f "src/main.tsx" ]; then
+            sed -i "s|<BrowserRouter>|<BrowserRouter basename=\"${BASE_PATH}\">|g" src/main.tsx
+          fi
+
+      - name: Build application
+        if: steps.check.outputs.exists == 'true'
+        working-directory: ${{ steps.check.outputs.app_dir }}
+        run: npm run build
+
+      - name: Configure AWS credentials
+        if: steps.check.outputs.exists == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_PREVIEW_DEPLOY_ROLE_ARN }}
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+
+      - name: Deploy to S3
+        if: steps.check.outputs.exists == 'true'
+        id: deploy
+        env:
+          ISSUE_NUMBER: ${{ steps.extract.outputs.issue_number }}
+          S3_BUCKET: ${{ vars.PREVIEWS_BUCKET_NAME }}
+          CLOUDFRONT_DOMAIN: ${{ vars.PREVIEWS_CDN_DOMAIN }}
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.PREVIEWS_DISTRIBUTION_ID }}
+          APP_DIR: ${{ steps.check.outputs.app_dir }}
+        run: |
+          S3_PATH="s3://${S3_BUCKET}/previews/issue-${ISSUE_NUMBER}/"
+
+          echo "Deploying from: ${APP_DIR}/dist/"
+          echo "Deploying to: $S3_PATH"
+
+          # Sync HTML files with no-cache headers
+          aws s3 sync "${APP_DIR}/dist/" "$S3_PATH" \
+            --delete \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --content-type "text/html" \
+            --exclude "*" \
+            --include "*.html"
+
+          # Sync other assets with long cache (content-hashed by Vite)
+          aws s3 sync "${APP_DIR}/dist/" "$S3_PATH" \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "*.html"
+
+          # Create CloudFront invalidation
+          echo "Creating CloudFront invalidation..."
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "${CLOUDFRONT_DISTRIBUTION_ID}" \
+            --paths "/previews/issue-${ISSUE_NUMBER}/*" \
+            --query 'Invalidation.Id' \
+            --output text)
+
+          echo "Invalidation created: $INVALIDATION_ID"
+
+          # Set preview URL output
+          PREVIEW_URL="https://${CLOUDFRONT_DOMAIN}/previews/issue-${ISSUE_NUMBER}/"
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "Preview URL: $PREVIEW_URL"
+
+      - name: Update pinned preview comment on issue
+        if: steps.check.outputs.exists == 'true' && steps.deploy.outputs.preview_url != '' && steps.extract.outputs.skip_comment != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ steps.extract.outputs.issue_number }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.preview_url }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+          COMMIT_URL="https://github.com/${GITHUB_REPOSITORY}/commit/${COMMIT_SHA}"
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          # Build comment body (using printf to avoid YAML issues)
+          BODY=$(printf '## Live Preview\n\n| Field | Value |\n|-------|-------|\n| **URL** | [%s](%s) |\n| **Last Deploy** | %s |\n| **Commit** | [`%s`](%s) |\n\n---\n*Auto-updates on each push to `agent-runtime` branch*' \
+            "$PREVIEW_URL" "$PREVIEW_URL" "$TIMESTAMP" "$SHORT_SHA" "$COMMIT_URL")
+
+          # Find existing preview comment
+          COMMENT_ID=$(gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}/comments" \
+            --jq '.[] | select(.body | contains("Live Preview")) | .id' | head -1)
+
+          if [ -n "$COMMENT_ID" ]; then
+            echo "Updating existing comment: $COMMENT_ID"
+            gh api "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" \
+              -X PATCH \
+              -f body="$BODY"
+          else
+            echo "Creating new preview comment"
+            gh issue comment "${ISSUE_NUMBER}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --body "$BODY"
+          fi
+
+          echo "Posted preview link to issue #${ISSUE_NUMBER}"
