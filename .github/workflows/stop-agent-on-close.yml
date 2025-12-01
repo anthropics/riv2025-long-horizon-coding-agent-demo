@@ -4,6 +4,10 @@ on:
   issues:
     types: [closed]
 
+permissions:
+  issues: read
+  contents: read
+
 env:
   AWS_REGION: us-west-2
 

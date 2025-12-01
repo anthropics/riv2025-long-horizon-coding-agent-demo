@@ -37,6 +37,11 @@ concurrency:
   group: agent-build-${{ github.event.inputs.issue_number || github.event.issue.number }}
   cancel-in-progress: false
 
+permissions:
+  issues: write
+  contents: read
+  actions: write
+
 env:
   AWS_REGION: us-west-2  # AgentCore deployed in us-west-2
   AGENTCORE_AGENT_ID: antodo_agent-0UyfaL5NVq

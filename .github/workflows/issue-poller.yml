@@ -14,6 +14,11 @@ concurrency:
   group: issue-poller-singleton
   cancel-in-progress: false
 
+permissions:
+  issues: read
+  actions: write
+  contents: read
+
 env:
   AWS_REGION: us-west-2
 

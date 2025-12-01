@@ -25,6 +25,10 @@ concurrency:
   group: preview-deploy-${{ github.ref_name }}
   cancel-in-progress: true
 
+permissions:
+  issues: read
+  contents: read
+
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
