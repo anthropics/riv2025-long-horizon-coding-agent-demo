@@ -3373,5 +3373,67 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-240",
+    "category": "functional",
+    "description": "Settings page displays language toggle with English and Japanese options",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify Language section is visible with Globe icon",
+      "Verify English option is displayed with 'English' label",
+      "Verify Japanese option is displayed with '日本語' label",
+      "Verify current language (English) is highlighted/selected with checkmark",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-241",
+    "category": "functional",
+    "description": "User can switch to Japanese language and UI updates",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Japanese language option (日本語)",
+      "Take a screenshot",
+      "Verify Japanese option is now highlighted/selected with checkmark",
+      "Verify Settings page heading changes to '設定'",
+      "Verify Profile section title changes to 'プロフィール'",
+      "Verify sidebar shows Japanese labels (プロジェクト, ワークフロー, etc.)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-242",
+    "category": "functional",
+    "description": "Japanese language reflects in sidebar navigation with project selected",
+    "steps": [
+      "Set language to Japanese from settings page",
+      "Create a project if needed",
+      "Navigate to a project's board page",
+      "Take a screenshot",
+      "Verify sidebar shows Japanese section titles: プランニング, ボード, レポート, プロジェクト",
+      "Verify sidebar items show Japanese: ロードマップ, エピック, カレンダー, バックログ, アクティブスプリント, etc.",
+      "Verify bottom section shows: プロジェクト, ワークフロー, 私たちについて",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-243",
+    "category": "functional",
+    "description": "Language setting persists after page reload",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Switch language to Japanese (日本語)",
+      "Reload the page",
+      "Take a screenshot",
+      "Verify Japanese is still selected (highlighted with checkmark)",
+      "Verify UI is still in Japanese (設定 instead of Settings)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -37,46 +37,46 @@ interface NavSection {
 }
 
 export function Sidebar() {
-  const { currentProject, sidebarCollapsed, setSidebarCollapsed } = useApp();
+  const { currentProject, sidebarCollapsed, setSidebarCollapsed, translations: t } = useApp();
   const { projectKey } = useParams();
   const navigate = useNavigate();
 
-  const projectSections: NavSection[] = currentProject
+  const projectSections: NavSection[] = useMemo(() => currentProject
     ? [
         {
-          title: 'Planning',
+          title: t.planning,
           items: [
-            { label: 'Roadmap', icon: Calendar, to: `/project/${currentProject.key}/roadmap` },
-            { label: 'Epics', icon: Zap, to: `/project/${currentProject.key}/epics` },
-            { label: 'Calendar', icon: CalendarDays, to: `/project/${currentProject.key}/calendar` },
-            { label: 'Backlog', icon: ListTodo, to: `/project/${currentProject.key}/backlog` },
-            { label: 'Active Sprints', icon: TrendingUp, to: `/project/${currentProject.key}/sprints` },
+            { label: t.roadmap, icon: Calendar, to: `/project/${currentProject.key}/roadmap` },
+            { label: t.epics, icon: Zap, to: `/project/${currentProject.key}/epics` },
+            { label: t.calendar, icon: CalendarDays, to: `/project/${currentProject.key}/calendar` },
+            { label: t.backlog, icon: ListTodo, to: `/project/${currentProject.key}/backlog` },
+            { label: t.activeSprints, icon: TrendingUp, to: `/project/${currentProject.key}/sprints` },
           ],
         },
         {
-          title: 'Board',
+          title: t.board,
           items: [
-            { label: 'Board', icon: Kanban, to: `/project/${currentProject.key}/board` },
+            { label: t.board, icon: Kanban, to: `/project/${currentProject.key}/board` },
           ],
         },
         {
-          title: 'Reports',
+          title: t.reports,
           items: [
-            { label: 'Burndown Chart', icon: BarChart3, to: `/project/${currentProject.key}/reports/burndown` },
-            { label: 'Velocity Chart', icon: TrendingUp, to: `/project/${currentProject.key}/reports/velocity` },
-            { label: 'Sprint Report', icon: FileText, to: `/project/${currentProject.key}/reports/sprint` },
+            { label: t.burndownChart, icon: BarChart3, to: `/project/${currentProject.key}/reports/burndown` },
+            { label: t.velocityChart, icon: TrendingUp, to: `/project/${currentProject.key}/reports/velocity` },
+            { label: t.sprintReport, icon: FileText, to: `/project/${currentProject.key}/reports/sprint` },
           ],
         },
         {
-          title: 'Project',
+          title: t.project,
           items: [
-            { label: 'Project Settings', icon: Settings, to: `/project/${currentProject.key}/settings` },
-            { label: 'Components', icon: Layers, to: `/project/${currentProject.key}/components` },
-            { label: 'Labels', icon: Tag, to: `/project/${currentProject.key}/labels` },
+            { label: t.projectSettings, icon: Settings, to: `/project/${currentProject.key}/settings` },
+            { label: t.components, icon: Layers, to: `/project/${currentProject.key}/components` },
+            { label: t.labels, icon: Tag, to: `/project/${currentProject.key}/labels` },
           ],
         },
       ]
-    : [];
+    : [], [currentProject, t]);
 
   // Keyboard shortcut for toggle
   useEffect(() => {
@@ -161,10 +161,10 @@ export function Sidebar() {
                   : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
               )
             }
-            title={sidebarCollapsed ? 'All Projects' : undefined}
+            title={sidebarCollapsed ? t.projects : undefined}
           >
             <FolderKanban className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span>All Projects</span>}
+            {!sidebarCollapsed && <span>{t.projects}</span>}
           </NavLink>
           <NavLink
             to="/workflows"
@@ -177,10 +177,10 @@ export function Sidebar() {
                   : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
               )
             }
-            title={sidebarCollapsed ? 'Workflows' : undefined}
+            title={sidebarCollapsed ? t.workflows : undefined}
           >
             <GitBranch className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span>Workflows</span>}
+            {!sidebarCollapsed && <span>{t.workflows}</span>}
           </NavLink>
           <NavLink
             to="/about"
@@ -193,10 +193,10 @@ export function Sidebar() {
                   : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
               )
             }
-            title={sidebarCollapsed ? 'About Us' : undefined}
+            title={sidebarCollapsed ? t.aboutUs : undefined}
           >
             <Info className="w-5 h-5 flex-shrink-0" />
-            {!sidebarCollapsed && <span>About Us</span>}
+            {!sidebarCollapsed && <span>{t.aboutUs}</span>}
           </NavLink>
         </nav>
 
@@ -207,7 +207,7 @@ export function Sidebar() {
             onClick={() => navigate('/projects/new')}
           >
             <Plus className="w-4 h-4" />
-            Create Project
+            {t.createProject}
           </Button>
         )}
 

@@ -116,10 +116,12 @@ export interface User {
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ColorTheme = 'ruby' | 'ocean' | 'forest' | 'sunset' | 'lavender' | 'cyberpunk' | 'retro';
+export type Language = 'en' | 'ja';
 
 export interface UserSettings {
   theme?: ThemeMode;
   colorTheme?: ColorTheme;
+  language?: Language;
   defaultProjectId?: string;
   sidebarCollapsed?: boolean;
   issueDetailMode?: 'panel' | 'modal';

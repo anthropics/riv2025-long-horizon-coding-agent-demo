@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, initializeDefaultUser, getCurrentUser, setCurrentUser as dbSetCurrentUser } from '@/lib/db';
-import type { User, Project, ThemeMode, ColorTheme } from '@/types';
+import type { User, Project, ThemeMode, ColorTheme, Language } from '@/types';
+import { getTranslations, type Translations } from '@/lib/translations';
 
 interface AppState {
   currentUser: User | null;
@@ -9,6 +10,8 @@ interface AppState {
   sidebarCollapsed: boolean;
   theme: ThemeMode;
   colorTheme: ColorTheme;
+  language: Language;
+  translations: Translations;
   isLoading: boolean;
 }
 
@@ -18,6 +21,7 @@ interface AppContextValue extends AppState {
   setSidebarCollapsed: (collapsed: boolean) => void;
   setTheme: (theme: ThemeMode) => Promise<void>;
   setColorTheme: (colorTheme: ColorTheme) => Promise<void>;
+  setLanguage: (language: Language) => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -29,6 +33,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsedState] = useState(false);
   const [theme, setThemeState] = useState<ThemeMode>('light');
   const [colorTheme, setColorThemeState] = useState<ColorTheme>('ruby');
+  const [language, setLanguageState] = useState<Language>('en');
+  const [translations, setTranslations] = useState<Translations>(getTranslations('en'));
   const [isLoading, setIsLoading] = useState(true);
 
   // Live query to keep user updated
@@ -45,6 +51,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setSidebarCollapsedState(user.settings?.sidebarCollapsed ?? false);
         setThemeState(user.settings?.theme ?? 'light');
         setColorThemeState(user.settings?.colorTheme ?? 'ruby');
+        const userLang = user.settings?.language ?? 'en';
+        setLanguageState(userLang);
+        setTranslations(getTranslations(userLang));
 
         // Load default project if set
         if (user.settings?.defaultProjectId) {
@@ -68,6 +77,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setCurrentUserState(liveUser);
       setThemeState(liveUser.settings?.theme ?? 'light');
       setColorThemeState(liveUser.settings?.colorTheme ?? 'ruby');
+      const userLang = liveUser.settings?.language ?? 'en';
+      setLanguageState(userLang);
+      setTranslations(getTranslations(userLang));
       setSidebarCollapsedState(liveUser.settings?.sidebarCollapsed ?? false);
     }
   }, [liveUser]);
@@ -134,18 +146,31 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }, [currentUser]);
 
+  const setLanguage = useCallback(async (newLanguage: Language) => {
+    setLanguageState(newLanguage);
+    setTranslations(getTranslations(newLanguage));
+    if (currentUser) {
+      await db.users.update(currentUser.id, {
+        settings: { ...currentUser.settings, language: newLanguage },
+      });
+    }
+  }, [currentUser]);
+
   const value: AppContextValue = {
     currentUser,
     currentProject,
     sidebarCollapsed,
     theme,
     colorTheme,
+    language,
+    translations,
     isLoading,
     setCurrentProject,
     setCurrentUser,
     setSidebarCollapsed,
     setTheme,
     setColorTheme,
+    setLanguage,
     refreshUser,
   };
 

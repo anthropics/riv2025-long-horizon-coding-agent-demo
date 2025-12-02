@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Moon, Sun, Monitor, Upload, Download, Trash2, Palette, Check } from 'lucide-react';
+import { Moon, Sun, Monitor, Upload, Download, Trash2, Palette, Check, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,7 +26,13 @@ import {
 import { db, exportAllData, importAllData } from '@/lib/db';
 import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
-import type { ColorTheme } from '@/types';
+import type { ColorTheme, Language } from '@/types';
+
+// Language configuration
+const LANGUAGES: { id: Language; name: string; nativeName: string; flag: string }[] = [
+  { id: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
+  { id: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
+];
 
 // Theme configuration
 const COLOR_THEMES: { id: ColorTheme; name: string; description: string; colors: { primary: string; secondary: string; accent: string } }[] = [
@@ -75,7 +81,7 @@ const COLOR_THEMES: { id: ColorTheme; name: string; description: string; colors:
 ];
 
 export function SettingsPage() {
-  const { currentUser, theme, setTheme, colorTheme, setColorTheme, refreshUser } = useApp();
+  const { currentUser, theme, setTheme, colorTheme, setColorTheme, language, setLanguage, translations: t, refreshUser } = useApp();
   const [userName, setUserName] = useState(currentUser?.name ?? '');
   const [userEmail, setUserEmail] = useState(currentUser?.email ?? '');
   const [isExporting, setIsExporting] = useState(false);
@@ -169,22 +175,22 @@ export function SettingsPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
         <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-          Settings
+          {t.settings}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Manage your preferences and application settings
+          {t.settingsDescription}
         </p>
       </div>
 
       {/* Profile */}
       <Card>
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>Update your personal information</CardDescription>
+          <CardTitle>{t.profile}</CardTitle>
+          <CardDescription>{t.profileDescription}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t.name}</Label>
             <Input
               id="name"
               value={userName}
@@ -193,7 +199,7 @@ export function SettingsPage() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t.email}</Label>
             <Input
               id="email"
               type="email"
@@ -203,22 +209,71 @@ export function SettingsPage() {
             />
           </div>
           <Button onClick={handleUpdateProfile} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
-            Save Profile
+            {t.saveProfile}
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* Language */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Globe className="w-5 h-5 text-primary" />
+            {t.language}
+          </CardTitle>
+          <CardDescription>{t.languageDescription}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 gap-3">
+            {LANGUAGES.map((lang) => (
+              <button
+                key={lang.id}
+                data-testid={`language-${lang.id}`}
+                onClick={() => setLanguage(lang.id)}
+                className={`
+                  relative group p-4 rounded-lg border-2 transition-all duration-200
+                  hover:shadow-md hover:scale-[1.02]
+                  ${language === lang.id
+                    ? 'border-primary ring-2 ring-primary/20 shadow-md bg-primary/5'
+                    : 'border-border hover:border-primary/50'
+                  }
+                `}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{lang.flag}</span>
+                  <div className="text-left">
+                    <p className="text-sm font-medium" style={{ fontFamily: 'var(--font-display)' }}>
+                      {lang.nativeName}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {lang.name}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Check Mark */}
+                {language === lang.id && (
+                  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary-foreground" />
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
       {/* Appearance */}
       <Card>
         <CardHeader>
-          <CardTitle>Appearance</CardTitle>
-          <CardDescription>Customize how Canopy looks</CardDescription>
+          <CardTitle>{t.appearance}</CardTitle>
+          <CardDescription>{t.appearanceDescription}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
             {/* Light/Dark Mode */}
             <div className="space-y-2">
-              <Label>Mode</Label>
+              <Label>{t.mode}</Label>
               <div className="flex gap-2">
                 <Button
                   variant={theme === 'light' ? 'default' : 'outline'}
@@ -226,7 +281,7 @@ export function SettingsPage() {
                   onClick={() => setTheme('light')}
                 >
                   <Sun className="w-4 h-4 mr-2" />
-                  Light
+                  {t.light}
                 </Button>
                 <Button
                   variant={theme === 'dark' ? 'default' : 'outline'}
@@ -234,7 +289,7 @@ export function SettingsPage() {
                   onClick={() => setTheme('dark')}
                 >
                   <Moon className="w-4 h-4 mr-2" />
-                  Dark
+                  {t.dark}
                 </Button>
                 <Button
                   variant={theme === 'system' ? 'default' : 'outline'}
@@ -242,7 +297,7 @@ export function SettingsPage() {
                   onClick={() => setTheme('system')}
                 >
                   <Monitor className="w-4 h-4 mr-2" />
-                  System
+                  {t.system}
                 </Button>
               </div>
             </div>
@@ -251,7 +306,7 @@ export function SettingsPage() {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Palette className="w-4 h-4 text-primary" />
-                <Label>Color Theme</Label>
+                <Label>{t.colorTheme}</Label>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {COLOR_THEMES.map((themeOption) => (
@@ -308,8 +363,8 @@ export function SettingsPage() {
       {/* Default Project */}
       <Card>
         <CardHeader>
-          <CardTitle>Default Project</CardTitle>
-          <CardDescription>Choose which project opens by default</CardDescription>
+          <CardTitle>{t.defaultProject}</CardTitle>
+          <CardDescription>{t.defaultProjectDescription}</CardDescription>
         </CardHeader>
         <CardContent>
           <Select
@@ -317,10 +372,10 @@ export function SettingsPage() {
             onValueChange={handleSetDefaultProject}
           >
             <SelectTrigger>
-              <SelectValue placeholder="No default project" />
+              <SelectValue placeholder={t.noDefaultProject} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="none">No default project</SelectItem>
+              <SelectItem value="none">{t.noDefaultProject}</SelectItem>
               {projects?.filter(p => !p.isArchived).map((project) => (
                 <SelectItem key={project.id} value={project.id}>
                   {project.name}
@@ -334,8 +389,8 @@ export function SettingsPage() {
       {/* Data Management */}
       <Card>
         <CardHeader>
-          <CardTitle>Data Management</CardTitle>
-          <CardDescription>Export, import, or clear your data</CardDescription>
+          <CardTitle>{t.dataManagement}</CardTitle>
+          <CardDescription>{t.dataManagementDescription}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-2">
@@ -346,7 +401,7 @@ export function SettingsPage() {
               className="flex-1"
             >
               <Download className="w-4 h-4 mr-2" />
-              {isExporting ? 'Exporting...' : 'Export Data'}
+              {isExporting ? t.exporting : t.exportData}
             </Button>
             <label className="flex-1">
               <Button
@@ -357,7 +412,7 @@ export function SettingsPage() {
               >
                 <span>
                   <Upload className="w-4 h-4 mr-2" />
-                  {isImporting ? 'Importing...' : 'Import Data'}
+                  {isImporting ? t.importing : t.importData}
                 </span>
               </Button>
               <input
@@ -370,7 +425,7 @@ export function SettingsPage() {
             </label>
           </div>
           <p className="text-xs text-muted-foreground">
-            Export your data as JSON for backup or transfer. Import previously exported data to restore.
+            {t.exportDescription}
           </p>
         </CardContent>
       </Card>
@@ -378,32 +433,31 @@ export function SettingsPage() {
       {/* Danger Zone */}
       <Card className="border-destructive">
         <CardHeader>
-          <CardTitle className="text-destructive">Danger Zone</CardTitle>
-          <CardDescription>Irreversible actions that affect all your data</CardDescription>
+          <CardTitle className="text-destructive">{t.dangerZone}</CardTitle>
+          <CardDescription>{t.dangerZoneDescription}</CardDescription>
         </CardHeader>
         <CardContent>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">
                 <Trash2 className="w-4 h-4 mr-2" />
-                Clear All Data
+                {t.clearAllData}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>{t.deleteConfirmTitle}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently delete all your projects, issues, sprints, and settings.
-                  This action cannot be undone. Consider exporting your data first.
+                  {t.deleteConfirmDescription}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleClearAllData}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  Delete Everything
+                  {t.deleteEverything}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -414,33 +468,33 @@ export function SettingsPage() {
       {/* Keyboard Shortcuts */}
       <Card>
         <CardHeader>
-          <CardTitle>Keyboard Shortcuts</CardTitle>
-          <CardDescription>Quick actions for power users</CardDescription>
+          <CardTitle>{t.keyboardShortcuts}</CardTitle>
+          <CardDescription>{t.keyboardShortcutsDescription}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Open search</span>
+              <span className="text-muted-foreground">{t.openSearch}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">⌘ K</kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Create issue</span>
+              <span className="text-muted-foreground">{t.createIssue}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">C</kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Go to board</span>
+              <span className="text-muted-foreground">{t.goToBoard}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">G B</kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Go to backlog</span>
+              <span className="text-muted-foreground">{t.goToBacklog}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">G L</kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Go to sprints</span>
+              <span className="text-muted-foreground">{t.goToSprints}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">G S</kbd>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Go to settings</span>
+              <span className="text-muted-foreground">{t.goToSettings}</span>
               <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">G ,</kbd>
             </div>
           </div>
@@ -450,14 +504,14 @@ export function SettingsPage() {
       {/* About */}
       <Card>
         <CardHeader>
-          <CardTitle>About Canopy</CardTitle>
+          <CardTitle>{t.aboutCanopy}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-2">
-            Canopy is a forest-inspired project management tool built for teams who value simplicity and focus.
+            {t.aboutDescription}
           </p>
           <p className="text-xs text-muted-foreground">
-            Version 1.0.0 • All data stored locally in your browser
+            {t.version}
           </p>
         </CardContent>
       </Card>
