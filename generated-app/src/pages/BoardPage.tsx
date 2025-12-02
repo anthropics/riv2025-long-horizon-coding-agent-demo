@@ -232,28 +232,40 @@ export function BoardPage() {
   // Empty state
   if (issues.length === 0 && !quickFilter) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh]">
-        <div className="text-center max-w-md">
-          <h2
-            className="text-xl font-semibold mb-2"
-            style={{ fontFamily: 'var(--font-display)' }}
-          >
-            Your board is empty
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            {activeSprint
-              ? `No issues in ${activeSprint.name}. Add issues to the sprint from the backlog.`
-              : 'Create your first issue to get started with the board.'}
-          </p>
-          <Button
-            onClick={() => setCreateModalOpen(true)}
-            className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Create Issue
-          </Button>
+      <>
+        <div className="flex flex-col items-center justify-center h-[60vh]">
+          <div className="text-center max-w-md">
+            <h2
+              className="text-xl font-semibold mb-2"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              Your board is empty
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              {activeSprint
+                ? `No issues in ${activeSprint.name}. Add issues to the sprint from the backlog.`
+                : 'Create your first issue to get started with the board.'}
+            </p>
+            <Button
+              onClick={() => setCreateModalOpen(true)}
+              className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Create Issue
+            </Button>
+          </div>
         </div>
-      </div>
+
+        {/* Create Issue Modal - must be rendered in empty state too */}
+        <CreateIssueModal
+          open={createModalOpen}
+          onOpenChange={(open) => {
+            setCreateModalOpen(open);
+            if (!open) setCreateInColumn(undefined);
+          }}
+          defaultStatus={createInColumn}
+        />
+      </>
     );
   }
 

@@ -3297,5 +3297,20 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-235",
+    "category": "functional",
+    "description": "Create Issue button on empty board page opens the create issue modal",
+    "steps": [
+      "Create a new project",
+      "Navigate to the project's board page (should be empty)",
+      "Verify 'Your board is empty' message is displayed",
+      "Click the 'Create Issue' button",
+      "Verify the Create Issue modal opens with 'Create Issue' heading",
+      "Verify the modal has summary input field",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]
