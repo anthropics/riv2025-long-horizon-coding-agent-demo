@@ -1,18 +1,16 @@
-# Feature Request: Issue #30
+# Feature Request: Issue #32
 
 ## Title
-[FEATURE] Add team and bandwidth
+[FEATURE] Admin dashboard for indexdb data
 
 ## Description
 ### Feature Name
 
-Team capacitiy
+indexdb dashboard
 
 ### Feature Specification
 
-* Ability to add team members
-* Add each member available number of weeks
-* Assign task to member
+Build a dashboard where an admin can see data from indexdb - show the data and how its stored
 
 ### Acceptance Criteria
 
@@ -25,7 +23,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #30`
+Commits should reference this issue: `Ref: #32`
 
 ## Mode
 Enhancement - Modify existing app in generated-app/

@@ -3496,5 +3496,62 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-248",
+    "category": "functional",
+    "description": "Admin dashboard displays IndexedDB data overview with database stats",
+    "steps": [
+      "Navigate to /admin/dashboard",
+      "Take a screenshot",
+      "Verify page shows 'Admin Dashboard' header with database icon",
+      "Verify stats cards display: Database name (CanopyDB), Version (v3), Tables count (14), Total Records",
+      "Verify 'Database Tables' section shows list of all IndexedDB tables",
+      "Verify each table shows name, record count badge, and schema info",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-249",
+    "category": "functional",
+    "description": "Admin link appears in sidebar navigation",
+    "steps": [
+      "Navigate to the homepage at /",
+      "Take a screenshot",
+      "Verify sidebar shows 'Admin' link with database icon",
+      "Verify Admin link is positioned after About Us in sidebar bottom section",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-250",
+    "category": "functional",
+    "description": "Admin dashboard shows expandable tables with record data",
+    "steps": [
+      "Navigate to /admin/dashboard",
+      "Click on a table row to expand it (e.g., 'users' table which has records)",
+      "Take a screenshot",
+      "Verify the table expands to show individual records",
+      "Verify each record shows a preview and can be clicked",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-251",
+    "category": "functional",
+    "description": "Admin dashboard Record Inspector shows selected record details",
+    "steps": [
+      "Navigate to /admin/dashboard",
+      "Expand a table that has records (e.g., 'users')",
+      "Click on a record to select it",
+      "Take a screenshot",
+      "Verify 'Record Inspector' panel on the right shows the full JSON data of the selected record",
+      "Verify the selected record is highlighted in the table",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

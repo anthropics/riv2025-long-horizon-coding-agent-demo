@@ -20,6 +20,7 @@ import {
   GitBranch,
   Zap,
   Users,
+  Database,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -199,6 +200,22 @@ export function Sidebar() {
           >
             <Info className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>{t.aboutUs}</span>}
+          </NavLink>
+          <NavLink
+            to="/admin/dashboard"
+            className={({ isActive }) =>
+              cn(
+                'flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors',
+                sidebarCollapsed && 'justify-center',
+                isActive
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+              )
+            }
+            title={sidebarCollapsed ? 'Admin Dashboard' : undefined}
+          >
+            <Database className="w-5 h-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span>Admin</span>}
           </NavLink>
         </nav>
 

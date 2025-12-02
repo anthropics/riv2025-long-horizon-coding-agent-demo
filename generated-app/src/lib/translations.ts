@@ -244,6 +244,18 @@ export interface Translations {
   aboutUs: string;
   featureOverview: string;
   contribution: string;
+
+  // Admin Dashboard
+  adminDashboard: string;
+  adminDashboardDescription: string;
+  databaseTables: string;
+  recordInspector: string;
+  totalRecords: string;
+  noRecords: string;
+  selectRecordToInspect: string;
+  exportTable: string;
+  refresh: string;
+  refreshing: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -491,6 +503,18 @@ const translations: Record<Language, Translations> = {
     aboutUs: 'About Us',
     featureOverview: 'Feature Overview',
     contribution: 'Contribution',
+
+    // Admin Dashboard
+    adminDashboard: 'Admin Dashboard',
+    adminDashboardDescription: 'IndexedDB Data Inspector',
+    databaseTables: 'Database Tables',
+    recordInspector: 'Record Inspector',
+    totalRecords: 'Total Records',
+    noRecords: 'No records in this table',
+    selectRecordToInspect: 'Select a record to inspect',
+    exportTable: 'Export table data',
+    refresh: 'Refresh',
+    refreshing: 'Refreshing...',
   },
 
   ja: {
@@ -737,6 +761,18 @@ const translations: Record<Language, Translations> = {
     aboutUs: '私たちについて',
     featureOverview: '機能概要',
     contribution: '貢献',
+
+    // Admin Dashboard
+    adminDashboard: '管理ダッシュボード',
+    adminDashboardDescription: 'IndexedDB データインスペクター',
+    databaseTables: 'データベーステーブル',
+    recordInspector: 'レコードインスペクター',
+    totalRecords: '総レコード数',
+    noRecords: 'このテーブルにはレコードがありません',
+    selectRecordToInspect: '検査するレコードを選択',
+    exportTable: 'テーブルデータをエクスポート',
+    refresh: '更新',
+    refreshing: '更新中...',
   },
 };
 

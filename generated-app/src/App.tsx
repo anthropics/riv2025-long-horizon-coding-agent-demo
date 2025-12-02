@@ -20,6 +20,7 @@ import { SettingsPage } from '@/pages/SettingsPage';
 import { AboutPage } from '@/pages/AboutPage';
 import { WorkflowsPage } from '@/pages/WorkflowsPage';
 import { TeamPage } from '@/pages/TeamPage';
+import { AdminDashboardPage } from '@/pages/AdminDashboardPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 function App() {
@@ -60,6 +61,9 @@ function App() {
 
             {/* About */}
             <Route path="/about" element={<AboutPage />} />
+
+            {/* Admin */}
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFoundPage />} />
