@@ -1,16 +1,16 @@
-# Feature Request: Issue #14
+# Feature Request: Issue #25
 
 ## Title
-[FEATURE] Canopy MVP
+[FEATURE] Themes
 
 ## Description
 ### Feature Name
 
-Canopy MVP
+Add more themes other than dark and light mode
 
 ### Feature Specification
 
-Canopy MVP
+users should be able to switch between multiple themes including light and dark and FUN
 
 ### Acceptance Criteria
 
@@ -23,7 +23,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #14`
+Commits should reference this issue: `Ref: #25`
 
 ## Mode
-Full Build - Create new app in generated-app/
+Enhancement - Modify existing app in generated-app/

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Moon, Sun, Monitor, Upload, Download, Trash2 } from 'lucide-react';
+import { Moon, Sun, Monitor, Upload, Download, Trash2, Palette, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,9 +26,56 @@ import {
 import { db, exportAllData, importAllData } from '@/lib/db';
 import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
+import type { ColorTheme } from '@/types';
+
+// Theme configuration
+const COLOR_THEMES: { id: ColorTheme; name: string; description: string; colors: { primary: string; secondary: string; accent: string } }[] = [
+  {
+    id: 'ruby',
+    name: 'Ruby',
+    description: 'Classic red theme with warm coral accents',
+    colors: { primary: '#7B2332', secondary: '#C25B6A', accent: '#E8A87C' }
+  },
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    description: 'Deep sea blues with teal accents',
+    colors: { primary: '#0D5C75', secondary: '#4BA3C3', accent: '#00D4AA' }
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    description: 'Nature-inspired greens with earthy tones',
+    colors: { primary: '#1B4332', secondary: '#52796F', accent: '#D4A373' }
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    description: 'Warm oranges, pinks, and golden hues',
+    colors: { primary: '#E85D04', secondary: '#FF6B9D', accent: '#FFD166' }
+  },
+  {
+    id: 'lavender',
+    name: 'Lavender',
+    description: 'Soft purples with pink and mint accents',
+    colors: { primary: '#7C4DFF', secondary: '#B388FF', accent: '#FF8ED4' }
+  },
+  {
+    id: 'cyberpunk',
+    name: 'Cyberpunk',
+    description: 'Neon pinks, cyans, and electric vibes',
+    colors: { primary: '#FF2E97', secondary: '#00D9FF', accent: '#FFE000' }
+  },
+  {
+    id: 'retro',
+    name: 'Retro',
+    description: 'Warm vintage colors inspired by 70s design',
+    colors: { primary: '#C85A38', secondary: '#6B8E6B', accent: '#E8B039' }
+  }
+];
 
 export function SettingsPage() {
-  const { currentUser, theme, setTheme, refreshUser } = useApp();
+  const { currentUser, theme, setTheme, colorTheme, setColorTheme, refreshUser } = useApp();
   const [userName, setUserName] = useState(currentUser?.name ?? '');
   const [userEmail, setUserEmail] = useState(currentUser?.email ?? '');
   const [isExporting, setIsExporting] = useState(false);
@@ -168,13 +215,14 @@ export function SettingsPage() {
           <CardDescription>Customize how Canopy looks</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Light/Dark Mode */}
             <div className="space-y-2">
-              <Label>Theme</Label>
+              <Label>Mode</Label>
               <div className="flex gap-2">
                 <Button
                   variant={theme === 'light' ? 'default' : 'outline'}
-                  className={theme === 'light' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
+                  className={theme === 'light' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : ''}
                   onClick={() => setTheme('light')}
                 >
                   <Sun className="w-4 h-4 mr-2" />
@@ -182,7 +230,7 @@ export function SettingsPage() {
                 </Button>
                 <Button
                   variant={theme === 'dark' ? 'default' : 'outline'}
-                  className={theme === 'dark' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
+                  className={theme === 'dark' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : ''}
                   onClick={() => setTheme('dark')}
                 >
                   <Moon className="w-4 h-4 mr-2" />
@@ -190,12 +238,67 @@ export function SettingsPage() {
                 </Button>
                 <Button
                   variant={theme === 'system' ? 'default' : 'outline'}
-                  className={theme === 'system' ? 'bg-[#E8A87C] hover:bg-[#d4946d] text-white' : ''}
+                  className={theme === 'system' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : ''}
                   onClick={() => setTheme('system')}
                 >
                   <Monitor className="w-4 h-4 mr-2" />
                   System
                 </Button>
+              </div>
+            </div>
+
+            {/* Color Theme */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4 text-primary" />
+                <Label>Color Theme</Label>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {COLOR_THEMES.map((themeOption) => (
+                  <button
+                    key={themeOption.id}
+                    onClick={() => setColorTheme(themeOption.id)}
+                    className={`
+                      relative group p-3 rounded-lg border-2 transition-all duration-200
+                      hover:shadow-md hover:scale-[1.02]
+                      ${colorTheme === themeOption.id
+                        ? 'border-primary ring-2 ring-primary/20 shadow-md'
+                        : 'border-border hover:border-primary/50'
+                      }
+                    `}
+                  >
+                    {/* Color Preview */}
+                    <div className="flex gap-1 mb-2">
+                      <div
+                        className="w-6 h-6 rounded-full shadow-sm"
+                        style={{ backgroundColor: themeOption.colors.primary }}
+                      />
+                      <div
+                        className="w-6 h-6 rounded-full shadow-sm"
+                        style={{ backgroundColor: themeOption.colors.secondary }}
+                      />
+                      <div
+                        className="w-6 h-6 rounded-full shadow-sm"
+                        style={{ backgroundColor: themeOption.colors.accent }}
+                      />
+                    </div>
+
+                    {/* Theme Name */}
+                    <p className="text-sm font-medium text-left" style={{ fontFamily: 'var(--font-display)' }}>
+                      {themeOption.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground text-left leading-snug mt-0.5">
+                      {themeOption.description}
+                    </p>
+
+                    {/* Check Mark */}
+                    {colorTheme === themeOption.id && (
+                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                        <Check className="w-3 h-3 text-primary-foreground" />
+                      </div>
+                    )}
+                  </button>
+                ))}
               </div>
             </div>
           </div>

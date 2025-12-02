@@ -3245,5 +3245,57 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-232",
+    "category": "functional",
+    "description": "Settings page displays color theme picker with all 7 themes",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify 'Appearance' section card is visible",
+      "Verify 'Color Theme' label with Palette icon",
+      "Verify all 7 color themes are displayed: Ruby, Ocean, Forest, Sunset, Lavender, Cyberpunk, Retro",
+      "Verify each theme shows color preview circles (primary, secondary, accent)",
+      "Verify each theme has name and description",
+      "Verify Ruby theme is selected by default (has checkmark)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-233",
+    "category": "functional",
+    "description": "User can switch between different color themes",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on 'Ocean' theme button",
+      "Take a screenshot",
+      "Verify Ocean theme is now selected (checkmark moves to Ocean)",
+      "Verify page colors change to Ocean theme (deep blues, teal accents)",
+      "Verify html element has 'theme-ocean' class",
+      "Click on 'Cyberpunk' theme button",
+      "Verify html element has 'theme-cyberpunk' class",
+      "Verify page colors change to neon pinks and cyans",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-234",
+    "category": "functional",
+    "description": "Color theme persists after page reload",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on 'Forest' theme button",
+      "Verify Forest theme is selected and html has 'theme-forest' class",
+      "Refresh the page",
+      "Take a screenshot",
+      "Verify Forest theme is still selected after reload",
+      "Verify html element still has 'theme-forest' class",
+      "Verify theme colors persist (nature-inspired greens)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

@@ -114,8 +114,12 @@ export interface User {
   settings?: UserSettings;
 }
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+export type ColorTheme = 'ruby' | 'ocean' | 'forest' | 'sunset' | 'lavender' | 'cyberpunk' | 'retro';
+
 export interface UserSettings {
-  theme?: 'light' | 'dark' | 'system';
+  theme?: ThemeMode;
+  colorTheme?: ColorTheme;
   defaultProjectId?: string;
   sidebarCollapsed?: boolean;
   issueDetailMode?: 'panel' | 'modal';
