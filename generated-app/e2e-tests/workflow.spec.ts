@@ -44,41 +44,35 @@ test.describe('Workflow Feature', () => {
   });
 
   test('Project settings shows workflow section', async ({ page }) => {
-    // First create a project
+    // First create a project using the form properly
     await page.goto('http://localhost:6174/projects/new');
     await page.waitForLoadState('networkidle');
 
-    // Fill in project name
-    await page.fill('input#name', 'Test Workflow Project');
+    // Fill in project name by clicking and typing
+    const nameInput = page.locator('input#name');
+    await nameInput.click();
+    await nameInput.fill('Test Workflow Project');
     await page.waitForTimeout(500);
 
-    // Click Create Project button
-    await page.click('button:has-text("Create Project")');
+    // Click Create Project button (within the form)
+    const submitButton = page.locator('form button[type="submit"]');
+    await submitButton.click();
 
-    // Wait for toast or navigation
-    await page.waitForTimeout(2000);
-
-    // Get the current URL to find the project key
-    const url = page.url();
-    const match = url.match(/\/project\/([^/]+)/);
-    if (match) {
-      const projectKey = match[1];
-      // Navigate to project settings
-      await page.goto(`http://localhost:6174/project/${projectKey}/settings`);
-    } else {
-      // If we're still on project create page, wait more and check for navigation
-      await page.waitForTimeout(1000);
-      // Navigate via sidebar if available
-      const settingsLink = page.locator('nav a:has-text("Project Settings")');
-      if (await settingsLink.isVisible()) {
-        await settingsLink.click();
-      }
-    }
-
+    // Wait for navigation to board page
+    await page.waitForURL(/\/project\/.*\/board/, { timeout: 10000 });
     await page.waitForLoadState('networkidle');
 
-    // Check workflow section is visible
-    await expect(page.locator('h2:has-text("Workflow"), [class*="CardTitle"]:has-text("Workflow")').first()).toBeVisible();
+    // Navigate to project settings using sidebar
+    const settingsLink = page.locator('a:has-text("Project Settings")');
+    await settingsLink.waitFor({ state: 'visible', timeout: 5000 });
+    await settingsLink.click();
+
+    await page.waitForURL(/\/project\/.*\/settings/, { timeout: 5000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(500);
+
+    // Check workflow section is visible using data-slot selector
+    await expect(page.locator('[data-slot="card-title"]:has-text("Workflow")')).toBeVisible();
     await expect(page.locator('text=Assign a workflow to define how issues transition')).toBeVisible();
 
     // Check workflow select is present
