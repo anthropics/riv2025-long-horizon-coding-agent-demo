@@ -22,7 +22,8 @@ import { db, createIssue } from '@/lib/db';
 import { useApp } from '@/context/AppContext';
 import { IssueTypeIcon } from '@/components/common/IssueTypeIcon';
 import { PriorityIcon } from '@/components/common/PriorityIcon';
-import type { IssueType, Priority } from '@/types';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import type { IssueType, Priority, TeamMember } from '@/types';
 import { toast } from 'sonner';
 
 interface CreateIssueModalProps {
@@ -46,6 +47,20 @@ export function CreateIssueModal({ open, onOpenChange, defaultStatus }: CreateIs
 
   const projects = useLiveQuery(() => db.projects.filter(p => !p.isArchived).toArray(), []);
   const users = useLiveQuery(() => db.users.toArray(), []);
+
+  // Get team members for the selected project
+  const teamMembers = useLiveQuery(
+    async () => {
+      if (!projectId) return [];
+      return await db.teamMembers.where('projectId').equals(projectId).toArray();
+    },
+    [projectId]
+  );
+
+  // Combined assignee options (team members + system users)
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
 
   // Update projectId when currentProject changes or modal opens
   useEffect(() => {
@@ -243,11 +258,42 @@ export function CreateIssueModal({ open, onOpenChange, defaultStatus }: CreateIs
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="unassigned">Unassigned</SelectItem>
-                  {users?.map((user) => (
-                    <SelectItem key={user.id} value={user.id}>
-                      {user.name}
-                    </SelectItem>
-                  ))}
+                  {/* Team Members */}
+                  {teamMembers && teamMembers.length > 0 && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Team Members</div>
+                      {teamMembers.map((member) => (
+                        <SelectItem key={member.userId} value={member.userId}>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-5 w-5">
+                              <AvatarFallback style={{ backgroundColor: `${member.color}20`, color: member.color, fontSize: '10px' }}>
+                                {getInitials(member.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {member.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
+                  {/* System Users */}
+                  {users && users.length > 0 && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">System Users</div>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-5 w-5">
+                              <AvatarFallback style={{ backgroundColor: `${user.color}20`, color: user.color, fontSize: '10px' }}>
+                                {getInitials(user.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {user.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

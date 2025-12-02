@@ -32,6 +32,7 @@ export interface Translations {
   workflows: string;
   calendar: string;
   epics: string;
+  team: string;
 
   // Settings Page
   settings: string;
@@ -278,6 +279,7 @@ const translations: Record<Language, Translations> = {
     workflows: 'Workflows',
     calendar: 'Calendar',
     epics: 'Epics',
+    team: 'Team',
 
     // Settings Page
     settings: 'Settings',
@@ -523,6 +525,7 @@ const translations: Record<Language, Translations> = {
     workflows: 'ワークフロー',
     calendar: 'カレンダー',
     epics: 'エピック',
+    team: 'チーム',
 
     // Settings Page
     settings: '設定',

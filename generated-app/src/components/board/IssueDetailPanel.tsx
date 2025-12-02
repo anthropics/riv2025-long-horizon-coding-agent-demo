@@ -30,7 +30,7 @@ import { PriorityIcon } from '@/components/common/PriorityIcon';
 import { toast } from 'sonner';
 import { format, formatDistanceToNow } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
-import type { Issue, IssueType, Priority, Comment as CommentType, ActivityLog } from '@/types';
+import type { Issue, IssueType, Priority, Comment as CommentType, ActivityLog, TeamMember } from '@/types';
 
 interface IssueDetailPanelProps {
   issue: Issue;
@@ -52,6 +52,11 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
   );
 
   const users = useLiveQuery(() => db.users.toArray(), []);
+
+  const teamMembers = useLiveQuery(
+    () => db.teamMembers.where('projectId').equals(issue.projectId).toArray(),
+    [issue.projectId]
+  );
 
   const labels = useLiveQuery(
     () => db.labels.where('projectId').equals(issue.projectId).toArray(),
@@ -90,7 +95,11 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
     [issue.id, issue.type]
   );
 
-  const assignee = users?.find(u => u.id === issue.assigneeId);
+  // Find assignee from users or team members
+  const assigneeUser = users?.find(u => u.id === issue.assigneeId);
+  const assigneeTeamMember = teamMembers?.find(m => m.userId === issue.assigneeId);
+  const assignee = assigneeUser ? { name: assigneeUser.name, color: assigneeUser.color } :
+    assigneeTeamMember ? { name: assigneeTeamMember.name, color: assigneeTeamMember.color } : null;
   const reporter = users?.find(u => u.id === issue.reporterId);
 
   // Sync state when issue changes
@@ -627,21 +636,48 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="unassigned">Unassigned</SelectItem>
-                  {users?.map((user) => (
-                    <SelectItem key={user.id} value={user.id}>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="w-5 h-5">
-                          <AvatarFallback
-                            className="text-[10px]"
-                            style={{ backgroundColor: user.color }}
-                          >
-                            {getInitials(user.name)}
-                          </AvatarFallback>
-                        </Avatar>
-                        {user.name}
-                      </div>
-                    </SelectItem>
-                  ))}
+                  {/* Team Members */}
+                  {teamMembers && teamMembers.length > 0 && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Team Members</div>
+                      {teamMembers.map((member) => (
+                        <SelectItem key={member.userId} value={member.userId}>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-5 h-5">
+                              <AvatarFallback
+                                className="text-[10px]"
+                                style={{ backgroundColor: member.color }}
+                              >
+                                {getInitials(member.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {member.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
+                  {/* System Users */}
+                  {users && users.length > 0 && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">System Users</div>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-5 h-5">
+                              <AvatarFallback
+                                className="text-[10px]"
+                                style={{ backgroundColor: user.color }}
+                              >
+                                {getInitials(user.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {user.name}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>

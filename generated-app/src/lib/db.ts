@@ -15,6 +15,7 @@ import type {
   AppSettings,
   BoardColumn,
   Workflow,
+  TeamMember,
 } from '@/types';
 
 // Define the Dexie database
@@ -32,6 +33,7 @@ export class CanopyDB extends Dexie {
   customFields!: Table<CustomField>;
   settings!: Table<AppSettings>;
   workflows!: Table<Workflow>;
+  teamMembers!: Table<TeamMember>;
 
   constructor() {
     super('CanopyDB');
@@ -65,6 +67,23 @@ export class CanopyDB extends Dexie {
       customFields: 'id, projectId',
       settings: 'key',
       workflows: 'id, name, isDefault, createdAt',
+    });
+
+    this.version(3).stores({
+      projects: 'id, key, name, isArchived, createdAt, workflowId',
+      issues: 'id, projectId, key, type, status, priority, assigneeId, epicId, parentId, sprintId, createdAt, [projectId+status], [projectId+sprintId], [projectId+epicId]',
+      sprints: 'id, projectId, status, startDate, endDate',
+      boards: 'id, projectId',
+      users: 'id, email, name',
+      labels: 'id, projectId, name',
+      components: 'id, projectId, name',
+      comments: 'id, issueId, authorId, createdAt',
+      activityLog: 'id, issueId, timestamp',
+      filters: 'id, ownerId, projectId',
+      customFields: 'id, projectId',
+      settings: 'key',
+      workflows: 'id, name, isDefault, createdAt',
+      teamMembers: 'id, projectId, userId, name, [projectId+userId]',
     });
   }
 }
@@ -179,7 +198,7 @@ export async function updateProject(id: string, updates: Partial<Project>): Prom
 }
 
 export async function deleteProject(id: string): Promise<void> {
-  await db.transaction('rw', [db.projects, db.issues, db.sprints, db.boards, db.labels, db.components, db.comments, db.activityLog, db.filters, db.customFields], async () => {
+  await db.transaction('rw', [db.projects, db.issues, db.sprints, db.boards, db.labels, db.components, db.comments, db.activityLog, db.filters, db.customFields, db.teamMembers], async () => {
     // Get all issues for this project
     const issues = await db.issues.where('projectId').equals(id).toArray();
     const issueIds = issues.map(i => i.id);
@@ -194,6 +213,7 @@ export async function deleteProject(id: string): Promise<void> {
     await db.components.where('projectId').equals(id).delete();
     await db.filters.where('projectId').equals(id).delete();
     await db.customFields.where('projectId').equals(id).delete();
+    await db.teamMembers.where('projectId').equals(id).delete();
     await db.projects.delete(id);
   });
 }
@@ -581,7 +601,7 @@ export async function clearAllData(): Promise<void> {
   await db.transaction('rw', [
     db.projects, db.issues, db.sprints, db.boards, db.users,
     db.labels, db.components, db.comments, db.activityLog,
-    db.filters, db.customFields, db.settings, db.workflows
+    db.filters, db.customFields, db.settings, db.workflows, db.teamMembers
   ], async () => {
     await db.projects.clear();
     await db.issues.clear();
@@ -596,6 +616,7 @@ export async function clearAllData(): Promise<void> {
     await db.customFields.clear();
     await db.settings.clear();
     await db.workflows.clear();
+    await db.teamMembers.clear();
   });
 }
 
@@ -616,8 +637,40 @@ export async function exportProject(projectId: string): Promise<string> {
     comments: await db.comments.where('issueId').anyOf(issueIds).toArray(),
     activityLog: await db.activityLog.where('issueId').anyOf(issueIds).toArray(),
     customFields: await db.customFields.where('projectId').equals(projectId).toArray(),
+    teamMembers: await db.teamMembers.where('projectId').equals(projectId).toArray(),
     exportedAt: new Date().toISOString(),
     version: 1,
   };
   return JSON.stringify(data, null, 2);
+}
+
+// Team Member helpers
+export async function createTeamMember(data: Omit<TeamMember, 'id' | 'createdAt' | 'updatedAt'>): Promise<TeamMember> {
+  const now = new Date();
+  const teamMember: TeamMember = {
+    ...data,
+    id: uuidv4(),
+    createdAt: now,
+    updatedAt: now,
+  };
+  await db.teamMembers.add(teamMember);
+  return teamMember;
+}
+
+export async function updateTeamMember(id: string, updates: Partial<TeamMember>): Promise<void> {
+  await db.teamMembers.update(id, { ...updates, updatedAt: new Date() });
+}
+
+export async function deleteTeamMember(id: string): Promise<void> {
+  // Get the team member to unassign issues
+  const teamMember = await db.teamMembers.get(id);
+  if (teamMember) {
+    // Unassign all issues from this team member
+    await db.issues.where('assigneeId').equals(teamMember.userId).modify({ assigneeId: undefined });
+  }
+  await db.teamMembers.delete(id);
+}
+
+export async function getTeamMembersForProject(projectId: string): Promise<TeamMember[]> {
+  return await db.teamMembers.where('projectId').equals(projectId).toArray();
 }

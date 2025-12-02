@@ -1,16 +1,18 @@
-# Feature Request: Issue #27
+# Feature Request: Issue #30
 
 ## Title
-[FEATURE] Add an Epics feature
+[FEATURE] Add team and bandwidth
 
 ## Description
 ### Feature Name
 
-Epics
+Team capacitiy
 
 ### Feature Specification
 
-Add a feature for Epics and make it so theres a clear ticket hierachy
+* Ability to add team members
+* Add each member available number of weeks
+* Assign task to member
 
 ### Acceptance Criteria
 
@@ -23,7 +25,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #27`
+Commits should reference this issue: `Ref: #30`
 
 ## Mode
 Enhancement - Modify existing app in generated-app/

@@ -3435,5 +3435,66 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-244",
+    "category": "functional",
+    "description": "Team page displays with stats overview when navigating to a project's team page",
+    "steps": [
+      "Create a project if needed",
+      "Navigate to the project's Team page at /project/{key}/team",
+      "Take a screenshot",
+      "Verify Team page displays with header 'Team' and Users icon",
+      "Verify stats cards show: Team Size, Total Available Weeks, Total Capacity (Hours)",
+      "Verify 'Add Team Member' button is visible with coral accent color",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-245",
+    "category": "functional",
+    "description": "Team link appears in sidebar under Project section",
+    "steps": [
+      "Create a project if needed and navigate to any project page",
+      "Take a screenshot",
+      "Verify sidebar shows Project section",
+      "Verify 'Team' link appears in sidebar with Users icon",
+      "Verify Team link is positioned before Project Settings",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-246",
+    "category": "functional",
+    "description": "User can add a team member with name and available weeks",
+    "steps": [
+      "Navigate to the project's Team page",
+      "Click 'Add Team Member' button",
+      "Verify dialog opens with fields: Name, Email, Available Weeks, Hours per Week, Avatar Color",
+      "Enter name 'John Doe'",
+      "Select available weeks as '4 weeks'",
+      "Click 'Add Member' button",
+      "Take a screenshot",
+      "Verify team member 'John Doe' appears in the team list with '4 weeks' badge",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-247",
+    "category": "functional",
+    "description": "Team member can be assigned to tasks from Create Issue modal",
+    "steps": [
+      "Navigate to the project's Team page and add a team member 'Jane Smith'",
+      "Open Create Issue modal",
+      "Verify Assignee dropdown shows 'Team Members' section with 'Jane Smith'",
+      "Select 'Jane Smith' as assignee",
+      "Take a screenshot",
+      "Verify 'Jane Smith' is shown as selected assignee with avatar",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

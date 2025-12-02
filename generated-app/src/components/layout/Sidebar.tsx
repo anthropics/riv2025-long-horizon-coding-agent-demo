@@ -19,6 +19,7 @@ import {
   Info,
   GitBranch,
   Zap,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -70,6 +71,7 @@ export function Sidebar() {
         {
           title: t.project,
           items: [
+            { label: t.team || 'Team', icon: Users, to: `/project/${currentProject.key}/team` },
             { label: t.projectSettings, icon: Settings, to: `/project/${currentProject.key}/settings` },
             { label: t.components, icon: Layers, to: `/project/${currentProject.key}/components` },
             { label: t.labels, icon: Tag, to: `/project/${currentProject.key}/labels` },

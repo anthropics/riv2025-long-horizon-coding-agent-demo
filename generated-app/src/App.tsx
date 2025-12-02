@@ -19,6 +19,7 @@ import { SprintReportPage } from '@/pages/SprintReportPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { AboutPage } from '@/pages/AboutPage';
 import { WorkflowsPage } from '@/pages/WorkflowsPage';
+import { TeamPage } from '@/pages/TeamPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
             <Route path="/project/:projectKey/settings" element={<ProjectSettingsPage />} />
             <Route path="/project/:projectKey/labels" element={<LabelsPage />} />
             <Route path="/project/:projectKey/components" element={<ComponentsPage />} />
+            <Route path="/project/:projectKey/team" element={<TeamPage />} />
 
             {/* Reports */}
             <Route path="/project/:projectKey/reports/burndown" element={<BurndownPage />} />

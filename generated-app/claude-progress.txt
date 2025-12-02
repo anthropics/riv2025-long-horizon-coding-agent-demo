@@ -1,8 +1,71 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #29 - Japanese Language Toggle)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #30 - Team and Bandwidth)
 
-## Latest Session (Issue #29 - Japanese Language Toggle - COMPLETE)
+## Latest Session (Issue #30 - Team and Bandwidth - COMPLETE)
+Added team capacity management feature that allows users to add team members, set available weeks per member, and assign tasks to team members.
+
+### Feature Description:
+Users can now:
+1. Navigate to a dedicated Team page at /project/{key}/team
+2. View team capacity stats (Team Size, Total Available Weeks, Total Capacity Hours)
+3. Add team members with name, email, available weeks, hours per week, and avatar color
+4. Edit and delete team members
+5. See assigned task counts and progress per team member
+6. Assign team members to issues from Create Issue modal and Issue Detail panel
+
+### New Files Created:
+- src/pages/TeamPage.tsx - Full team management page with capacity tracking
+
+### Files Modified:
+- src/types/index.ts - Added TeamMember and TeamMemberWithStats types
+- src/lib/db.ts - Added teamMembers table (v3 schema), helper functions (createTeamMember, updateTeamMember, deleteTeamMember, getTeamMembersForProject), updated deleteProject and clearAllData to include teamMembers
+- src/lib/translations.ts - Added 'team' translation for English and Japanese
+- src/App.tsx - Added route for /project/:projectKey/team and TeamPage import
+- src/components/layout/Sidebar.tsx - Added Team link with Users icon under PROJECT section
+- src/components/modals/CreateIssueModal.tsx - Added team members to assignee dropdown with "Team Members" section header
+- src/components/board/IssueDetailPanel.tsx - Added team members to assignee dropdown in issue detail sidebar
+
+### Team Page Features:
+- Header with "Team" title, Users icon, and "Add Team Member" button (coral accent)
+- Stats overview cards: Team Size, Total Available Weeks, Total Capacity (Hours)
+- Team members table with columns: Member (avatar + name + email), Available Weeks, Hours/Week, Assigned Tasks (with progress bar), Actions
+- Add/Edit team member dialog with fields: Name, Email, Available Weeks dropdown (1-52), Hours per Week dropdown, Avatar Color picker with preview
+- Empty state with "No team members yet" message and "Add your first team member" CTA
+- Capacity Planning Tip info box explaining how available weeks help with sprint planning
+- Team member deletion with automatic unassignment from issues
+
+### Assignee Dropdown Updates:
+- Both CreateIssueModal and IssueDetailPanel now show team members grouped under "Team Members" section
+- System users shown under "System Users" section
+- Team members display with colored avatar showing initials
+
+### New Tests Added (test-244 through test-247):
+- test-244: Team page displays with stats overview when navigating to a project's team page ✅
+- test-245: Team link appears in sidebar under Project section ✅
+- test-246: User can add a team member with name and available weeks ✅
+- test-247: Team member can be assigned to tasks from Create Issue modal ✅
+
+### E2E Tests:
+- e2e-tests/team-setup.spec.ts - Project creation and team page navigation
+- e2e-tests/team-all-tests.spec.ts - Comprehensive tests for all team features (4/4 passing)
+
+### Build Status:
+- `npm run build` succeeds without errors ✅
+- All new tests pass (4/4) ✅
+- All console logs show NO_CONSOLE_ERRORS ✅
+- Application loads correctly ✅
+
+### Screenshots Captured:
+- test-244-final.png: Team page with stats overview and empty state
+- test-245-final.png: Sidebar with Team link under PROJECT section
+- test-246-final.png: Team member "John Doe" added with "4 weeks" badge
+- test-247-final.png: Create Issue modal showing Team Members dropdown with "Jane Smith"
+- final-a1b2c3.png: Final app state
+
+---
+
+## Previous Session (Issue #29 - Japanese Language Toggle - COMPLETE)
 Added a Japanese language toggle feature that allows users to switch the app UI between English and Japanese.
 
 ### Feature Description:
@@ -322,13 +385,23 @@ Built a complete JIRA-like project management application called "Canopy" with:
 - [x] Timeline view with epics
 - [x] Month view with date columns
 
-### Epics (NEW)
+### Epics
 - [x] Dedicated Epics page with hierarchy view
 - [x] Stats overview (Total, Open, In Progress, Done)
 - [x] Child issues grouped under epics
 - [x] Progress tracking with bars and percentages
 - [x] Filter and search functionality
 - [x] Issue hierarchy legend
+
+### Team & Capacity (NEW - Issue #30)
+- [x] Dedicated Team page at /project/{key}/team
+- [x] Team capacity stats (Team Size, Total Available Weeks, Total Capacity Hours)
+- [x] Add/Edit/Delete team members with name, email, available weeks, hours per week
+- [x] Avatar color picker with preview
+- [x] Assigned tasks count and progress tracking per team member
+- [x] Team members selectable in Create Issue modal assignee dropdown
+- [x] Team members selectable in Issue Detail panel assignee dropdown
+- [x] "Team Members" and "System Users" sections in assignee dropdowns
 
 ### Calendar
 - [x] Monthly calendar view
@@ -364,15 +437,16 @@ Built a complete JIRA-like project management application called "Canopy" with:
 - [x] Contribution guidelines
 
 ## Tests
-- tests.json: 239 comprehensive tests (test-001 through test-239)
+- tests.json: 247 comprehensive tests (test-001 through test-247)
 - e2e-tests/: Playwright test suite
-- All Epics tests (test-236 through test-239) passing
+- All Team tests (test-244 through test-247) passing
 
 ## Key Files
 - src/lib/db.ts - Dexie database schema
 - src/context/AppContext.tsx - Global state
 - src/pages/*.tsx - All page components
-- src/pages/EpicsPage.tsx - NEW Epics page
+- src/pages/EpicsPage.tsx - Epics page
+- src/pages/TeamPage.tsx - NEW Team page (Issue #30)
 - src/components/board/* - Board components
 - src/components/modals/* - Modal dialogs
 - src/styles/globals.css - Theme variables

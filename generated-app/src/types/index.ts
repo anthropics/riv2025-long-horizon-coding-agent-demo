@@ -242,3 +242,24 @@ export interface ProjectWithStats extends Project {
   openIssueCount: number;
   activeSprintId?: string;
 }
+
+// Team Member type for capacity planning
+export interface TeamMember {
+  id: string;
+  projectId: string;
+  userId: string;
+  name: string;
+  email?: string;
+  avatarUrl?: string;
+  color: string;
+  availableWeeks: number; // Number of weeks the team member is available
+  hoursPerWeek?: number; // Hours available per week (default: 40)
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TeamMemberWithStats extends TeamMember {
+  assignedIssueCount: number;
+  totalStoryPoints: number;
+  completedStoryPoints: number;
+}
