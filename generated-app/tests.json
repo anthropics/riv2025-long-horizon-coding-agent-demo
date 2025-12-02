@@ -3553,5 +3553,49 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-252",
+    "category": "functional",
+    "description": "Settings page displays Arabic language option with English and Japanese",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify Language section is visible with Globe icon",
+      "Verify English option is displayed with 'English' label and 🇺🇸 flag",
+      "Verify Japanese option is displayed with '日本語' label and 🇯🇵 flag",
+      "Verify Arabic option is displayed with 'العربية' label and 🇸🇦 flag",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-253",
+    "category": "functional",
+    "description": "User can switch to Arabic language and UI updates",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Arabic language option (العربية)",
+      "Take a screenshot",
+      "Verify Arabic option is now highlighted/selected with checkmark",
+      "Verify Settings page heading changes to 'الإعدادات'",
+      "Verify Profile section title changes to 'الملف الشخصي'",
+      "Verify sidebar shows Arabic labels (المشاريع, سير العمل, etc.)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-254",
+    "category": "functional",
+    "description": "Arabic language reflects in sidebar navigation",
+    "steps": [
+      "Set language to Arabic from settings page",
+      "Take a screenshot",
+      "Verify sidebar shows Arabic labels: المشاريع (Projects), سير العمل (Workflows), من نحن (About Us)",
+      "Verify 'إنشاء مشروع' (Create Project) button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

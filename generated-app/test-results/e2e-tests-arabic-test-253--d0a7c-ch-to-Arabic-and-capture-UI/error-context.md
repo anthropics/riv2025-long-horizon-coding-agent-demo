@@ -1,0 +1,198 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Canopy" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - generic [ref=e9]: Canopy
+    - button "Search... Ctrl+K" [ref=e11]:
+      - img [ref=e12]
+      - generic [ref=e15]: Search...
+      - generic [ref=e16]: Ctrl+K
+    - button "Select Project" [ref=e17]:
+      - generic [ref=e18]: Select Project
+      - img
+    - button "Create" [ref=e19]:
+      - img
+      - text: Create
+    - button [ref=e20]:
+      - img
+    - button "M" [ref=e21]:
+      - generic [ref=e23]: M
+  - generic [ref=e24]:
+    - complementary [ref=e25]:
+      - paragraph [ref=e31]: Select a project to see navigation
+      - generic [ref=e32]:
+        - navigation [ref=e33]:
+          - link "المشاريع" [ref=e34] [cursor=pointer]:
+            - /url: /projects
+            - img [ref=e35]
+            - generic [ref=e37]: المشاريع
+          - link "سير العمل" [ref=e38] [cursor=pointer]:
+            - /url: /workflows
+            - img [ref=e39]
+            - generic [ref=e43]: سير العمل
+          - link "من نحن" [ref=e44] [cursor=pointer]:
+            - /url: /about
+            - img [ref=e45]
+            - generic [ref=e47]: من نحن
+          - link "Admin" [ref=e48] [cursor=pointer]:
+            - /url: /admin/dashboard
+            - img [ref=e49]
+            - generic [ref=e53]: Admin
+        - button "إنشاء مشروع" [ref=e54]:
+          - img
+          - text: إنشاء مشروع
+        - button "Collapse" [ref=e55]:
+          - img
+          - generic [ref=e56]: Collapse
+    - main [ref=e57]:
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - heading "الإعدادات" [level=1] [ref=e61]
+          - paragraph [ref=e62]: إدارة تفضيلاتك وإعدادات التطبيق
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]: الملف الشخصي
+            - generic [ref=e66]: تحديث معلوماتك الشخصية
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - generic [ref=e69]: الاسم
+              - textbox "الاسم" [ref=e70]:
+                - /placeholder: Your name
+                - text: Me
+            - generic [ref=e71]:
+              - generic [ref=e72]: البريد الإلكتروني
+              - textbox "البريد الإلكتروني" [ref=e73]:
+                - /placeholder: your@email.com
+                - text: me@canopy.local
+            - button "حفظ الملف الشخصي" [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - img [ref=e78]
+              - text: اللغة
+            - generic [ref=e81]: اختر لغتك المفضلة
+          - generic [ref=e83]:
+            - button "🇺🇸 English English" [ref=e84]:
+              - generic [ref=e85]:
+                - generic [ref=e86]: 🇺🇸
+                - generic [ref=e87]:
+                  - paragraph [ref=e88]: English
+                  - paragraph [ref=e89]: English
+            - button "🇯🇵 日本語 Japanese" [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: 🇯🇵
+                - generic [ref=e93]:
+                  - paragraph [ref=e94]: 日本語
+                  - paragraph [ref=e95]: Japanese
+            - button "🇸🇦 العربية Arabic" [active] [ref=e96]:
+              - generic [ref=e97]:
+                - generic [ref=e98]: 🇸🇦
+                - generic [ref=e99]:
+                  - paragraph [ref=e100]: العربية
+                  - paragraph [ref=e101]: Arabic
+              - img [ref=e103]
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]: المظهر
+            - generic [ref=e108]: تخصيص مظهر كانوبي
+          - generic [ref=e110]:
+            - generic [ref=e111]:
+              - generic [ref=e112]: الوضع
+              - generic [ref=e113]:
+                - button "فاتح" [ref=e114]:
+                  - img
+                  - text: فاتح
+                - button "داكن" [ref=e115]:
+                  - img
+                  - text: داكن
+                - button "النظام" [ref=e116]:
+                  - img
+                  - text: النظام
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - img [ref=e119]
+                - generic [ref=e125]: سمة اللون
+              - generic [ref=e126]:
+                - button "Ruby Classic red theme with warm coral accents" [ref=e127]:
+                  - paragraph [ref=e132]: Ruby
+                  - paragraph [ref=e133]: Classic red theme with warm coral accents
+                  - img [ref=e135]
+                - button "Ocean Deep sea blues with teal accents" [ref=e137]:
+                  - paragraph [ref=e142]: Ocean
+                  - paragraph [ref=e143]: Deep sea blues with teal accents
+                - button "Forest Nature-inspired greens with earthy tones" [ref=e144]:
+                  - paragraph [ref=e149]: Forest
+                  - paragraph [ref=e150]: Nature-inspired greens with earthy tones
+                - button "Sunset Warm oranges, pinks, and golden hues" [ref=e151]:
+                  - paragraph [ref=e156]: Sunset
+                  - paragraph [ref=e157]: Warm oranges, pinks, and golden hues
+                - button "Lavender Soft purples with pink and mint accents" [ref=e158]:
+                  - paragraph [ref=e163]: Lavender
+                  - paragraph [ref=e164]: Soft purples with pink and mint accents
+                - button "Cyberpunk Neon pinks, cyans, and electric vibes" [ref=e165]:
+                  - paragraph [ref=e170]: Cyberpunk
+                  - paragraph [ref=e171]: Neon pinks, cyans, and electric vibes
+                - button "Retro Warm vintage colors inspired by 70s design" [ref=e172]:
+                  - paragraph [ref=e177]: Retro
+                  - paragraph [ref=e178]: Warm vintage colors inspired by 70s design
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - generic [ref=e181]: المشروع الافتراضي
+            - generic [ref=e182]: اختر المشروع الذي يفتح افتراضياً
+          - combobox [ref=e184]:
+            - generic: لا يوجد مشروع افتراضي
+            - img
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - generic [ref=e187]: إدارة البيانات
+            - generic [ref=e188]: تصدير، استيراد، أو مسح بياناتك
+          - generic [ref=e189]:
+            - generic [ref=e190]:
+              - button "تصدير البيانات" [ref=e191]:
+                - img
+                - text: تصدير البيانات
+              - generic [ref=e193]:
+                - img
+                - text: استيراد البيانات
+            - paragraph [ref=e194]: تصدير بياناتك بصيغة JSON للنسخ الاحتياطي أو النقل. استيراد البيانات المصدرة سابقاً للاستعادة.
+        - generic [ref=e195]:
+          - generic [ref=e196]:
+            - generic [ref=e197]: منطقة الخطر
+            - generic [ref=e198]: إجراءات لا رجعة فيها تؤثر على جميع بياناتك
+          - button "مسح جميع البيانات" [ref=e200]:
+            - img
+            - text: مسح جميع البيانات
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e203]: اختصارات لوحة المفاتيح
+            - generic [ref=e204]: إجراءات سريعة للمستخدمين المتقدمين
+          - generic [ref=e206]:
+            - generic [ref=e207]:
+              - generic [ref=e208]: فتح البحث
+              - generic [ref=e209]: ⌘ K
+            - generic [ref=e210]:
+              - generic [ref=e211]: إنشاء مهمة
+              - generic [ref=e212]: C
+            - generic [ref=e213]:
+              - generic [ref=e214]: الذهاب إلى اللوحة
+              - generic [ref=e215]: G B
+            - generic [ref=e216]:
+              - generic [ref=e217]: الذهاب إلى قائمة المهام
+              - generic [ref=e218]: G L
+            - generic [ref=e219]:
+              - generic [ref=e220]: الذهاب إلى السباقات
+              - generic [ref=e221]: G S
+            - generic [ref=e222]:
+              - generic [ref=e223]: الذهاب إلى الإعدادات
+              - generic [ref=e224]: G ,
+        - generic [ref=e225]:
+          - generic [ref=e227]: حول كانوبي
+          - generic [ref=e228]:
+            - paragraph [ref=e229]: كانوبي هي أداة إدارة مشاريع مستوحاة من الغابة، مصممة للفرق التي تقدر البساطة والتركيز.
+            - paragraph [ref=e230]: الإصدار 1.0.0 • جميع البيانات مخزنة محلياً في متصفحك
+  - region "Notifications alt+T"
+```

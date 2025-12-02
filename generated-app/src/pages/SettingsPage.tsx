@@ -32,6 +32,7 @@ import type { ColorTheme, Language } from '@/types';
 const LANGUAGES: { id: Language; name: string; nativeName: string; flag: string }[] = [
   { id: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
   { id: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
+  { id: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
 ];
 
 // Theme configuration

@@ -1,16 +1,16 @@
-# Feature Request: Issue #32
+# Feature Request: Issue #31
 
 ## Title
-[FEATURE] Admin dashboard for indexdb data
+[FEATURE] Add Arabic
 
 ## Description
 ### Feature Name
 
-indexdb dashboard
+Arabic Language
 
 ### Feature Specification
 
-Build a dashboard where an admin can see data from indexdb - show the data and how its stored
+Add Arabic as a language option
 
 ### Acceptance Criteria
 
@@ -23,7 +23,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #32`
+Commits should reference this issue: `Ref: #31`
 
 ## Mode
 Enhancement - Modify existing app in generated-app/
