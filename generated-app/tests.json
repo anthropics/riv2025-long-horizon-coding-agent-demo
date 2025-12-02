@@ -3088,5 +3088,49 @@
       "Verify the overall theme feels cohesive with red/coral/rose colors"
     ],
     "passes": true
+  },
+  {
+    "id": "test-222",
+    "category": "functional",
+    "description": "Calendar page displays monthly calendar grid with navigation",
+    "steps": [
+      "Navigate to a project's calendar page at /project/:key/calendar",
+      "Take a screenshot",
+      "Verify calendar grid is displayed with days of the week (Sun-Sat)",
+      "Verify current month and year is shown in header",
+      "Verify Today button is present",
+      "Verify previous/next month navigation arrows are present",
+      "Verify current day is highlighted",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-223",
+    "category": "functional",
+    "description": "Calendar page shows status legend and stats",
+    "steps": [
+      "Navigate to a project's calendar page without any issues",
+      "Take a screenshot",
+      "Verify status legend shows Overdue, Due Today, Upcoming, Completed indicators",
+      "Verify stats show item count with due dates",
+      "Verify empty state message appears when no issues have due dates",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-224",
+    "category": "style",
+    "description": "Calendar link appears in sidebar under Planning section",
+    "steps": [
+      "Navigate to a project's board page",
+      "Take a screenshot",
+      "Verify sidebar shows Planning section",
+      "Verify Calendar link is present in Planning section with CalendarDays icon",
+      "Verify Calendar link navigates to /project/:key/calendar",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

@@ -5,6 +5,7 @@ import {
   Kanban,
   ListTodo,
   Calendar,
+  CalendarDays,
   BarChart3,
   TrendingUp,
   FileText,
@@ -43,6 +44,7 @@ export function Sidebar() {
           title: 'Planning',
           items: [
             { label: 'Roadmap', icon: Calendar, to: `/project/${currentProject.key}/roadmap` },
+            { label: 'Calendar', icon: CalendarDays, to: `/project/${currentProject.key}/calendar` },
             { label: 'Backlog', icon: ListTodo, to: `/project/${currentProject.key}/backlog` },
             { label: 'Active Sprints', icon: TrendingUp, to: `/project/${currentProject.key}/sprints` },
           ],

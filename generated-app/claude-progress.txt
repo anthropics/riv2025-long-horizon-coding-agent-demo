@@ -1,6 +1,6 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #18 - Red Theme)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #20 - Calendar Feature)
 
 ## Summary
 Built a complete JIRA-like project management application called "Canopy" with:
@@ -8,6 +8,33 @@ Built a complete JIRA-like project management application called "Canopy" with:
 - React 18 + Vite 6 + Tailwind CSS v4 + React Router v7
 - **Red color palette (#7B2332 primary ruby red, #E8A87C coral accent, #FAF7F7 background)**
 - Space Grotesk for headers, DM Sans for body text
+
+## Issue #20 - Calendar Feature (NEW)
+Added a calendar view to visualize issues with due dates:
+
+### New Files Created:
+- src/pages/CalendarPage.tsx - Full calendar view with monthly grid, navigation, and due date visualization
+
+### Files Modified:
+- src/App.tsx - Added route for /project/:projectKey/calendar
+- src/components/layout/Sidebar.tsx - Added Calendar link to Planning section with CalendarDays icon
+
+### Calendar Features:
+- Monthly calendar grid view with navigation (prev/next month, Today button)
+- Color-coded status legend: Overdue (red), Due Today (accent), Upcoming (primary), Completed (green)
+- Issue pills on calendar days showing due items with type icons
+- Click on day to see detailed list of issues due that day
+- Stats showing total items with due dates, overdue count, and upcoming count
+- Empty state when no issues have due dates
+- Supports clicking issues to open detail panel
+- Shows assignee avatars and story points on issue cards
+
+### New Tests Added (test-222, test-223, test-224):
+- test-222: Calendar page displays monthly calendar grid with navigation
+- test-223: Calendar page shows status legend and stats
+- test-224: Calendar link appears in sidebar under Planning section
+
+---
 
 ## Issue #18 - Red Theme Changes
 Changed the entire color palette from forest green to red:

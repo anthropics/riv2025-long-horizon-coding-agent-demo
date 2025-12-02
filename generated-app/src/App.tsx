@@ -7,6 +7,7 @@ import { NewProjectPage } from '@/pages/NewProjectPage';
 import { BoardPage } from '@/pages/BoardPage';
 import { BacklogPage } from '@/pages/BacklogPage';
 import { RoadmapPage } from '@/pages/RoadmapPage';
+import { CalendarPage } from '@/pages/CalendarPage';
 import { SprintsPage } from '@/pages/SprintsPage';
 import { ProjectSettingsPage } from '@/pages/ProjectSettingsPage';
 import { LabelsPage } from '@/pages/LabelsPage';
@@ -34,6 +35,7 @@ function App() {
             <Route path="/project/:projectKey/board" element={<BoardPage />} />
             <Route path="/project/:projectKey/backlog" element={<BacklogPage />} />
             <Route path="/project/:projectKey/roadmap" element={<RoadmapPage />} />
+            <Route path="/project/:projectKey/calendar" element={<CalendarPage />} />
             <Route path="/project/:projectKey/sprints" element={<SprintsPage />} />
             <Route path="/project/:projectKey/settings" element={<ProjectSettingsPage />} />
             <Route path="/project/:projectKey/labels" element={<LabelsPage />} />
