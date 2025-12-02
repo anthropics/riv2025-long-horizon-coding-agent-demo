@@ -18,6 +18,7 @@ import {
   Plus,
   Info,
   GitBranch,
+  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -46,6 +47,7 @@ export function Sidebar() {
           title: 'Planning',
           items: [
             { label: 'Roadmap', icon: Calendar, to: `/project/${currentProject.key}/roadmap` },
+            { label: 'Epics', icon: Zap, to: `/project/${currentProject.key}/epics` },
             { label: 'Calendar', icon: CalendarDays, to: `/project/${currentProject.key}/calendar` },
             { label: 'Backlog', icon: ListTodo, to: `/project/${currentProject.key}/backlog` },
             { label: 'Active Sprints', icon: TrendingUp, to: `/project/${currentProject.key}/sprints` },

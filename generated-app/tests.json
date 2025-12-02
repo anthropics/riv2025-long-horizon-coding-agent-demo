@@ -3312,5 +3312,66 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-236",
+    "category": "functional",
+    "description": "Epics page displays with stats overview and hierarchy legend",
+    "steps": [
+      "Create a project if needed",
+      "Navigate to the project's Epics page at /project/{key}/epics",
+      "Take a screenshot",
+      "Verify page header shows 'Epics' with Layers icon",
+      "Verify stats cards display: Total Epics, Open, In Progress, Done",
+      "Verify 'Create Epic' button is visible",
+      "Verify filter controls: search input, Expand All, Collapse All buttons",
+      "Verify Issue Hierarchy legend shows: Epic -> Child Issues -> Sub-tasks",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-237",
+    "category": "functional",
+    "description": "Epics link appears in sidebar under Planning section",
+    "steps": [
+      "Create a project if needed",
+      "Navigate to the project's board page",
+      "Take a screenshot",
+      "Verify sidebar shows Planning section",
+      "Verify 'Epics' link appears in sidebar with Zap icon",
+      "Verify Epics link is positioned after Roadmap",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-238",
+    "category": "functional",
+    "description": "Epics page shows empty state when no epics exist",
+    "steps": [
+      "Create a new project with no epics",
+      "Navigate to the project's Epics page at /project/{key}/epics",
+      "Take a screenshot",
+      "Verify empty state message 'No epics yet' is displayed",
+      "Verify empty state shows 'Epics help you organize related issues into larger initiatives'",
+      "Verify 'Create your first Epic' button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-239",
+    "category": "functional",
+    "description": "Create Epic button opens create issue modal",
+    "steps": [
+      "Navigate to the project's Epics page",
+      "Click 'Create Epic' button",
+      "Verify Create Issue modal opens",
+      "Verify modal has summary input field",
+      "Verify modal allows selecting Epic issue type",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]
