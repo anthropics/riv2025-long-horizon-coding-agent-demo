@@ -17,6 +17,7 @@ import {
   PanelLeft,
   Plus,
   Info,
+  GitBranch,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -162,6 +163,22 @@ export function Sidebar() {
           >
             <FolderKanban className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>All Projects</span>}
+          </NavLink>
+          <NavLink
+            to="/workflows"
+            className={({ isActive }) =>
+              cn(
+                'flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors',
+                sidebarCollapsed && 'justify-center',
+                isActive
+                  ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+              )
+            }
+            title={sidebarCollapsed ? 'Workflows' : undefined}
+          >
+            <GitBranch className="w-5 h-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span>Workflows</span>}
           </NavLink>
           <NavLink
             to="/about"

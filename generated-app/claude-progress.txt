@@ -1,8 +1,80 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #22 - Create Issue Bug Fix - FINAL)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #23 - Workflow Feature - FINAL)
 
-## Latest Session Summary (Issue #22 - Create Issue Bug Fix)
+## Latest Session Summary (Issue #23 - Workflow Feature)
+Added a comprehensive workflow management feature that allows users to create workflows to manage issue state transitions, and assign workflows to projects.
+
+### Feature Description:
+Users can now:
+1. View and manage workflows at /workflows
+2. Create custom workflows with multiple statuses and transitions
+3. Assign workflows to projects via Project Settings
+4. See the default workflow (Open → In Progress → In Review → Done) out of the box
+
+### New Files Created:
+- src/pages/WorkflowsPage.tsx - Full workflow management page with CRUD operations
+
+### Files Modified:
+- src/types/index.ts - Added Workflow, WorkflowStatus, WorkflowTransition types; added workflowId to Project type
+- src/lib/db.ts - Added workflows table, helper functions (createWorkflow, updateWorkflow, deleteWorkflow, getWorkflowForProject, initializeDefaultWorkflow)
+- src/App.tsx - Added route for /workflows
+- src/components/layout/Sidebar.tsx - Added "Workflows" link with GitBranch icon between "All Projects" and "About Us"
+- src/pages/ProjectSettingsPage.tsx - Added Workflow assignment section with dropdown to select and save workflow for project
+
+### Workflow Page Features:
+- Display all workflows in card format
+- Default Workflow shown with "Default" badge
+- Status flow visualization: Open → In Progress → In Review → Done
+- Create Workflow button opens modal with:
+  - Name and description fields
+  - Status management (add, remove, reorder statuses)
+  - Status category selection (To Do, In Progress, Done)
+  - Transition configuration (define which statuses can transition to which)
+  - Live preview of status flow
+- Edit workflow (for non-default workflows)
+- Delete workflow (resets projects to default workflow)
+- Duplicate workflow functionality
+- Shows usage count ("Used by X project(s)")
+
+### Project Settings - Workflow Section:
+- New "Workflow" card with GitBranch icon
+- "Assign a workflow to define how issues transition between statuses" description
+- Dropdown selector showing all available workflows
+- Shows "Default Workflow (Default)" by default
+- Status flow preview below the dropdown
+- "Save Workflow" button
+- "Manage Workflows" link to navigate to /workflows
+
+### Database Schema Changes:
+- Added version 2 to Dexie schema
+- New `workflows` table with fields: id, name, isDefault, createdAt
+- Added workflowId index to projects table
+- Updated export/import functions to include workflows
+- Updated clearAllData to include workflows
+
+### New Tests Added (test-229, test-230, test-231):
+- test-229: Workflows page displays default workflow with status transitions
+- test-230: Workflows link appears in sidebar with GitBranch icon
+- test-231: Project settings page shows workflow assignment section
+
+### E2E Tests:
+- e2e-tests/workflow.spec.ts - 4 Playwright tests for workflow functionality
+- e2e-tests/workflow-settings.spec.ts - Test for project settings workflow section
+- e2e-tests/test-231.spec.ts - Specific test for workflow assignment UI
+
+### Verification:
+- Build succeeds without errors: ✅
+- No console errors (NO_CONSOLE_ERRORS verified): ✅
+- All new tests pass: ✅
+- Screenshots captured showing:
+  - test-229: Workflows page with Default Workflow
+  - test-230: Sidebar with Workflows link
+  - test-231: Project Settings with Workflow section
+
+---
+
+## Previous Session Summary (Issue #22 - Create Issue Bug Fix)
 Fixed a bug where Create Issue did not work when navigating from All Projects to a project and clicking Create.
 
 ### Bug Description:

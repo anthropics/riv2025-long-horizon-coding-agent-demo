@@ -14,6 +14,7 @@ import type {
   CustomField,
   AppSettings,
   BoardColumn,
+  Workflow,
 } from '@/types';
 
 // Define the Dexie database
@@ -30,6 +31,7 @@ export class CanopyDB extends Dexie {
   filters!: Table<Filter>;
   customFields!: Table<CustomField>;
   settings!: Table<AppSettings>;
+  workflows!: Table<Workflow>;
 
   constructor() {
     super('CanopyDB');
@@ -47,6 +49,22 @@ export class CanopyDB extends Dexie {
       filters: 'id, ownerId, projectId',
       customFields: 'id, projectId',
       settings: 'key',
+    });
+
+    this.version(2).stores({
+      projects: 'id, key, name, isArchived, createdAt, workflowId',
+      issues: 'id, projectId, key, type, status, priority, assigneeId, epicId, parentId, sprintId, createdAt, [projectId+status], [projectId+sprintId], [projectId+epicId]',
+      sprints: 'id, projectId, status, startDate, endDate',
+      boards: 'id, projectId',
+      users: 'id, email, name',
+      labels: 'id, projectId, name',
+      components: 'id, projectId, name',
+      comments: 'id, issueId, authorId, createdAt',
+      activityLog: 'id, issueId, timestamp',
+      filters: 'id, ownerId, projectId',
+      customFields: 'id, projectId',
+      settings: 'key',
+      workflows: 'id, name, isDefault, createdAt',
     });
   }
 }
@@ -400,6 +418,89 @@ export async function createComponent(data: Omit<Component, 'id'>): Promise<Comp
   return component;
 }
 
+// Workflow helpers
+export const DEFAULT_WORKFLOW_ID = 'default-workflow';
+
+export const DEFAULT_WORKFLOW: Workflow = {
+  id: DEFAULT_WORKFLOW_ID,
+  name: 'Default Workflow',
+  description: 'The standard workflow with Open, In Progress, In Review, and Done statuses',
+  statuses: [
+    { id: 'open', name: 'Open', statusCategory: 'todo', sortOrder: 0 },
+    { id: 'in-progress', name: 'In Progress', statusCategory: 'in_progress', sortOrder: 1 },
+    { id: 'in-review', name: 'In Review', statusCategory: 'in_progress', sortOrder: 2 },
+    { id: 'done', name: 'Done', statusCategory: 'done', sortOrder: 3 },
+  ],
+  transitions: [
+    { fromStatusId: 'open', toStatusId: 'in-progress' },
+    { fromStatusId: 'in-progress', toStatusId: 'in-review' },
+    { fromStatusId: 'in-review', toStatusId: 'done' },
+    { fromStatusId: 'in-progress', toStatusId: 'open' },
+    { fromStatusId: 'in-review', toStatusId: 'in-progress' },
+    { fromStatusId: 'done', toStatusId: 'in-review' },
+  ],
+  isDefault: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export async function initializeDefaultWorkflow(): Promise<Workflow> {
+  try {
+    const existingWorkflow = await db.workflows.get(DEFAULT_WORKFLOW_ID);
+    if (!existingWorkflow) {
+      await db.workflows.put(DEFAULT_WORKFLOW);
+      return DEFAULT_WORKFLOW;
+    }
+    return existingWorkflow;
+  } catch (error) {
+    // If there's an error, try to return the workflow anyway
+    const workflow = await db.workflows.get(DEFAULT_WORKFLOW_ID);
+    return workflow ?? DEFAULT_WORKFLOW;
+  }
+}
+
+export async function createWorkflow(data: Omit<Workflow, 'id' | 'createdAt' | 'updatedAt'>): Promise<Workflow> {
+  const now = new Date();
+  const workflow: Workflow = {
+    ...data,
+    id: uuidv4(),
+    createdAt: now,
+    updatedAt: now,
+  };
+  await db.workflows.add(workflow);
+  return workflow;
+}
+
+export async function updateWorkflow(id: string, updates: Partial<Workflow>): Promise<void> {
+  await db.workflows.update(id, { ...updates, updatedAt: new Date() });
+}
+
+export async function deleteWorkflow(id: string): Promise<void> {
+  // Don't allow deleting the default workflow
+  if (id === DEFAULT_WORKFLOW_ID) {
+    throw new Error('Cannot delete the default workflow');
+  }
+
+  // Reset any projects using this workflow to the default
+  await db.projects.where('workflowId').equals(id).modify({ workflowId: undefined });
+  await db.workflows.delete(id);
+}
+
+export async function getWorkflowForProject(projectId: string): Promise<Workflow> {
+  const project = await db.projects.get(projectId);
+  if (!project) throw new Error('Project not found');
+
+  if (project.workflowId) {
+    const workflow = await db.workflows.get(project.workflowId);
+    if (workflow) return workflow;
+  }
+
+  // Return default workflow if none assigned
+  await initializeDefaultWorkflow();
+  const defaultWorkflow = await db.workflows.get(DEFAULT_WORKFLOW_ID);
+  return defaultWorkflow ?? DEFAULT_WORKFLOW;
+}
+
 // Filter helpers
 export async function createFilter(data: Omit<Filter, 'id' | 'createdAt'>): Promise<Filter> {
   const filter: Filter = { ...data, id: uuidv4(), createdAt: new Date() };
@@ -429,8 +530,9 @@ export async function exportAllData(): Promise<string> {
     filters: await db.filters.toArray(),
     customFields: await db.customFields.toArray(),
     settings: await db.settings.toArray(),
+    workflows: await db.workflows.toArray(),
     exportedAt: new Date().toISOString(),
-    version: 1,
+    version: 2,
   };
   return JSON.stringify(data, null, 2);
 }
@@ -441,7 +543,7 @@ export async function importAllData(jsonString: string): Promise<void> {
   await db.transaction('rw', [
     db.projects, db.issues, db.sprints, db.boards, db.users,
     db.labels, db.components, db.comments, db.activityLog,
-    db.filters, db.customFields, db.settings
+    db.filters, db.customFields, db.settings, db.workflows
   ], async () => {
     // Clear existing data
     await db.projects.clear();
@@ -456,6 +558,7 @@ export async function importAllData(jsonString: string): Promise<void> {
     await db.filters.clear();
     await db.customFields.clear();
     await db.settings.clear();
+    await db.workflows.clear();
 
     // Import new data
     if (data.projects?.length) await db.projects.bulkAdd(data.projects);
@@ -470,6 +573,7 @@ export async function importAllData(jsonString: string): Promise<void> {
     if (data.filters?.length) await db.filters.bulkAdd(data.filters);
     if (data.customFields?.length) await db.customFields.bulkAdd(data.customFields);
     if (data.settings?.length) await db.settings.bulkAdd(data.settings);
+    if (data.workflows?.length) await db.workflows.bulkAdd(data.workflows);
   });
 }
 
@@ -477,7 +581,7 @@ export async function clearAllData(): Promise<void> {
   await db.transaction('rw', [
     db.projects, db.issues, db.sprints, db.boards, db.users,
     db.labels, db.components, db.comments, db.activityLog,
-    db.filters, db.customFields, db.settings
+    db.filters, db.customFields, db.settings, db.workflows
   ], async () => {
     await db.projects.clear();
     await db.issues.clear();
@@ -491,6 +595,7 @@ export async function clearAllData(): Promise<void> {
     await db.filters.clear();
     await db.customFields.clear();
     await db.settings.clear();
+    await db.workflows.clear();
   });
 }
 

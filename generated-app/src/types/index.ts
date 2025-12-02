@@ -37,6 +37,7 @@ export interface Project {
   icon: string;
   isArchived: boolean;
   settings?: ProjectSettings;
+  workflowId?: string;
 }
 
 export interface ProjectSettings {
@@ -182,6 +183,31 @@ export interface CustomField {
 export interface AppSettings {
   key: string;
   value: unknown;
+}
+
+// Workflow types
+export interface WorkflowStatus {
+  id: string;
+  name: string;
+  statusCategory: StatusCategory;
+  sortOrder: number;
+  color?: string;
+}
+
+export interface WorkflowTransition {
+  fromStatusId: string;
+  toStatusId: string;
+}
+
+export interface Workflow {
+  id: string;
+  name: string;
+  description?: string;
+  statuses: WorkflowStatus[];
+  transitions: WorkflowTransition[];
+  isDefault: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Helper types

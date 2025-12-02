@@ -17,6 +17,7 @@ import { VelocityPage } from '@/pages/VelocityPage';
 import { SprintReportPage } from '@/pages/SprintReportPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { AboutPage } from '@/pages/AboutPage';
+import { WorkflowsPage } from '@/pages/WorkflowsPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 function App() {
@@ -49,6 +50,9 @@ function App() {
 
             {/* Settings */}
             <Route path="/settings" element={<SettingsPage />} />
+
+            {/* Workflows */}
+            <Route path="/workflows" element={<WorkflowsPage />} />
 
             {/* About */}
             <Route path="/about" element={<AboutPage />} />

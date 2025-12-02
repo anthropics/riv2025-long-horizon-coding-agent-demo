@@ -3194,5 +3194,56 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-229",
+    "category": "functional",
+    "description": "Workflows page displays default workflow with status transitions",
+    "steps": [
+      "Navigate to http://localhost:6174/workflows",
+      "Take a screenshot",
+      "Verify 'Workflows' heading is displayed",
+      "Verify 'Create and manage workflows to define how issues transition between statuses' description",
+      "Verify 'Create Workflow' button is visible with coral accent color",
+      "Verify Default Workflow card is shown with 'Default' badge",
+      "Verify status flow displays: Open -> In Progress -> In Review -> Done",
+      "Verify 'Used by X project(s)' count is shown",
+      "Verify duplicate (copy) button is visible on workflow card",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-230",
+    "category": "functional",
+    "description": "Workflows link appears in sidebar with GitBranch icon",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify sidebar shows 'Workflows' link in the bottom section",
+      "Verify Workflows link has GitBranch icon",
+      "Verify Workflows link is positioned between 'All Projects' and 'About Us'",
+      "Verify clicking Workflows navigates to /workflows",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-231",
+    "category": "functional",
+    "description": "Project settings page shows workflow assignment section",
+    "steps": [
+      "Create a new project and navigate to its settings page",
+      "Take a screenshot",
+      "Verify 'Workflow' section card is visible with GitBranch icon",
+      "Verify 'Assign a workflow to define how issues transition between statuses' description",
+      "Verify 'Project Workflow' label and dropdown selector",
+      "Verify dropdown shows 'Default Workflow (Default)' as the selected option",
+      "Verify status flow preview is shown below the dropdown",
+      "Verify 'Save Workflow' button is visible",
+      "Verify 'Manage Workflows' link navigates to /workflows",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

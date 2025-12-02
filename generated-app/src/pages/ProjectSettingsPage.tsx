@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Trash2, Archive, Download, AlertTriangle } from 'lucide-react';
+import { Trash2, Archive, Download, AlertTriangle, GitBranch, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,7 +19,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { db, updateProject, deleteProject, exportProject } from '@/lib/db';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { db, updateProject, deleteProject, exportProject, initializeDefaultWorkflow, DEFAULT_WORKFLOW_ID } from '@/lib/db';
 import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
 
@@ -41,13 +48,22 @@ export function ProjectSettingsPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [color, setColor] = useState('');
+  const [workflowId, setWorkflowId] = useState<string | undefined>(undefined);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
+
+  // Initialize default workflow and fetch all workflows
+  useEffect(() => {
+    initializeDefaultWorkflow();
+  }, []);
+
+  const workflows = useLiveQuery(() => db.workflows.toArray(), []);
 
   useEffect(() => {
     if (project) {
       setName(project.name);
       setDescription(project.description ?? '');
       setColor(project.color);
+      setWorkflowId(project.workflowId ?? DEFAULT_WORKFLOW_ID);
       setCurrentProject(project);
     }
   }, [project, setCurrentProject]);
@@ -55,7 +71,12 @@ export function ProjectSettingsPage() {
   const handleSave = async () => {
     if (!project) return;
     try {
-      await updateProject(project.id, { name, description: description || undefined, color });
+      await updateProject(project.id, {
+        name,
+        description: description || undefined,
+        color,
+        workflowId: workflowId === DEFAULT_WORKFLOW_ID ? undefined : workflowId,
+      });
       toast.success('Settings saved');
     } catch (error) {
       toast.error('Failed to save settings');
@@ -172,6 +193,76 @@ export function ProjectSettingsPage() {
           <Button onClick={handleSave} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
             Save Changes
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* Workflow */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <GitBranch className="w-5 h-5" />
+            Workflow
+          </CardTitle>
+          <CardDescription>
+            Assign a workflow to define how issues transition between statuses
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="workflow">Project Workflow</Label>
+            <Select value={workflowId} onValueChange={setWorkflowId}>
+              <SelectTrigger id="workflow">
+                <SelectValue placeholder="Select a workflow" />
+              </SelectTrigger>
+              <SelectContent>
+                {workflows?.map((workflow) => (
+                  <SelectItem key={workflow.id} value={workflow.id}>
+                    {workflow.name}
+                    {workflow.isDefault && ' (Default)'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              The workflow determines the available statuses and transitions for issues in this project
+            </p>
+          </div>
+
+          {/* Show selected workflow preview */}
+          {workflowId && workflows && (
+            <div className="p-3 bg-muted/50 rounded-lg">
+              {(() => {
+                const selectedWorkflow = workflows.find((w) => w.id === workflowId);
+                if (!selectedWorkflow) return null;
+                return (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Status flow:</p>
+                    <div className="flex items-center gap-1 flex-wrap text-xs">
+                      {selectedWorkflow.statuses
+                        .slice()
+                        .sort((a, b) => a.sortOrder - b.sortOrder)
+                        .map((status, index, arr) => (
+                          <span key={status.id} className="flex items-center gap-1">
+                            <span className="px-2 py-0.5 rounded bg-background border">{status.name}</span>
+                            {index < arr.length - 1 && <span className="text-muted-foreground">→</span>}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between pt-2">
+            <Button onClick={handleSave} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
+              Save Workflow
+            </Button>
+            <Link to="/workflows" className="text-sm text-primary hover:underline flex items-center gap-1">
+              Manage Workflows
+              <ExternalLink className="w-3 h-3" />
+            </Link>
+          </div>
         </CardContent>
       </Card>
 
