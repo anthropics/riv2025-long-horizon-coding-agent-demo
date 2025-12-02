@@ -3176,5 +3176,23 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-228",
+    "category": "functional",
+    "description": "Create Issue works when navigating from All Projects to a project and clicking Create",
+    "steps": [
+      "Navigate to http://localhost:6174 with an existing project",
+      "Click 'All Projects' in the sidebar",
+      "Click on an existing project card to navigate to its board",
+      "Click the 'Create' button in the header",
+      "Verify the Create Issue modal opens",
+      "Fill in the issue summary with 'Test Issue'",
+      "Click the Create button in the modal",
+      "Verify 'Issue created successfully' toast appears",
+      "Verify the new issue appears in the To Do column",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

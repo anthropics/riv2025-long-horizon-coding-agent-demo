@@ -1,8 +1,56 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #21 - About Us Tab - FINAL)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #22 - Create Issue Bug Fix - FINAL)
 
-## Latest Session Summary (Issue #21 - About Us Tab)
+## Latest Session Summary (Issue #22 - Create Issue Bug Fix)
+Fixed a bug where Create Issue did not work when navigating from All Projects to a project and clicking Create.
+
+### Bug Description:
+When a user:
+1. Clicked "All Projects" in the navigation
+2. Clicked on an existing project
+3. Tried to click "Create Issue"
+Nothing would happen - the issue wouldn't be created.
+
+### Root Cause:
+The CreateIssueModal component had a timing issue with syncing `projectId` state when `currentProject` changed in the AppContext. The modal component is always mounted in the Header, and when the user navigates from All Projects to a project, the `currentProject` context updates but the modal's internal `projectId` state wasn't always properly synchronized.
+
+### Fix Applied:
+Added an additional `useEffect` in CreateIssueModal.tsx that syncs `projectId` whenever the modal opens:
+
+```javascript
+// Also sync projectId when modal opens to ensure latest project is used
+useEffect(() => {
+  if (open && currentProject) {
+    setProjectId(currentProject.id);
+  }
+}, [open, currentProject]);
+```
+
+### Files Modified:
+- src/components/modals/CreateIssueModal.tsx - Added useEffect to sync projectId when modal opens
+
+### New Test Added (test-228):
+- test-228: Create Issue works when navigating from All Projects to a project and clicking Create
+
+### E2E Tests:
+- e2e-tests/debug-issue-22.spec.ts - Debug test that validates the full flow
+- e2e-tests/bug-reproduce-22.spec.ts - Original reproduction test
+
+### Verification:
+- Build succeeds without errors: ✅
+- E2E test passes showing full flow works: ✅
+- Screenshots captured showing:
+  - debug-05-all-projects.png - All Projects page with project card
+  - debug-06-project-board.png - Board after clicking project
+  - debug-07-create-modal.png - Create Issue modal opened
+  - debug-08-filled-summary.png - Form filled with summary
+  - debug-09-after-submit.png - Issue created successfully with toast
+- No console errors (NO_CONSOLE_ERRORS verified): ✅
+
+---
+
+## Previous Session Summary (Issue #21 - About Us Tab)
 Added a creative "About Us" tab to the sidebar that provides information about the Canopy project and how to make feature/bug requests.
 
 ### New Files Created:

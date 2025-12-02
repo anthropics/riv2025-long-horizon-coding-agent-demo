@@ -47,12 +47,19 @@ export function CreateIssueModal({ open, onOpenChange, defaultStatus }: CreateIs
   const projects = useLiveQuery(() => db.projects.filter(p => !p.isArchived).toArray(), []);
   const users = useLiveQuery(() => db.users.toArray(), []);
 
-  // Update projectId when currentProject changes
+  // Update projectId when currentProject changes or modal opens
   useEffect(() => {
     if (currentProject) {
       setProjectId(currentProject.id);
     }
   }, [currentProject]);
+
+  // Also sync projectId when modal opens to ensure latest project is used
+  useEffect(() => {
+    if (open && currentProject) {
+      setProjectId(currentProject.id);
+    }
+  }, [open, currentProject]);
 
   const resetForm = () => {
     setSummary('');
