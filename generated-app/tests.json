@@ -3132,5 +3132,49 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-225",
+    "category": "functional",
+    "description": "About Us page displays hero section with Canopy description",
+    "steps": [
+      "Navigate to http://localhost:6174/about",
+      "Take a screenshot",
+      "Verify hero section shows 'Welcome to Canopy' heading",
+      "Verify hero section shows description of JIRA-like project management tool",
+      "Verify gradient background with primary/secondary/accent colors",
+      "Verify Canopy tree icon is displayed",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-226",
+    "category": "functional",
+    "description": "About Us link appears in sidebar with Info icon",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify sidebar shows 'About Us' link at the bottom",
+      "Verify About Us link has Info icon",
+      "Verify clicking About Us navigates to /about",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-227",
+    "category": "functional",
+    "description": "About Us page shows 'How to Make Requests' section with Bug Reports, Feature Requests, and Pull Requests",
+    "steps": [
+      "Navigate to http://localhost:6174/about",
+      "Take a screenshot",
+      "Verify 'How to Make Requests' section is visible",
+      "Verify Bug Reports card with steps to follow",
+      "Verify Feature Requests card with steps to follow",
+      "Verify Pull Requests card with steps to follow",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

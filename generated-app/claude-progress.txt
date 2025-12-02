@@ -1,6 +1,52 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #20 - Calendar Feature - FINAL)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #21 - About Us Tab - FINAL)
+
+## Latest Session Summary (Issue #21 - About Us Tab)
+Added a creative "About Us" tab to the sidebar that provides information about the Canopy project and how to make feature/bug requests.
+
+### New Files Created:
+- src/pages/AboutPage.tsx - Full About Us page with hero section, mission statement, features, and contribution guidelines
+
+### Files Modified:
+- src/App.tsx - Added route for /about
+- src/components/layout/Sidebar.tsx - Added "About Us" link with Info icon in the bottom section
+
+### About Us Page Features:
+- Beautiful gradient hero section with animated floating leaves and Canopy tree icon
+- "Welcome to Canopy" heading with description of the project as a JIRA-like project management tool
+- "Our Mission" section explaining the philosophy behind Canopy
+- "What Makes Canopy Special" - 4 feature cards (Sprint Planning, Kanban Board, Team Collaboration, Customizable)
+- "Get Involved" divider
+- "How to Make Requests" section with 3 cards:
+  - Bug Reports - steps to report bugs
+  - Feature Requests - steps to request features
+  - Pull Requests - steps to contribute code
+- "Best Practices for Great Feedback" section with helpful tips
+- CTA section with buttons to create a project or view all projects
+- Footer with Canopy branding
+
+### Sidebar Integration:
+- "About Us" link added to the bottom section of the sidebar
+- Uses Info icon from lucide-react
+- Works in both expanded and collapsed sidebar states
+- Properly highlights when active
+
+### New Tests Added (test-225, test-226, test-227):
+- test-225: About Us page displays hero section with Canopy description
+- test-226: About Us link appears in sidebar with Info icon
+- test-227: About Us page shows 'How to Make Requests' section with Bug Reports, Feature Requests, and Pull Requests
+
+### E2E Tests:
+- e2e-tests/about-page.spec.ts - 3 Playwright tests all passing
+
+### Verification:
+- Build succeeds without errors: ✅
+- No console errors (NO_CONSOLE_ERRORS verified): ✅
+- All new tests pass: ✅
+
+---
+
 
 ## Latest Session Summary (December 2, 2025 - Session 2)
 - Verified calendar feature implementation with comprehensive E2E tests
