@@ -1,16 +1,16 @@
-# Feature Request: Issue #25
+# Feature Request: Issue #27
 
 ## Title
-[FEATURE] Themes
+[FEATURE] Add an Epics feature
 
 ## Description
 ### Feature Name
 
-Add more themes other than dark and light mode
+Epics
 
 ### Feature Specification
 
-users should be able to switch between multiple themes including light and dark and FUN
+Add a feature for Epics and make it so theres a clear ticket hierachy
 
 ### Acceptance Criteria
 
@@ -23,7 +23,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #25`
+Commits should reference this issue: `Ref: #27`
 
 ## Mode
 Enhancement - Modify existing app in generated-app/
