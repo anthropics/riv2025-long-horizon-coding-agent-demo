@@ -3815,5 +3815,45 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-268",
+    "category": "functional",
+    "description": "Story of completion modal appears when task is marked as done by dragging to Done column",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Create a project if none exists",
+      "Navigate to the project board",
+      "Create an issue if none exists",
+      "Drag the issue to Done column or change status to Done",
+      "Take a screenshot",
+      "Verify completion story modal appears with data-testid='completion-story-modal'",
+      "Verify modal displays a headline like 'Mission Accomplished!' or 'Done and Dusted!'",
+      "Verify modal displays the task key",
+      "Verify modal displays a sardonic completion story text with data-testid='completion-story-text'",
+      "Verify 'Continue Conquering' button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-269",
+    "category": "functional",
+    "description": "Story of completion modal closes when Continue Conquering button is clicked",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Create a project if none exists",
+      "Navigate to the project board",
+      "Create an issue if none exists",
+      "Click on an issue to open the detail panel",
+      "Change the status dropdown from 'To Do' to 'Done'",
+      "Verify completion story modal appears",
+      "Click 'Continue Conquering' button",
+      "Take a screenshot",
+      "Verify modal is closed",
+      "Verify task status is Done",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

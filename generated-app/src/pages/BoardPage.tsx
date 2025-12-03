@@ -28,6 +28,7 @@ import { BoardColumn } from '@/components/board/BoardColumn';
 import { IssueCard } from '@/components/board/IssueCard';
 import { IssueDetailPanel } from '@/components/board/IssueDetailPanel';
 import { CreateIssueModal } from '@/components/modals/CreateIssueModal';
+import { CompletionStoryModal } from '@/components/modals/CompletionStoryModal';
 import type { Issue, BoardColumn as BoardColumnType } from '@/types';
 import { toast } from 'sonner';
 
@@ -44,6 +45,12 @@ export function BoardPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [createInColumn, setCreateInColumn] = useState<string | undefined>();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [completionStory, setCompletionStory] = useState<{
+    isOpen: boolean;
+    taskName: string;
+    taskKey: string;
+    taskType?: string;
+  }>({ isOpen: false, taskName: '', taskKey: '' });
 
   // Load project if not set
   useEffect(() => {
@@ -200,6 +207,13 @@ export function BoardPage() {
           if (isMovedToDone) {
             // Trigger confetti animation!
             triggerConfetti();
+            // Show completion story
+            setCompletionStory({
+              isOpen: true,
+              taskName: activeIssue.summary,
+              taskKey: activeIssue.key,
+              taskType: activeIssue.type,
+            });
           }
 
           toast.success(`Moved to ${column?.name ?? targetColumnId}`);
@@ -373,6 +387,15 @@ export function BoardPage() {
           if (!open) setCreateInColumn(undefined);
         }}
         defaultStatus={createInColumn}
+      />
+
+      {/* Completion Story Modal */}
+      <CompletionStoryModal
+        isOpen={completionStory.isOpen}
+        onClose={() => setCompletionStory({ ...completionStory, isOpen: false })}
+        taskName={completionStory.taskName}
+        taskKey={completionStory.taskKey}
+        taskType={completionStory.taskType as any}
       />
     </>
   );

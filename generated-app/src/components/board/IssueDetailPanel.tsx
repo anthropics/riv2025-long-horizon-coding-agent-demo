@@ -26,6 +26,7 @@ import {
 import { db, updateIssue, deleteIssue, addComment, createIssue } from '@/lib/db';
 import { triggerConfetti, triggerSmallConfetti } from '@/lib/confetti';
 import { useApp } from '@/context/AppContext';
+import { CompletionStoryModal } from '@/components/modals/CompletionStoryModal';
 import { IssueTypeIcon } from '@/components/common/IssueTypeIcon';
 import { PriorityIcon } from '@/components/common/PriorityIcon';
 import { toast } from 'sonner';
@@ -45,6 +46,12 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
   const [description, setDescription] = useState(issue.description ?? '');
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const [completionStory, setCompletionStory] = useState<{
+    isOpen: boolean;
+    taskName: string;
+    taskKey: string;
+    taskType?: string;
+  }>({ isOpen: false, taskName: '', taskKey: '' });
 
   // Live queries
   const board = useLiveQuery(
@@ -302,6 +309,13 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
                 if (isMovedToDone) {
                   // Trigger confetti animation!
                   triggerConfetti();
+                  // Show completion story
+                  setCompletionStory({
+                    isOpen: true,
+                    taskName: issue.summary,
+                    taskKey: issue.key,
+                    taskType: issue.type,
+                  });
                 }
               }}
             >
@@ -841,6 +855,15 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
           </div>
         </div>
       </div>
+
+      {/* Completion Story Modal */}
+      <CompletionStoryModal
+        isOpen={completionStory.isOpen}
+        onClose={() => setCompletionStory({ ...completionStory, isOpen: false })}
+        taskName={completionStory.taskName}
+        taskKey={completionStory.taskKey}
+        taskType={completionStory.taskType as any}
+      />
     </div>
   );
 }

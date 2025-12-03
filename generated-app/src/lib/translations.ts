@@ -351,6 +351,10 @@ export interface Translations {
   epicsHelpOrganize: string;
   epicParent: string;
   projectNotFound: string;
+
+  // Completion Story
+  completionStoryTitle: string;
+  continueConquering: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -705,6 +709,10 @@ const translations: Record<Language, Translations> = {
     epicsHelpOrganize: 'Epics help you organize related issues into larger initiatives',
     epicParent: 'Epic (parent)',
     projectNotFound: 'Project not found',
+
+    // Completion Story
+    completionStoryTitle: 'Task Complete!',
+    continueConquering: 'Continue Conquering',
   },
 
   ja: {
@@ -1058,6 +1066,10 @@ const translations: Record<Language, Translations> = {
     epicsHelpOrganize: 'エピックは関連する課題をより大きなイニシアチブに整理するのに役立ちます',
     epicParent: 'エピック（親）',
     projectNotFound: 'プロジェクトが見つかりません',
+
+    // Completion Story
+    completionStoryTitle: 'タスク完了！',
+    continueConquering: '次の挑戦へ',
   },
 
   zh: {
@@ -1411,6 +1423,10 @@ const translations: Record<Language, Translations> = {
     epicsHelpOrganize: '史诗帮助您将相关问题组织成更大的计划',
     epicParent: '史诗（父级）',
     projectNotFound: '项目未找到',
+
+    // Completion Story
+    completionStoryTitle: '任务完成！',
+    continueConquering: '继续征服',
   },
 
   ar: {
@@ -1764,6 +1780,10 @@ const translations: Record<Language, Translations> = {
     epicsHelpOrganize: 'تساعد الملاحم في تنظيم المهام ذات الصلة في مبادرات أكبر',
     epicParent: 'ملحمة (أصل)',
     projectNotFound: 'المشروع غير موجود',
+
+    // Completion Story
+    completionStoryTitle: 'اكتملت المهمة!',
+    continueConquering: 'استمر في الفتح',
   },
 
   es: {
@@ -2117,6 +2137,10 @@ const translations: Record<Language, Translations> = {
     epicsHelpOrganize: 'Las épicas te ayudan a organizar problemas relacionados en iniciativas más grandes',
     epicParent: 'Épica (padre)',
     projectNotFound: 'Proyecto no encontrado',
+
+    // Completion Story
+    completionStoryTitle: '¡Tarea Completada!',
+    continueConquering: 'Seguir Conquistando',
   },
 };
 
