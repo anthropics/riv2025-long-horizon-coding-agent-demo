@@ -87,6 +87,34 @@ gh api repos/OWNER/REPO/labels -f name="agent-complete" -f color="0E8A16" -f des
 gh api repos/OWNER/REPO/labels -f name="tests-failed" -f color="D93F0B" -f description="Tests failed during agent build"
 ```
 
+### AWS Secrets Manager
+
+The agent reads secrets from AWS Secrets Manager. Required secrets:
+
+| Secret Name | Description |
+|-------------|-------------|
+| `claude-code/{env}/anthropic-api-key` | Anthropic API key for Claude |
+| `claude-code/{env}/github-token` | Default GitHub PAT (fallback) |
+| `claude-code/{env}/github-token-{org}` | Org-specific GitHub PAT (optional) |
+
+Where `{env}` is the environment name (default: `reinvent`) and `{org}` is the GitHub organization name.
+
+**Org-specific tokens** allow separation of concerns when working with multiple GitHub organizations. The agent checks for an org-specific token first, then falls back to the default:
+
+```bash
+# Create org-specific token (recommended for multi-org setups)
+aws secretsmanager create-secret \
+  --name claude-code/reinvent/github-token-anthropics \
+  --secret-string "ghp_your_pat_here" \
+  --region us-west-2
+
+# Or update existing default token
+aws secretsmanager update-secret \
+  --secret-id claude-code/reinvent/github-token \
+  --secret-string "ghp_your_pat_here" \
+  --region us-west-2
+```
+
 ## Project Structure
 
 ```
