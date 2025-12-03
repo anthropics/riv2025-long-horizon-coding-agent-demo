@@ -3597,5 +3597,50 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-255",
+    "category": "functional",
+    "description": "Settings page displays Mandarin language option with all other languages",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify Language section is visible with Globe icon",
+      "Verify English option is displayed with 'English' label and 🇺🇸 flag",
+      "Verify Japanese option is displayed with '日本語' label and 🇯🇵 flag",
+      "Verify Arabic option is displayed with 'العربية' label and 🇸🇦 flag",
+      "Verify Mandarin option is displayed with '中文' label and 🇨🇳 flag",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-256",
+    "category": "functional",
+    "description": "User can switch to Mandarin language and UI updates",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Mandarin language option (中文)",
+      "Take a screenshot",
+      "Verify Mandarin option is now highlighted/selected with checkmark",
+      "Verify Settings page heading changes to '设置'",
+      "Verify Profile section title changes to '个人资料'",
+      "Verify Language section title changes to '语言'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-257",
+    "category": "functional",
+    "description": "Mandarin language reflects in sidebar navigation",
+    "steps": [
+      "Set language to Mandarin from settings page",
+      "Take a screenshot",
+      "Verify sidebar shows Mandarin labels: 项目 (Projects), 工作流 (Workflows), 关于我们 (About Us)",
+      "Verify '创建项目' (Create Project) button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]
