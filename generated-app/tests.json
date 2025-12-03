@@ -3642,5 +3642,20 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-258",
+    "category": "style",
+    "description": "Top menu bar is positioned on the right side of the header",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify Canopy logo is on the far left of the header",
+      "Verify Search bar, Project Selector, Create button, Bell icon, and User avatar are grouped together on the right side of the header",
+      "Verify there is empty space between the logo and the right-side menu items",
+      "Verify the menu items are not spread across the entire header width",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

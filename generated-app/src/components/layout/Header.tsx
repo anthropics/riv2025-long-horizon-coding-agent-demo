@@ -92,8 +92,11 @@ export function Header() {
           <span>Canopy</span>
         </Link>
 
-        {/* Global Search */}
-        <div className="flex-1 max-w-md">
+        {/* Spacer to push menu items to the right */}
+        <div className="flex-1" />
+
+        {/* Global Search - moved to the right */}
+        <div className="w-72">
           <button
             onClick={() => setShowSearchModal(true)}
             className="w-full flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-md transition-colors text-sm text-white/80"
