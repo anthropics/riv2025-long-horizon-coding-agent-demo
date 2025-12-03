@@ -3657,5 +3657,51 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-259",
+    "category": "functional",
+    "description": "Settings page displays Spanish language option with all other languages",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify Language section is visible with Globe icon",
+      "Verify English option is displayed with 'English' label and 🇺🇸 flag",
+      "Verify Japanese option is displayed with '日本語' label and 🇯🇵 flag",
+      "Verify Arabic option is displayed with 'العربية' label and 🇸🇦 flag",
+      "Verify Mandarin option is displayed with '中文' label and 🇨🇳 flag",
+      "Verify Spanish option is displayed with 'Español' label and 🇪🇸 flag",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-260",
+    "category": "functional",
+    "description": "User can switch to Spanish language and UI updates",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Spanish language option (Español)",
+      "Take a screenshot",
+      "Verify Spanish option is now highlighted/selected with checkmark",
+      "Verify Settings page heading changes to 'Configuración'",
+      "Verify Profile section title changes to 'Perfil'",
+      "Verify Language section title changes to 'Idioma'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-261",
+    "category": "functional",
+    "description": "Spanish language reflects in sidebar navigation",
+    "steps": [
+      "Set language to Spanish from settings page",
+      "Take a screenshot",
+      "Verify sidebar shows Spanish labels: Proyectos (Projects), Flujos de Trabajo (Workflows), Sobre Nosotros (About Us)",
+      "Verify 'Crear Proyecto' (Create Project) button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

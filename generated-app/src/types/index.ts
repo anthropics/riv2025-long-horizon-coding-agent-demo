@@ -116,7 +116,7 @@ export interface User {
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ColorTheme = 'ruby' | 'ocean' | 'forest' | 'sunset' | 'lavender' | 'cyberpunk' | 'retro';
-export type Language = 'en' | 'ja' | 'ar' | 'zh';
+export type Language = 'en' | 'ja' | 'ar' | 'zh' | 'es';
 
 export interface UserSettings {
   theme?: ThemeMode;

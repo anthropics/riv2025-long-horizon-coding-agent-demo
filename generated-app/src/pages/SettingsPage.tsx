@@ -34,6 +34,7 @@ const LANGUAGES: { id: Language; name: string; nativeName: string; flag: string 
   { id: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
   { id: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
   { id: 'zh', name: 'Mandarin', nativeName: '中文', flag: '🇨🇳' },
+  { id: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
 ];
 
 // Theme configuration
