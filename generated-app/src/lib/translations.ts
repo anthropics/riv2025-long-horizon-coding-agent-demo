@@ -256,6 +256,101 @@ export interface Translations {
   exportTable: string;
   refresh: string;
   refreshing: string;
+
+  // About Page
+  welcomeToCanopy: string;
+  aboutHeroDescription: string;
+  ourMission: string;
+  simplifyProjectManagement: string;
+  missionDescription: string;
+  whatMakesCanopySpecial: string;
+  sprintPlanning: string;
+  sprintPlanningDesc: string;
+  kanbanBoard: string;
+  kanbanBoardDesc: string;
+  teamCollaboration: string;
+  teamCollaborationDesc: string;
+  customizable: string;
+  customizableDesc: string;
+  getInvolved: string;
+  contribute: string;
+  howToMakeRequests: string;
+  requestsDescription: string;
+  bugReports: string;
+  bugReportsDesc: string;
+  featureRequests: string;
+  featureRequestsDesc: string;
+  pullRequests: string;
+  pullRequestsDesc: string;
+  stepsToFollow: string;
+  describeWhatHappened: string;
+  includeStepsToReproduce: string;
+  addScreenshotsIfPossible: string;
+  explainTheFeature: string;
+  shareTheUseCase: string;
+  describeExpectedBehavior: string;
+  forkTheRepository: string;
+  makeYourChanges: string;
+  submitAPr: string;
+  bestPractices: string;
+  beSpecificAndDescriptive: string;
+  includeBrowserInfo: string;
+  searchExistingIssues: string;
+  oneIssuePerReport: string;
+  useClearTitles: string;
+  attachScreenshots: string;
+  readyToGetStarted: string;
+  createProjectCTA: string;
+  createAProject: string;
+  viewAllProjects: string;
+  builtWithLove: string;
+
+  // Team Page
+  teamTitle: string;
+  teamDescription: string;
+  addTeamMember: string;
+  teamSize: string;
+  totalAvailableWeeks: string;
+  totalCapacityHours: string;
+  member: string;
+  availableWeeks: string;
+  hoursPerWeek: string;
+  assignedTasks: string;
+  actions: string;
+  noTeamMembersYet: string;
+  addTeamMemberDesc: string;
+  addFirstTeamMember: string;
+  capacityPlanningTip: string;
+  capacityPlanningTipDesc: string;
+  editTeamMember: string;
+  nameRequired: string;
+  emailOptional: string;
+  avatarColor: string;
+  preview: string;
+  addMember: string;
+  saveChanges: string;
+  teamMemberAdded: string;
+  teamMemberUpdated: string;
+  teamMemberRemoved: string;
+  failedToAddTeamMember: string;
+  failedToUpdateTeamMember: string;
+  failedToRemoveTeamMember: string;
+
+  // Epics Page
+  manageEpicsDesc: string;
+  searchEpicsPlaceholder: string;
+  filterByStatus: string;
+  allStatuses: string;
+  completed: string;
+  issuesDone: string;
+  storyPointsTotal: string;
+  noChildIssues: string;
+  linkIssuesToEpic: string;
+  noEpicsMatchFilters: string;
+  tryAdjustingFilters: string;
+  epicsHelpOrganize: string;
+  epicParent: string;
+  projectNotFound: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -515,6 +610,101 @@ const translations: Record<Language, Translations> = {
     exportTable: 'Export table data',
     refresh: 'Refresh',
     refreshing: 'Refreshing...',
+
+    // About Page
+    welcomeToCanopy: 'Welcome to Canopy',
+    aboutHeroDescription: 'A JIRA-like project management tool that helps teams plan, track, and deliver great work together.',
+    ourMission: 'Our Mission',
+    simplifyProjectManagement: 'Simplify Project Management',
+    missionDescription: 'Canopy was born from the belief that project management should be intuitive, beautiful, and accessible. We\'ve combined the power of professional tools with a delightful user experience.',
+    whatMakesCanopySpecial: 'What Makes Canopy Special',
+    sprintPlanning: 'Sprint Planning',
+    sprintPlanningDesc: 'Organize work into focused sprints with clear goals',
+    kanbanBoard: 'Kanban Board',
+    kanbanBoardDesc: 'Visualize workflow with drag-and-drop simplicity',
+    teamCollaboration: 'Team Collaboration',
+    teamCollaborationDesc: 'Assign tasks and track progress together',
+    customizable: 'Customizable',
+    customizableDesc: 'Labels, components, and project settings your way',
+    getInvolved: 'Get Involved',
+    contribute: 'Contribute',
+    howToMakeRequests: 'How to Make Requests',
+    requestsDescription: 'We value your feedback! Here are the best ways to report bugs or request new features.',
+    bugReports: 'Bug Reports',
+    bugReportsDesc: 'Found something broken? Help us squash it!',
+    featureRequests: 'Feature Requests',
+    featureRequestsDesc: 'Have an idea? We\'d love to hear it!',
+    pullRequests: 'Pull Requests',
+    pullRequestsDesc: 'Code contributions are always welcome!',
+    stepsToFollow: 'Steps to follow',
+    describeWhatHappened: 'Describe what happened',
+    includeStepsToReproduce: 'Include steps to reproduce',
+    addScreenshotsIfPossible: 'Add screenshots if possible',
+    explainTheFeature: 'Explain the feature',
+    shareTheUseCase: 'Share the use case',
+    describeExpectedBehavior: 'Describe expected behavior',
+    forkTheRepository: 'Fork the repository',
+    makeYourChanges: 'Make your changes',
+    submitAPr: 'Submit a PR with description',
+    bestPractices: 'Best Practices for Great Feedback',
+    beSpecificAndDescriptive: 'Be specific and descriptive',
+    includeBrowserInfo: 'Include browser/device info for bugs',
+    searchExistingIssues: 'Search existing issues first',
+    oneIssuePerReport: 'One issue per report',
+    useClearTitles: 'Use clear, concise titles',
+    attachScreenshots: 'Attach relevant screenshots',
+    readyToGetStarted: 'Ready to Get Started?',
+    createProjectCTA: 'Create your first project and experience the joy of organized, beautiful project management with Canopy.',
+    createAProject: 'Create a Project',
+    viewAllProjects: 'View All Projects',
+    builtWithLove: 'Built with love for teams who love beautiful tools',
+
+    // Team Page
+    teamTitle: 'Team',
+    teamDescription: 'Manage team members and capacity for',
+    addTeamMember: 'Add Team Member',
+    teamSize: 'Team Size',
+    totalAvailableWeeks: 'Total Available Weeks',
+    totalCapacityHours: 'Total Capacity (Hours)',
+    member: 'Member',
+    availableWeeks: 'Available Weeks',
+    hoursPerWeek: 'Hours/Week',
+    assignedTasks: 'Assigned Tasks',
+    actions: 'Actions',
+    noTeamMembersYet: 'No team members yet',
+    addTeamMemberDesc: 'Add team members to track capacity and assign tasks.',
+    addFirstTeamMember: 'Add your first team member',
+    capacityPlanningTip: 'Capacity Planning Tip',
+    capacityPlanningTipDesc: 'Available weeks help you plan how much work can be assigned to each team member during sprints. Adjust these values based on vacation schedules, part-time availability, or other commitments.',
+    editTeamMember: 'Edit Team Member',
+    nameRequired: 'Name *',
+    emailOptional: 'Email (optional)',
+    avatarColor: 'Avatar Color',
+    preview: 'Preview:',
+    addMember: 'Add Member',
+    saveChanges: 'Save Changes',
+    teamMemberAdded: 'Team member added',
+    teamMemberUpdated: 'Team member updated',
+    teamMemberRemoved: 'Team member removed',
+    failedToAddTeamMember: 'Failed to add team member',
+    failedToUpdateTeamMember: 'Failed to update team member',
+    failedToRemoveTeamMember: 'Failed to remove team member',
+
+    // Epics Page
+    manageEpicsDesc: 'Manage your epics and track their progress',
+    searchEpicsPlaceholder: 'Search epics and child issues...',
+    filterByStatus: 'Filter by status',
+    allStatuses: 'All Statuses',
+    completed: 'Completed',
+    issuesDone: 'issues done',
+    storyPointsTotal: 'story points total',
+    noChildIssues: 'No child issues yet. Link issues to this epic to track progress.',
+    linkIssuesToEpic: 'Link issues to this epic',
+    noEpicsMatchFilters: 'No epics match your filters',
+    tryAdjustingFilters: 'Try adjusting your search or filters',
+    epicsHelpOrganize: 'Epics help you organize related issues into larger initiatives',
+    epicParent: 'Epic (parent)',
+    projectNotFound: 'Project not found',
   },
 
   ja: {
@@ -773,6 +963,101 @@ const translations: Record<Language, Translations> = {
     exportTable: 'テーブルデータをエクスポート',
     refresh: '更新',
     refreshing: '更新中...',
+
+    // About Page
+    welcomeToCanopy: 'Canopyへようこそ',
+    aboutHeroDescription: 'チームが計画、追跡、そして素晴らしい仕事を一緒に提供するのを助けるJIRAライクなプロジェクト管理ツール。',
+    ourMission: '私たちのミッション',
+    simplifyProjectManagement: 'プロジェクト管理を簡素化',
+    missionDescription: 'Canopyは、プロジェクト管理が直感的で、美しく、アクセスしやすいものであるべきだという信念から生まれました。プロフェッショナルなツールの力と、楽しいユーザー体験を組み合わせました。',
+    whatMakesCanopySpecial: 'Canopyの特別なところ',
+    sprintPlanning: 'スプリント計画',
+    sprintPlanningDesc: '明確な目標を持つ集中したスプリントに作業を整理',
+    kanbanBoard: 'カンバンボード',
+    kanbanBoardDesc: 'ドラッグアンドドロップでワークフローを視覚化',
+    teamCollaboration: 'チームコラボレーション',
+    teamCollaborationDesc: 'タスクを割り当て、一緒に進捗を追跡',
+    customizable: 'カスタマイズ可能',
+    customizableDesc: 'ラベル、コンポーネント、プロジェクト設定を自由に',
+    getInvolved: '参加する',
+    contribute: '貢献',
+    howToMakeRequests: 'リクエストの方法',
+    requestsDescription: 'フィードバックを大切にしています！バグ報告や新機能リクエストの最良の方法をご紹介します。',
+    bugReports: 'バグ報告',
+    bugReportsDesc: '何か壊れていますか？修正を手伝ってください！',
+    featureRequests: '機能リクエスト',
+    featureRequestsDesc: 'アイデアがありますか？ぜひお聞かせください！',
+    pullRequests: 'プルリクエスト',
+    pullRequestsDesc: 'コードの貢献はいつでも歓迎です！',
+    stepsToFollow: '手順',
+    describeWhatHappened: '何が起こったか説明',
+    includeStepsToReproduce: '再現手順を含める',
+    addScreenshotsIfPossible: '可能であればスクリーンショットを追加',
+    explainTheFeature: '機能を説明',
+    shareTheUseCase: 'ユースケースを共有',
+    describeExpectedBehavior: '期待される動作を説明',
+    forkTheRepository: 'リポジトリをフォーク',
+    makeYourChanges: '変更を加える',
+    submitAPr: '説明付きでPRを提出',
+    bestPractices: '良いフィードバックのベストプラクティス',
+    beSpecificAndDescriptive: '具体的で説明的に',
+    includeBrowserInfo: 'バグの場合はブラウザ/デバイス情報を含める',
+    searchExistingIssues: '既存の課題を先に検索',
+    oneIssuePerReport: '1レポートにつき1つの課題',
+    useClearTitles: '明確で簡潔なタイトルを使用',
+    attachScreenshots: '関連するスクリーンショットを添付',
+    readyToGetStarted: '始める準備はできましたか？',
+    createProjectCTA: '最初のプロジェクトを作成し、Canopyで整理された美しいプロジェクト管理の喜びを体験してください。',
+    createAProject: 'プロジェクトを作成',
+    viewAllProjects: 'すべてのプロジェクトを表示',
+    builtWithLove: '美しいツールを愛するチームのために愛を込めて作りました',
+
+    // Team Page
+    teamTitle: 'チーム',
+    teamDescription: 'チームメンバーと稼働率を管理',
+    addTeamMember: 'チームメンバーを追加',
+    teamSize: 'チームサイズ',
+    totalAvailableWeeks: '合計稼働週数',
+    totalCapacityHours: '総稼働時間',
+    member: 'メンバー',
+    availableWeeks: '稼働週数',
+    hoursPerWeek: '週当たり時間',
+    assignedTasks: '割り当てタスク',
+    actions: '操作',
+    noTeamMembersYet: 'チームメンバーがまだいません',
+    addTeamMemberDesc: 'チームメンバーを追加して、稼働率を追跡し、タスクを割り当てます。',
+    addFirstTeamMember: '最初のチームメンバーを追加',
+    capacityPlanningTip: '稼働率計画のヒント',
+    capacityPlanningTipDesc: '稼働週数は、スプリント中に各チームメンバーにどれだけの作業を割り当てられるかを計画するのに役立ちます。休暇スケジュール、パートタイムの空き状況、その他のコミットメントに基づいてこれらの値を調整してください。',
+    editTeamMember: 'チームメンバーを編集',
+    nameRequired: '名前 *',
+    emailOptional: 'メール（任意）',
+    avatarColor: 'アバターカラー',
+    preview: 'プレビュー：',
+    addMember: 'メンバーを追加',
+    saveChanges: '変更を保存',
+    teamMemberAdded: 'チームメンバーを追加しました',
+    teamMemberUpdated: 'チームメンバーを更新しました',
+    teamMemberRemoved: 'チームメンバーを削除しました',
+    failedToAddTeamMember: 'チームメンバーの追加に失敗しました',
+    failedToUpdateTeamMember: 'チームメンバーの更新に失敗しました',
+    failedToRemoveTeamMember: 'チームメンバーの削除に失敗しました',
+
+    // Epics Page
+    manageEpicsDesc: 'エピックを管理し、進捗を追跡します',
+    searchEpicsPlaceholder: 'エピックと子課題を検索...',
+    filterByStatus: 'ステータスでフィルター',
+    allStatuses: 'すべてのステータス',
+    completed: '完了',
+    issuesDone: '課題完了',
+    storyPointsTotal: 'ストーリーポイント合計',
+    noChildIssues: '子課題がまだありません。このエピックに課題をリンクして進捗を追跡してください。',
+    linkIssuesToEpic: 'このエピックに課題をリンク',
+    noEpicsMatchFilters: 'フィルターに一致するエピックがありません',
+    tryAdjustingFilters: '検索またはフィルターを調整してみてください',
+    epicsHelpOrganize: 'エピックは関連する課題をより大きなイニシアチブに整理するのに役立ちます',
+    epicParent: 'エピック（親）',
+    projectNotFound: 'プロジェクトが見つかりません',
   },
 
   zh: {
@@ -1031,6 +1316,101 @@ const translations: Record<Language, Translations> = {
     exportTable: '导出表数据',
     refresh: '刷新',
     refreshing: '刷新中...',
+
+    // About Page
+    welcomeToCanopy: '欢迎来到树冠',
+    aboutHeroDescription: '一个帮助团队规划、跟踪和共同交付优秀工作的类似JIRA的项目管理工具。',
+    ourMission: '我们的使命',
+    simplifyProjectManagement: '简化项目管理',
+    missionDescription: '树冠诞生于这样的信念：项目管理应该是直观的、美观的、易于访问的。我们将专业工具的强大功能与愉悦的用户体验相结合。',
+    whatMakesCanopySpecial: '树冠的特别之处',
+    sprintPlanning: '冲刺规划',
+    sprintPlanningDesc: '将工作组织成目标明确的集中冲刺',
+    kanbanBoard: '看板',
+    kanbanBoardDesc: '通过拖放简单地可视化工作流程',
+    teamCollaboration: '团队协作',
+    teamCollaborationDesc: '分配任务并一起跟踪进度',
+    customizable: '可定制',
+    customizableDesc: '按您的方式设置标签、组件和项目设置',
+    getInvolved: '参与其中',
+    contribute: '贡献',
+    howToMakeRequests: '如何提出请求',
+    requestsDescription: '我们重视您的反馈！以下是报告错误或请求新功能的最佳方式。',
+    bugReports: '错误报告',
+    bugReportsDesc: '发现问题了吗？帮助我们修复它！',
+    featureRequests: '功能请求',
+    featureRequestsDesc: '有想法吗？我们很想听听！',
+    pullRequests: '拉取请求',
+    pullRequestsDesc: '代码贡献随时欢迎！',
+    stepsToFollow: '操作步骤',
+    describeWhatHappened: '描述发生了什么',
+    includeStepsToReproduce: '包含重现步骤',
+    addScreenshotsIfPossible: '如果可能添加截图',
+    explainTheFeature: '解释功能',
+    shareTheUseCase: '分享使用案例',
+    describeExpectedBehavior: '描述预期行为',
+    forkTheRepository: '分叉仓库',
+    makeYourChanges: '进行更改',
+    submitAPr: '提交带描述的PR',
+    bestPractices: '优质反馈的最佳实践',
+    beSpecificAndDescriptive: '具体且描述性',
+    includeBrowserInfo: '包含浏览器/设备信息用于错误报告',
+    searchExistingIssues: '先搜索现有问题',
+    oneIssuePerReport: '每个报告一个问题',
+    useClearTitles: '使用清晰简洁的标题',
+    attachScreenshots: '附上相关截图',
+    readyToGetStarted: '准备开始了吗？',
+    createProjectCTA: '创建您的第一个项目，体验树冠带来的有条理、美观的项目管理乐趣。',
+    createAProject: '创建项目',
+    viewAllProjects: '查看所有项目',
+    builtWithLove: '为热爱美观工具的团队用心打造',
+
+    // Team Page
+    teamTitle: '团队',
+    teamDescription: '管理团队成员和容量',
+    addTeamMember: '添加团队成员',
+    teamSize: '团队规模',
+    totalAvailableWeeks: '总可用周数',
+    totalCapacityHours: '总容量（小时）',
+    member: '成员',
+    availableWeeks: '可用周数',
+    hoursPerWeek: '每周小时数',
+    assignedTasks: '已分配任务',
+    actions: '操作',
+    noTeamMembersYet: '还没有团队成员',
+    addTeamMemberDesc: '添加团队成员以跟踪容量和分配任务。',
+    addFirstTeamMember: '添加您的第一个团队成员',
+    capacityPlanningTip: '容量规划提示',
+    capacityPlanningTipDesc: '可用周数帮助您规划在冲刺期间可以分配给每个团队成员多少工作。根据假期安排、兼职可用性或其他承诺调整这些值。',
+    editTeamMember: '编辑团队成员',
+    nameRequired: '名称 *',
+    emailOptional: '电子邮件（可选）',
+    avatarColor: '头像颜色',
+    preview: '预览：',
+    addMember: '添加成员',
+    saveChanges: '保存更改',
+    teamMemberAdded: '团队成员已添加',
+    teamMemberUpdated: '团队成员已更新',
+    teamMemberRemoved: '团队成员已移除',
+    failedToAddTeamMember: '添加团队成员失败',
+    failedToUpdateTeamMember: '更新团队成员失败',
+    failedToRemoveTeamMember: '移除团队成员失败',
+
+    // Epics Page
+    manageEpicsDesc: '管理您的史诗并跟踪其进度',
+    searchEpicsPlaceholder: '搜索史诗和子问题...',
+    filterByStatus: '按状态筛选',
+    allStatuses: '所有状态',
+    completed: '已完成',
+    issuesDone: '问题已完成',
+    storyPointsTotal: '故事点数总计',
+    noChildIssues: '还没有子问题。将问题链接到此史诗以跟踪进度。',
+    linkIssuesToEpic: '将问题链接到此史诗',
+    noEpicsMatchFilters: '没有符合筛选条件的史诗',
+    tryAdjustingFilters: '尝试调整您的搜索或筛选条件',
+    epicsHelpOrganize: '史诗帮助您将相关问题组织成更大的计划',
+    epicParent: '史诗（父级）',
+    projectNotFound: '项目未找到',
   },
 
   ar: {
@@ -1289,6 +1669,101 @@ const translations: Record<Language, Translations> = {
     exportTable: 'تصدير بيانات الجدول',
     refresh: 'تحديث',
     refreshing: 'جار التحديث...',
+
+    // About Page
+    welcomeToCanopy: 'مرحباً بك في كانوبي',
+    aboutHeroDescription: 'أداة إدارة مشاريع شبيهة بـ JIRA تساعد الفرق على التخطيط والتتبع وتقديم عمل رائع معاً.',
+    ourMission: 'مهمتنا',
+    simplifyProjectManagement: 'تبسيط إدارة المشاريع',
+    missionDescription: 'ولدت كانوبي من الإيمان بأن إدارة المشاريع يجب أن تكون بديهية وجميلة وسهلة الوصول. لقد جمعنا بين قوة الأدوات المهنية وتجربة مستخدم ممتعة.',
+    whatMakesCanopySpecial: 'ما يميز كانوبي',
+    sprintPlanning: 'تخطيط السباق',
+    sprintPlanningDesc: 'تنظيم العمل في سباقات مركزة بأهداف واضحة',
+    kanbanBoard: 'لوحة كانبان',
+    kanbanBoardDesc: 'تصور سير العمل بسهولة السحب والإفلات',
+    teamCollaboration: 'تعاون الفريق',
+    teamCollaborationDesc: 'تعيين المهام وتتبع التقدم معاً',
+    customizable: 'قابل للتخصيص',
+    customizableDesc: 'التسميات والمكونات وإعدادات المشروع بطريقتك',
+    getInvolved: 'شارك معنا',
+    contribute: 'المساهمة',
+    howToMakeRequests: 'كيفية تقديم الطلبات',
+    requestsDescription: 'نقدر ملاحظاتك! إليك أفضل الطرق للإبلاغ عن الأخطاء أو طلب ميزات جديدة.',
+    bugReports: 'تقارير الأخطاء',
+    bugReportsDesc: 'وجدت شيئاً معطلاً؟ ساعدنا في إصلاحه!',
+    featureRequests: 'طلبات الميزات',
+    featureRequestsDesc: 'لديك فكرة؟ نود سماعها!',
+    pullRequests: 'طلبات السحب',
+    pullRequestsDesc: 'المساهمات البرمجية مرحب بها دائماً!',
+    stepsToFollow: 'الخطوات المتبعة',
+    describeWhatHappened: 'صف ما حدث',
+    includeStepsToReproduce: 'قم بتضمين خطوات إعادة الإنتاج',
+    addScreenshotsIfPossible: 'أضف لقطات شاشة إن أمكن',
+    explainTheFeature: 'اشرح الميزة',
+    shareTheUseCase: 'شارك حالة الاستخدام',
+    describeExpectedBehavior: 'صف السلوك المتوقع',
+    forkTheRepository: 'انسخ المستودع',
+    makeYourChanges: 'قم بإجراء تغييراتك',
+    submitAPr: 'قدم طلب سحب مع وصف',
+    bestPractices: 'أفضل الممارسات للملاحظات الجيدة',
+    beSpecificAndDescriptive: 'كن محدداً ووصفياً',
+    includeBrowserInfo: 'قم بتضمين معلومات المتصفح/الجهاز للأخطاء',
+    searchExistingIssues: 'ابحث في المشاكل الموجودة أولاً',
+    oneIssuePerReport: 'مشكلة واحدة لكل تقرير',
+    useClearTitles: 'استخدم عناوين واضحة وموجزة',
+    attachScreenshots: 'أرفق لقطات شاشة ذات صلة',
+    readyToGetStarted: 'هل أنت مستعد للبدء؟',
+    createProjectCTA: 'أنشئ مشروعك الأول واستمتع بإدارة مشاريع منظمة وجميلة مع كانوبي.',
+    createAProject: 'إنشاء مشروع',
+    viewAllProjects: 'عرض جميع المشاريع',
+    builtWithLove: 'صُنع بحب للفرق التي تحب الأدوات الجميلة',
+
+    // Team Page
+    teamTitle: 'الفريق',
+    teamDescription: 'إدارة أعضاء الفريق والقدرة',
+    addTeamMember: 'إضافة عضو فريق',
+    teamSize: 'حجم الفريق',
+    totalAvailableWeeks: 'إجمالي الأسابيع المتاحة',
+    totalCapacityHours: 'إجمالي القدرة (ساعات)',
+    member: 'العضو',
+    availableWeeks: 'الأسابيع المتاحة',
+    hoursPerWeek: 'ساعات/أسبوع',
+    assignedTasks: 'المهام المعينة',
+    actions: 'الإجراءات',
+    noTeamMembersYet: 'لا يوجد أعضاء فريق بعد',
+    addTeamMemberDesc: 'أضف أعضاء فريق لتتبع القدرة وتعيين المهام.',
+    addFirstTeamMember: 'أضف عضو فريقك الأول',
+    capacityPlanningTip: 'نصيحة تخطيط القدرة',
+    capacityPlanningTipDesc: 'تساعد الأسابيع المتاحة في التخطيط لمقدار العمل الذي يمكن تعيينه لكل عضو فريق خلال السباقات. قم بضبط هذه القيم بناءً على جداول الإجازات والتوفر الجزئي أو الالتزامات الأخرى.',
+    editTeamMember: 'تعديل عضو الفريق',
+    nameRequired: 'الاسم *',
+    emailOptional: 'البريد الإلكتروني (اختياري)',
+    avatarColor: 'لون الصورة الرمزية',
+    preview: 'معاينة:',
+    addMember: 'إضافة عضو',
+    saveChanges: 'حفظ التغييرات',
+    teamMemberAdded: 'تمت إضافة عضو الفريق',
+    teamMemberUpdated: 'تم تحديث عضو الفريق',
+    teamMemberRemoved: 'تمت إزالة عضو الفريق',
+    failedToAddTeamMember: 'فشل في إضافة عضو الفريق',
+    failedToUpdateTeamMember: 'فشل في تحديث عضو الفريق',
+    failedToRemoveTeamMember: 'فشل في إزالة عضو الفريق',
+
+    // Epics Page
+    manageEpicsDesc: 'إدارة ملاحمك وتتبع تقدمها',
+    searchEpicsPlaceholder: 'البحث في الملاحم والمهام الفرعية...',
+    filterByStatus: 'تصفية حسب الحالة',
+    allStatuses: 'جميع الحالات',
+    completed: 'مكتمل',
+    issuesDone: 'المهام المنجزة',
+    storyPointsTotal: 'إجمالي نقاط القصة',
+    noChildIssues: 'لا توجد مهام فرعية بعد. اربط المهام بهذه الملحمة لتتبع التقدم.',
+    linkIssuesToEpic: 'ربط المهام بهذه الملحمة',
+    noEpicsMatchFilters: 'لا توجد ملاحم تطابق الفلاتر',
+    tryAdjustingFilters: 'حاول تعديل البحث أو الفلاتر',
+    epicsHelpOrganize: 'تساعد الملاحم في تنظيم المهام ذات الصلة في مبادرات أكبر',
+    epicParent: 'ملحمة (أصل)',
+    projectNotFound: 'المشروع غير موجود',
   },
 
   es: {
@@ -1547,6 +2022,101 @@ const translations: Record<Language, Translations> = {
     exportTable: 'Exportar datos de tabla',
     refresh: 'Actualizar',
     refreshing: 'Actualizando...',
+
+    // About Page
+    welcomeToCanopy: 'Bienvenido a Canopy',
+    aboutHeroDescription: 'Una herramienta de gestión de proyectos similar a JIRA que ayuda a los equipos a planificar, rastrear y entregar un gran trabajo juntos.',
+    ourMission: 'Nuestra Misión',
+    simplifyProjectManagement: 'Simplificar la Gestión de Proyectos',
+    missionDescription: 'Canopy nació de la creencia de que la gestión de proyectos debe ser intuitiva, hermosa y accesible. Hemos combinado el poder de herramientas profesionales con una experiencia de usuario encantadora.',
+    whatMakesCanopySpecial: 'Lo Que Hace Especial a Canopy',
+    sprintPlanning: 'Planificación de Sprint',
+    sprintPlanningDesc: 'Organiza el trabajo en sprints enfocados con objetivos claros',
+    kanbanBoard: 'Tablero Kanban',
+    kanbanBoardDesc: 'Visualiza el flujo de trabajo con simplicidad de arrastrar y soltar',
+    teamCollaboration: 'Colaboración en Equipo',
+    teamCollaborationDesc: 'Asigna tareas y rastrea el progreso juntos',
+    customizable: 'Personalizable',
+    customizableDesc: 'Etiquetas, componentes y configuración del proyecto a tu manera',
+    getInvolved: 'Involúcrate',
+    contribute: 'Contribuir',
+    howToMakeRequests: 'Cómo Hacer Solicitudes',
+    requestsDescription: '¡Valoramos tus comentarios! Aquí están las mejores formas de reportar errores o solicitar nuevas funciones.',
+    bugReports: 'Reportes de Errores',
+    bugReportsDesc: '¿Encontraste algo roto? ¡Ayúdanos a solucionarlo!',
+    featureRequests: 'Solicitudes de Funciones',
+    featureRequestsDesc: '¿Tienes una idea? ¡Nos encantaría escucharla!',
+    pullRequests: 'Pull Requests',
+    pullRequestsDesc: '¡Las contribuciones de código siempre son bienvenidas!',
+    stepsToFollow: 'Pasos a seguir',
+    describeWhatHappened: 'Describe lo que sucedió',
+    includeStepsToReproduce: 'Incluye pasos para reproducir',
+    addScreenshotsIfPossible: 'Agrega capturas de pantalla si es posible',
+    explainTheFeature: 'Explica la función',
+    shareTheUseCase: 'Comparte el caso de uso',
+    describeExpectedBehavior: 'Describe el comportamiento esperado',
+    forkTheRepository: 'Bifurca el repositorio',
+    makeYourChanges: 'Realiza tus cambios',
+    submitAPr: 'Envía un PR con descripción',
+    bestPractices: 'Mejores Prácticas para Buenos Comentarios',
+    beSpecificAndDescriptive: 'Sé específico y descriptivo',
+    includeBrowserInfo: 'Incluye información del navegador/dispositivo para errores',
+    searchExistingIssues: 'Busca problemas existentes primero',
+    oneIssuePerReport: 'Un problema por reporte',
+    useClearTitles: 'Usa títulos claros y concisos',
+    attachScreenshots: 'Adjunta capturas de pantalla relevantes',
+    readyToGetStarted: '¿Listo para Comenzar?',
+    createProjectCTA: 'Crea tu primer proyecto y experimenta la alegría de una gestión de proyectos organizada y hermosa con Canopy.',
+    createAProject: 'Crear un Proyecto',
+    viewAllProjects: 'Ver Todos los Proyectos',
+    builtWithLove: 'Hecho con amor para equipos que aman herramientas hermosas',
+
+    // Team Page
+    teamTitle: 'Equipo',
+    teamDescription: 'Gestionar miembros del equipo y capacidad para',
+    addTeamMember: 'Agregar Miembro del Equipo',
+    teamSize: 'Tamaño del Equipo',
+    totalAvailableWeeks: 'Semanas Disponibles Totales',
+    totalCapacityHours: 'Capacidad Total (Horas)',
+    member: 'Miembro',
+    availableWeeks: 'Semanas Disponibles',
+    hoursPerWeek: 'Horas/Semana',
+    assignedTasks: 'Tareas Asignadas',
+    actions: 'Acciones',
+    noTeamMembersYet: 'Aún no hay miembros del equipo',
+    addTeamMemberDesc: 'Agrega miembros del equipo para rastrear la capacidad y asignar tareas.',
+    addFirstTeamMember: 'Agrega tu primer miembro del equipo',
+    capacityPlanningTip: 'Consejo de Planificación de Capacidad',
+    capacityPlanningTipDesc: 'Las semanas disponibles te ayudan a planificar cuánto trabajo se puede asignar a cada miembro del equipo durante los sprints. Ajusta estos valores según los horarios de vacaciones, disponibilidad parcial u otros compromisos.',
+    editTeamMember: 'Editar Miembro del Equipo',
+    nameRequired: 'Nombre *',
+    emailOptional: 'Correo Electrónico (opcional)',
+    avatarColor: 'Color del Avatar',
+    preview: 'Vista Previa:',
+    addMember: 'Agregar Miembro',
+    saveChanges: 'Guardar Cambios',
+    teamMemberAdded: 'Miembro del equipo agregado',
+    teamMemberUpdated: 'Miembro del equipo actualizado',
+    teamMemberRemoved: 'Miembro del equipo eliminado',
+    failedToAddTeamMember: 'Error al agregar miembro del equipo',
+    failedToUpdateTeamMember: 'Error al actualizar miembro del equipo',
+    failedToRemoveTeamMember: 'Error al eliminar miembro del equipo',
+
+    // Epics Page
+    manageEpicsDesc: 'Gestiona tus épicas y rastrea su progreso',
+    searchEpicsPlaceholder: 'Buscar épicas y problemas hijos...',
+    filterByStatus: 'Filtrar por estado',
+    allStatuses: 'Todos los Estados',
+    completed: 'Completado',
+    issuesDone: 'problemas completados',
+    storyPointsTotal: 'puntos de historia totales',
+    noChildIssues: 'Aún no hay problemas hijos. Vincula problemas a esta épica para rastrear el progreso.',
+    linkIssuesToEpic: 'Vincular problemas a esta épica',
+    noEpicsMatchFilters: 'No hay épicas que coincidan con tus filtros',
+    tryAdjustingFilters: 'Intenta ajustar tu búsqueda o filtros',
+    epicsHelpOrganize: 'Las épicas te ayudan a organizar problemas relacionados en iniciativas más grandes',
+    epicParent: 'Épica (padre)',
+    projectNotFound: 'Proyecto no encontrado',
   },
 };
 

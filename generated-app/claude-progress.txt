@@ -1,6 +1,76 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #35 - Spanish Language)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #36 - Japanese Translation on Individual Pages)
+
+## Issue #36 - Japanese Translation on Individual Pages (COMPLETE)
+Added Japanese translations for individual pages (About, Team, Epics) that previously had hardcoded English strings.
+
+### Feature Description:
+When users set the language to Japanese, the following pages now display fully translated content:
+1. **About Page** - Welcome message, mission statement, features, contribution guidelines, best practices, CTAs
+2. **Team Page** - Page header, stats cards, table headers, empty state, add/edit dialogs, toast messages
+3. **Epics Page** - Page header, stats overview, filter controls, table headers, empty state, hierarchy legend
+
+### Files Modified:
+- src/lib/translations.ts - Added 80+ new translation keys for About, Team, and Epics pages in all 5 languages (EN, JA, ZH, AR, ES)
+- src/pages/AboutPage.tsx - Updated to use translations object from useApp() context instead of hardcoded strings
+- src/pages/TeamPage.tsx - Updated to use translations object from useApp() context instead of hardcoded strings
+- src/pages/EpicsPage.tsx - Updated to use translations object from useApp() context instead of hardcoded strings
+
+### New Translation Keys Added:
+**About Page:**
+- welcomeToCanopy, aboutHeroDescription, ourMission, simplifyProjectManagement, missionDescription
+- whatMakesCanopySpecial, sprintPlanning, sprintPlanningDesc, kanbanBoard, kanbanBoardDesc
+- teamCollaboration, teamCollaborationDesc, customizable, customizableDesc
+- getInvolved, contribute, howToMakeRequests, requestsDescription
+- bugReports, bugReportsDesc, featureRequests, featureRequestsDesc, pullRequests, pullRequestsDesc
+- stepsToFollow, describeWhatHappened, includeStepsToReproduce, addScreenshotsIfPossible
+- explainTheFeature, shareTheUseCase, describeExpectedBehavior
+- forkTheRepository, makeYourChanges, submitAPr
+- bestPractices, beSpecificAndDescriptive, includeBrowserInfo, searchExistingIssues
+- oneIssuePerReport, useClearTitles, attachScreenshots
+- readyToGetStarted, createProjectCTA, createAProject, viewAllProjects, builtWithLove
+
+**Team Page:**
+- teamTitle, teamDescription, addTeamMember, teamSize, totalAvailableWeeks, totalCapacityHours
+- member, availableWeeks, hoursPerWeek, assignedTasks, actions
+- noTeamMembersYet, addTeamMemberDesc, addFirstTeamMember
+- capacityPlanningTip, capacityPlanningTipDesc
+- editTeamMember, nameRequired, emailOptional, avatarColor, preview, addMember, saveChanges
+- teamMemberAdded, teamMemberUpdated, teamMemberRemoved
+- failedToAddTeamMember, failedToUpdateTeamMember, failedToRemoveTeamMember
+
+**Epics Page:**
+- manageEpicsDesc, searchEpicsPlaceholder, filterByStatus, allStatuses, completed
+- issuesDone, storyPointsTotal, noChildIssues, linkIssuesToEpic
+- noEpicsMatchFilters, tryAdjustingFilters, epicsHelpOrganize, epicParent, projectNotFound
+
+### New Tests Added (test-262 through test-265):
+- test-262: About page displays Japanese translations when language is set to Japanese ✅
+- test-263: About page contribution section displays Japanese translations ✅
+- test-264: Team page displays Japanese translations when language is set to Japanese ✅
+- test-265: Epics page displays Japanese translations when language is set to Japanese ✅
+
+### E2E Tests Created:
+- e2e-tests/japanese-translations.spec.ts - Basic translation verification
+- e2e-tests/set-japanese-about.spec.ts - About page in Japanese
+- e2e-tests/test-263-about-contribution.spec.ts - Contribution section
+- e2e-tests/full-team-test.spec.ts - Team page with project creation
+- e2e-tests/full-epics-test.spec.ts - Epics page with project creation
+
+### Build Status:
+- `npm run build` succeeds without errors ✅
+- All new tests pass (4/4) ✅
+- All console logs show NO_CONSOLE_ERRORS ✅
+- Application loads correctly ✅
+
+### Screenshots Captured (Issue #36):
+- test-262-about-ja.png: About page with Japanese translations (hero, mission, features)
+- test-263-contribution.png: About page contribution section in Japanese
+- test-264-team.png: Team page with Japanese labels (チーム, チームサイズ, 合計稼働週数)
+- test-265-epics.png: Epics page with Japanese labels (エピック, 合計エピック数, すべて展開)
+
+---
 
 ## Issue #35 - Spanish Language (COMPLETE)
 Added Spanish as a language option in the Settings page.

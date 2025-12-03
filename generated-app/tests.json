@@ -3703,5 +3703,81 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-262",
+    "category": "functional",
+    "description": "About page displays Japanese translations when language is set to Japanese",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Japanese language option (日本語)",
+      "Navigate to http://localhost:6174/about",
+      "Take a screenshot",
+      "Verify page heading shows 'Canopyへようこそ' (Welcome to Canopy)",
+      "Verify 'Our Mission' section shows '私たちのミッション'",
+      "Verify 'Simplify Project Management' shows 'プロジェクト管理を簡素化'",
+      "Verify 'Sprint Planning' shows 'スプリント計画'",
+      "Verify 'Kanban Board' shows 'カンバンボード'",
+      "Verify 'Bug Reports' shows 'バグ報告'",
+      "Verify 'Feature Requests' shows '機能リクエスト'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-263",
+    "category": "functional",
+    "description": "About page contribution section displays Japanese translations",
+    "steps": [
+      "Set language to Japanese from settings page",
+      "Navigate to http://localhost:6174/about",
+      "Take a screenshot",
+      "Verify 'How to Make Requests' shows 'リクエストの方法'",
+      "Verify 'Best Practices' section shows '良いフィードバックのベストプラクティス'",
+      "Verify 'Ready to Get Started' shows '始める準備はできましたか？'",
+      "Verify 'Create a Project' button shows 'プロジェクトを作成'",
+      "Verify footer shows '美しいツールを愛するチームのために愛を込めて作りました'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-264",
+    "category": "functional",
+    "description": "Team page displays Japanese translations when language is set to Japanese",
+    "steps": [
+      "Set language to Japanese from settings page",
+      "Create a project if none exists",
+      "Navigate to team page for the project",
+      "Take a screenshot",
+      "Verify page heading shows 'チーム' (Team)",
+      "Verify 'Add Team Member' button shows 'チームメンバーを追加'",
+      "Verify 'Team Size' shows 'チームサイズ'",
+      "Verify 'Total Available Weeks' shows '合計稼働週数'",
+      "Verify 'Total Capacity (Hours)' shows '総稼働時間'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-265",
+    "category": "functional",
+    "description": "Epics page displays Japanese translations when language is set to Japanese",
+    "steps": [
+      "Set language to Japanese from settings page",
+      "Create a project if none exists",
+      "Navigate to epics page for the project",
+      "Take a screenshot",
+      "Verify page heading shows 'エピック' (Epics)",
+      "Verify description shows 'エピックを管理し、進捗を追跡します'",
+      "Verify 'Total Epics' shows '合計エピック数'",
+      "Verify 'Open' shows 'オープン'",
+      "Verify 'In Progress' shows '進行中'",
+      "Verify 'Done' shows '完了'",
+      "Verify 'Expand All' shows 'すべて展開'",
+      "Verify 'Collapse All' shows 'すべて折りたたむ'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

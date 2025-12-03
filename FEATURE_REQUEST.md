@@ -1,16 +1,16 @@
-# Feature Request: Issue #31
+# Feature Request: Issue #36
 
 ## Title
-[FEATURE] Add Arabic
+[FEATURE] translate individual pages in japanese
 
 ## Description
 ### Feature Name
 
-Arabic Language
+japanese translation on individual pages
 
 ### Feature Specification
 
-Add Arabic as a language option
+japanese translation on individual pages
 
 ### Acceptance Criteria
 
@@ -23,7 +23,7 @@ Small (< 1 hour)
 
 ## Branch
 All work should be committed to the `agent-runtime` branch.
-Commits should reference this issue: `Ref: #31`
+Commits should reference this issue: `Ref: #36`
 
 ## Mode
 Enhancement - Modify existing app in generated-app/

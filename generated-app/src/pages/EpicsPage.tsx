@@ -40,7 +40,7 @@ type FilterStatus = 'all' | 'open' | 'in_progress' | 'done';
 
 export function EpicsPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations } = useApp();
   const [expandedEpics, setExpandedEpics] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<FilterStatus>('all');
@@ -209,11 +209,11 @@ export function EpicsPage() {
       return (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground gap-4">
           <Layers className="w-12 h-12 text-muted-foreground/50" />
-          <p>Project not found</p>
+          <p>{translations.projectNotFound}</p>
         </div>
       );
     }
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{translations.loading}</div>;
   }
 
   return (
@@ -223,10 +223,10 @@ export function EpicsPage() {
         <div>
           <h1 className="text-xl font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
             <Layers className="w-6 h-6 text-[#9B59B6]" />
-            Epics
+            {translations.epics}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage your epics and track their progress
+            {translations.manageEpicsDesc}
           </p>
         </div>
         <Button
@@ -234,7 +234,7 @@ export function EpicsPage() {
           className="bg-accent hover:bg-accent/90 gap-2"
         >
           <Plus className="w-4 h-4" />
-          Create Epic
+          {translations.createEpic}
         </Button>
       </div>
 
@@ -243,7 +243,7 @@ export function EpicsPage() {
         <div className="p-4 border rounded-lg bg-card">
           <div className="flex items-center gap-2 mb-1">
             <Target className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Total Epics</span>
+            <span className="text-sm text-muted-foreground">{translations.totalEpics}</span>
           </div>
           <span className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
             {stats.total}
@@ -252,7 +252,7 @@ export function EpicsPage() {
         <div className="p-4 border rounded-lg bg-card">
           <div className="flex items-center gap-2 mb-1">
             <Circle className="w-4 h-4 text-blue-500" />
-            <span className="text-sm text-muted-foreground">Open</span>
+            <span className="text-sm text-muted-foreground">{translations.open}</span>
           </div>
           <span className="text-2xl font-bold text-blue-500" style={{ fontFamily: 'var(--font-display)' }}>
             {stats.open}
@@ -261,7 +261,7 @@ export function EpicsPage() {
         <div className="p-4 border rounded-lg bg-card">
           <div className="flex items-center gap-2 mb-1">
             <Clock className="w-4 h-4 text-amber-500" />
-            <span className="text-sm text-muted-foreground">In Progress</span>
+            <span className="text-sm text-muted-foreground">{translations.inProgress}</span>
           </div>
           <span className="text-2xl font-bold text-amber-500" style={{ fontFamily: 'var(--font-display)' }}>
             {stats.inProgress}
@@ -270,7 +270,7 @@ export function EpicsPage() {
         <div className="p-4 border rounded-lg bg-card">
           <div className="flex items-center gap-2 mb-1">
             <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span className="text-sm text-muted-foreground">Done</span>
+            <span className="text-sm text-muted-foreground">{translations.done}</span>
           </div>
           <span className="text-2xl font-bold text-green-500" style={{ fontFamily: 'var(--font-display)' }}>
             {stats.done}
@@ -283,7 +283,7 @@ export function EpicsPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search epics and child issues..."
+            placeholder={translations.searchEpicsPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -293,22 +293,22 @@ export function EpicsPage() {
         <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as FilterStatus)}>
           <SelectTrigger className="w-40">
             <Filter className="w-4 h-4 mr-2" />
-            <SelectValue placeholder="Filter by status" />
+            <SelectValue placeholder={translations.filterByStatus} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="open">Open</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="done">Done</SelectItem>
+            <SelectItem value="all">{translations.allStatuses}</SelectItem>
+            <SelectItem value="open">{translations.open}</SelectItem>
+            <SelectItem value="in_progress">{translations.inProgress}</SelectItem>
+            <SelectItem value="done">{translations.done}</SelectItem>
           </SelectContent>
         </Select>
 
         <div className="flex gap-1">
           <Button variant="outline" size="sm" onClick={expandAll}>
-            Expand All
+            {translations.expandAll}
           </Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>
-            Collapse All
+            {translations.collapseAll}
           </Button>
         </div>
       </div>
@@ -317,10 +317,10 @@ export function EpicsPage() {
       <div className="border rounded-lg overflow-hidden">
         {/* Table Header */}
         <div className="grid grid-cols-[1fr_100px_120px_150px] gap-4 px-4 py-3 bg-muted border-b text-sm font-medium text-muted-foreground">
-          <span>Epic</span>
-          <span className="text-center">Issues</span>
-          <span className="text-center">Progress</span>
-          <span className="text-center">Status</span>
+          <span>{translations.epic}</span>
+          <span className="text-center">{translations.issues}</span>
+          <span className="text-center">{translations.progress}</span>
+          <span className="text-center">{translations.status}</span>
         </div>
 
         {/* Epic Rows */}
@@ -395,9 +395,9 @@ export function EpicsPage() {
                           epicStatus === 'in_progress' && 'bg-amber-500 hover:bg-amber-600 text-white'
                         )}
                       >
-                        {epicStatus === 'done' ? 'Completed' :
-                         epicStatus === 'in_progress' ? 'In Progress' :
-                         'Open'}
+                        {epicStatus === 'done' ? translations.completed :
+                         epicStatus === 'in_progress' ? translations.inProgress :
+                         translations.open}
                       </Badge>
                     </div>
                   </div>
@@ -456,11 +456,11 @@ export function EpicsPage() {
                       {/* Summary row for this epic */}
                       <div className="px-4 py-2 pl-16 text-xs text-muted-foreground border-t bg-muted/30 flex items-center gap-4">
                         <span>
-                          <strong>{progress?.done ?? 0}</strong> of <strong>{progress?.total ?? 0}</strong> issues done
+                          <strong>{progress?.done ?? 0}</strong> of <strong>{progress?.total ?? 0}</strong> {translations.issuesDone}
                         </span>
                         <span className="text-muted-foreground/50">•</span>
                         <span>
-                          <strong>{children.reduce((sum, c) => sum + (c.storyPoints ?? 0), 0)}</strong> story points total
+                          <strong>{children.reduce((sum, c) => sum + (c.storyPoints ?? 0), 0)}</strong> {translations.storyPointsTotal}
                         </span>
                       </div>
                     </div>
@@ -469,7 +469,7 @@ export function EpicsPage() {
                   {/* Empty state for epic with no children */}
                   {isExpanded && children.length === 0 && (
                     <div className="bg-muted/20 border-t px-4 py-6 text-center text-sm text-muted-foreground">
-                      No child issues yet. Link issues to this epic to track progress.
+                      {translations.noChildIssues}
                     </div>
                   )}
                 </div>
@@ -479,12 +479,12 @@ export function EpicsPage() {
             <div className="p-12 text-center">
               <Layers className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
               <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'var(--font-display)' }}>
-                {searchQuery || statusFilter !== 'all' ? 'No epics match your filters' : 'No epics yet'}
+                {searchQuery || statusFilter !== 'all' ? translations.noEpicsMatchFilters : translations.noEpics}
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
                 {searchQuery || statusFilter !== 'all'
-                  ? 'Try adjusting your search or filters'
-                  : 'Epics help you organize related issues into larger initiatives'}
+                  ? translations.tryAdjustingFilters
+                  : translations.epicsHelpOrganize}
               </p>
               {!searchQuery && statusFilter === 'all' && (
                 <Button
@@ -492,7 +492,7 @@ export function EpicsPage() {
                   className="gap-2"
                 >
                   <Plus className="w-4 h-4" />
-                  Create your first Epic
+                  {translations.createYourFirstEpic}
                 </Button>
               )}
             </div>
@@ -502,22 +502,22 @@ export function EpicsPage() {
 
       {/* Legend */}
       <div className="flex items-center gap-6 text-xs text-muted-foreground">
-        <span className="font-medium">Issue Hierarchy:</span>
+        <span className="font-medium">{translations.issueHierarchy}:</span>
         <div className="flex items-center gap-2">
           <IssueTypeIcon type="Epic" size={14} />
-          <span>Epic (parent)</span>
+          <span>{translations.epicParent}</span>
         </div>
         <span className="text-muted-foreground/50">→</span>
         <div className="flex items-center gap-2">
           <IssueTypeIcon type="Story" size={14} />
           <IssueTypeIcon type="Bug" size={14} />
           <IssueTypeIcon type="Task" size={14} />
-          <span>Child Issues</span>
+          <span>{translations.childIssues}</span>
         </div>
         <span className="text-muted-foreground/50">→</span>
         <div className="flex items-center gap-2">
           <IssueTypeIcon type="Sub-task" size={14} />
-          <span>Sub-tasks</span>
+          <span>{translations.subtasks}</span>
         </div>
       </div>
 

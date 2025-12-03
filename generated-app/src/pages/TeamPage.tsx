@@ -117,9 +117,9 @@ export function TeamPage() {
 
       resetForm();
       setIsCreateOpen(false);
-      toast.success('Team member added');
+      toast.success(translations.teamMemberAdded);
     } catch (error) {
-      toast.error('Failed to add team member');
+      toast.error(translations.failedToAddTeamMember);
     }
   };
 
@@ -134,18 +134,18 @@ export function TeamPage() {
         hoursPerWeek: editingMember.hoursPerWeek,
       });
       setEditingMember(null);
-      toast.success('Team member updated');
+      toast.success(translations.teamMemberUpdated);
     } catch (error) {
-      toast.error('Failed to update team member');
+      toast.error(translations.failedToUpdateTeamMember);
     }
   };
 
   const handleDelete = async (memberId: string) => {
     try {
       await deleteTeamMember(memberId);
-      toast.success('Team member removed');
+      toast.success(translations.teamMemberRemoved);
     } catch (error) {
-      toast.error('Failed to remove team member');
+      toast.error(translations.failedToRemoveTeamMember);
     }
   };
 
@@ -163,7 +163,7 @@ export function TeamPage() {
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{translations.loading}</div>;
   }
 
   return (
@@ -176,16 +176,16 @@ export function TeamPage() {
           </div>
           <div>
             <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-              Team
+              {translations.teamTitle}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Manage team members and capacity for {project.name}
+              {translations.teamDescription} {project.name}
             </p>
           </div>
         </div>
         <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
           <Plus className="w-4 h-4" />
-          Add Team Member
+          {translations.addTeamMember}
         </Button>
       </div>
 
@@ -194,7 +194,7 @@ export function TeamPage() {
         <div className="border rounded-lg p-4 bg-card">
           <div className="flex items-center gap-2 text-muted-foreground mb-1">
             <Users className="w-4 h-4" />
-            <span className="text-sm">Team Size</span>
+            <span className="text-sm">{translations.teamSize}</span>
           </div>
           <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
             {teamMembers?.length ?? 0}
@@ -203,7 +203,7 @@ export function TeamPage() {
         <div className="border rounded-lg p-4 bg-card">
           <div className="flex items-center gap-2 text-muted-foreground mb-1">
             <Calendar className="w-4 h-4" />
-            <span className="text-sm">Total Available Weeks</span>
+            <span className="text-sm">{translations.totalAvailableWeeks}</span>
           </div>
           <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
             {totalCapacity.totalWeeks}
@@ -212,7 +212,7 @@ export function TeamPage() {
         <div className="border rounded-lg p-4 bg-card">
           <div className="flex items-center gap-2 text-muted-foreground mb-1">
             <ListChecks className="w-4 h-4" />
-            <span className="text-sm">Total Capacity (Hours)</span>
+            <span className="text-sm">{translations.totalCapacityHours}</span>
           </div>
           <p className="text-2xl font-bold" style={{ fontFamily: 'var(--font-display)' }}>
             {totalCapacity.totalHours}
@@ -224,11 +224,11 @@ export function TeamPage() {
       {teamMembers && teamMembers.length > 0 ? (
         <div className="border rounded-lg divide-y">
           <div className="grid grid-cols-12 gap-4 p-4 bg-muted/50 text-sm font-medium text-muted-foreground">
-            <div className="col-span-4">Member</div>
-            <div className="col-span-2 text-center">Available Weeks</div>
-            <div className="col-span-2 text-center">Hours/Week</div>
-            <div className="col-span-2 text-center">Assigned Tasks</div>
-            <div className="col-span-2 text-center">Actions</div>
+            <div className="col-span-4">{translations.member}</div>
+            <div className="col-span-2 text-center">{translations.availableWeeks}</div>
+            <div className="col-span-2 text-center">{translations.hoursPerWeek}</div>
+            <div className="col-span-2 text-center">{translations.assignedTasks}</div>
+            <div className="col-span-2 text-center">{translations.actions}</div>
           </div>
           {teamMembers.map((member) => {
             const stats = memberStats[member.id] || { assignedCount: 0, totalPoints: 0, completedPoints: 0 };
@@ -251,7 +251,7 @@ export function TeamPage() {
                 </div>
                 <div className="col-span-2 text-center">
                   <Badge variant="secondary" className="font-mono">
-                    {member.availableWeeks} weeks
+                    {member.availableWeeks} {member.availableWeeks !== 1 ? 'weeks' : 'week'}
                   </Badge>
                 </div>
                 <div className="col-span-2 text-center">
@@ -296,14 +296,14 @@ export function TeamPage() {
               <Users className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="font-medium" style={{ fontFamily: 'var(--font-display)' }}>No team members yet</h3>
+              <h3 className="font-medium" style={{ fontFamily: 'var(--font-display)' }}>{translations.noTeamMembersYet}</h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Add team members to track capacity and assign tasks.
+                {translations.addTeamMemberDesc}
               </p>
             </div>
             <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
               <Plus className="w-4 h-4" />
-              Add your first team member
+              {translations.addFirstTeamMember}
             </Button>
           </div>
         </div>
@@ -316,11 +316,10 @@ export function TeamPage() {
             <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-medium text-amber-900 dark:text-amber-100" style={{ fontFamily: 'var(--font-display)' }}>
-                Capacity Planning Tip
+                {translations.capacityPlanningTip}
               </h4>
               <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                Available weeks help you plan how much work can be assigned to each team member during sprints.
-                Adjust these values based on vacation schedules, part-time availability, or other commitments.
+                {translations.capacityPlanningTipDesc}
               </p>
             </div>
           </div>
@@ -331,11 +330,11 @@ export function TeamPage() {
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'var(--font-display)' }}>Add Team Member</DialogTitle>
+            <DialogTitle style={{ fontFamily: 'var(--font-display)' }}>{translations.addTeamMember}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="name">{translations.nameRequired}</Label>
               <Input
                 id="name"
                 value={newName}
@@ -344,7 +343,7 @@ export function TeamPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email (optional)</Label>
+              <Label htmlFor="email">{translations.emailOptional}</Label>
               <Input
                 id="email"
                 type="email"
@@ -355,7 +354,7 @@ export function TeamPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="availableWeeks">Available Weeks</Label>
+                <Label htmlFor="availableWeeks">{translations.availableWeeks}</Label>
                 <Select
                   value={newAvailableWeeks.toString()}
                   onValueChange={(v) => setNewAvailableWeeks(parseInt(v))}
@@ -371,7 +370,7 @@ export function TeamPage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hoursPerWeek">Hours per Week</Label>
+                <Label htmlFor="hoursPerWeek">{translations.hoursPerWeek}</Label>
                 <Select
                   value={newHoursPerWeek.toString()}
                   onValueChange={(v) => setNewHoursPerWeek(parseInt(v))}
@@ -388,7 +387,7 @@ export function TeamPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Avatar Color</Label>
+              <Label>{translations.avatarColor}</Label>
               <div className="flex flex-wrap gap-2">
                 {USER_COLORS.map((c) => (
                   <button
@@ -402,7 +401,7 @@ export function TeamPage() {
               </div>
             </div>
             <div className="flex items-center gap-3 pt-2">
-              <span className="text-sm text-muted-foreground">Preview:</span>
+              <span className="text-sm text-muted-foreground">{translations.preview}</span>
               <Avatar className="h-10 w-10 border-2" style={{ borderColor: newColor }}>
                 <AvatarFallback style={{ backgroundColor: `${newColor}20`, color: newColor }} className="font-medium">
                   {getInitials(newName || 'JD')}
@@ -411,9 +410,9 @@ export function TeamPage() {
               <span className="font-medium">{newName || 'John Doe'}</span>
             </div>
             <div className="flex justify-end gap-2 pt-4">
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>{translations.cancel}</Button>
               <Button onClick={handleCreate} disabled={!newName.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
-                Add Member
+                {translations.addMember}
               </Button>
             </div>
           </div>
@@ -424,12 +423,12 @@ export function TeamPage() {
       <Dialog open={!!editingMember} onOpenChange={(open) => !open && setEditingMember(null)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle style={{ fontFamily: 'var(--font-display)' }}>Edit Team Member</DialogTitle>
+            <DialogTitle style={{ fontFamily: 'var(--font-display)' }}>{translations.editTeamMember}</DialogTitle>
           </DialogHeader>
           {editingMember && (
             <div className="space-y-4 pt-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-name">Name *</Label>
+                <Label htmlFor="edit-name">{translations.nameRequired}</Label>
                 <Input
                   id="edit-name"
                   value={editingMember.name}
@@ -437,7 +436,7 @@ export function TeamPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-email">Email (optional)</Label>
+                <Label htmlFor="edit-email">{translations.emailOptional}</Label>
                 <Input
                   id="edit-email"
                   type="email"
@@ -447,7 +446,7 @@ export function TeamPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-availableWeeks">Available Weeks</Label>
+                  <Label htmlFor="edit-availableWeeks">{translations.availableWeeks}</Label>
                   <Select
                     value={editingMember.availableWeeks.toString()}
                     onValueChange={(v) => setEditingMember({ ...editingMember, availableWeeks: parseInt(v) })}
@@ -463,7 +462,7 @@ export function TeamPage() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-hoursPerWeek">Hours per Week</Label>
+                  <Label htmlFor="edit-hoursPerWeek">{translations.hoursPerWeek}</Label>
                   <Select
                     value={(editingMember.hoursPerWeek ?? 40).toString()}
                     onValueChange={(v) => setEditingMember({ ...editingMember, hoursPerWeek: parseInt(v) })}
@@ -480,7 +479,7 @@ export function TeamPage() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Avatar Color</Label>
+                <Label>{translations.avatarColor}</Label>
                 <div className="flex flex-wrap gap-2">
                   {USER_COLORS.map((c) => (
                     <button
@@ -494,9 +493,9 @@ export function TeamPage() {
                 </div>
               </div>
               <div className="flex justify-end gap-2 pt-4">
-                <Button variant="outline" onClick={() => setEditingMember(null)}>Cancel</Button>
+                <Button variant="outline" onClick={() => setEditingMember(null)}>{translations.cancel}</Button>
                 <Button onClick={handleUpdate} disabled={!editingMember.name.trim()} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
-                  Save Changes
+                  {translations.saveChanges}
                 </Button>
               </div>
             </div>

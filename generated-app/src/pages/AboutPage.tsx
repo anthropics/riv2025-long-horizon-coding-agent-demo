@@ -17,40 +17,52 @@ import {
   Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useApp } from '@/context/AppContext';
 
 export function AboutPage() {
+  const { translations } = useApp();
+
   const features = [
-    { icon: Target, title: 'Sprint Planning', desc: 'Organize work into focused sprints with clear goals' },
-    { icon: Zap, title: 'Kanban Board', desc: 'Visualize workflow with drag-and-drop simplicity' },
-    { icon: Users, title: 'Team Collaboration', desc: 'Assign tasks and track progress together' },
-    { icon: Palette, title: 'Customizable', desc: 'Labels, components, and project settings your way' },
+    { icon: Target, title: translations.sprintPlanning, desc: translations.sprintPlanningDesc },
+    { icon: Zap, title: translations.kanbanBoard, desc: translations.kanbanBoardDesc },
+    { icon: Users, title: translations.teamCollaboration, desc: translations.teamCollaborationDesc },
+    { icon: Palette, title: translations.customizable, desc: translations.customizableDesc },
   ];
 
   const requestMethods = [
     {
       icon: Bug,
-      title: 'Bug Reports',
-      description: 'Found something broken? Help us squash it!',
+      title: translations.bugReports,
+      description: translations.bugReportsDesc,
       color: 'text-destructive',
       bgColor: 'bg-destructive/10',
-      steps: ['Describe what happened', 'Include steps to reproduce', 'Add screenshots if possible'],
+      steps: [translations.describeWhatHappened, translations.includeStepsToReproduce, translations.addScreenshotsIfPossible],
     },
     {
       icon: Lightbulb,
-      title: 'Feature Requests',
-      description: 'Have an idea? We\'d love to hear it!',
+      title: translations.featureRequests,
+      description: translations.featureRequestsDesc,
       color: 'text-[#E9C46A]',
       bgColor: 'bg-[#E9C46A]/10',
-      steps: ['Explain the feature', 'Share the use case', 'Describe expected behavior'],
+      steps: [translations.explainTheFeature, translations.shareTheUseCase, translations.describeExpectedBehavior],
     },
     {
       icon: GitPullRequest,
-      title: 'Pull Requests',
-      description: 'Code contributions are always welcome!',
+      title: translations.pullRequests,
+      description: translations.pullRequestsDesc,
       color: 'text-secondary',
       bgColor: 'bg-secondary/10',
-      steps: ['Fork the repository', 'Make your changes', 'Submit a PR with description'],
+      steps: [translations.forkTheRepository, translations.makeYourChanges, translations.submitAPr],
     },
+  ];
+
+  const bestPractices = [
+    translations.beSpecificAndDescriptive,
+    translations.includeBrowserInfo,
+    translations.searchExistingIssues,
+    translations.oneIssuePerReport,
+    translations.useClearTitles,
+    translations.attachScreenshots,
   ];
 
   return (
@@ -76,10 +88,10 @@ export function AboutPage() {
             </div>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-            Welcome to Canopy
+            {translations.welcomeToCanopy}
           </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-            A JIRA-like project management tool that helps teams plan, track, and deliver great work together.
+            {translations.aboutHeroDescription}
           </p>
         </div>
       </div>
@@ -90,21 +102,20 @@ export function AboutPage() {
         <section className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
             <Heart className="w-4 h-4" />
-            Our Mission
+            {translations.ourMission}
           </div>
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-            Simplify Project Management
+            {translations.simplifyProjectManagement}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Canopy was born from the belief that project management should be intuitive, beautiful, and accessible.
-            We've combined the power of professional tools with a delightful user experience.
+            {translations.missionDescription}
           </p>
         </section>
 
         {/* Features Grid */}
         <section className="mb-16">
           <h3 className="text-xl font-semibold text-foreground mb-6 text-center" style={{ fontFamily: 'var(--font-display)' }}>
-            What Makes Canopy Special
+            {translations.whatMakesCanopySpecial}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((feature, index) => (
@@ -132,7 +143,7 @@ export function AboutPage() {
           <div className="flex-1 h-px bg-border" />
           <div className="flex items-center gap-2 text-muted-foreground">
             <Leaf className="w-4 h-4" />
-            <span className="text-sm font-medium">Get Involved</span>
+            <span className="text-sm font-medium">{translations.getInvolved}</span>
             <Leaf className="w-4 h-4" />
           </div>
           <div className="flex-1 h-px bg-border" />
@@ -143,13 +154,13 @@ export function AboutPage() {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full text-secondary text-sm font-medium mb-4">
               <MessageSquare className="w-4 h-4" />
-              Contribute
+              {translations.contribute}
             </div>
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-              How to Make Requests
+              {translations.howToMakeRequests}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We value your feedback! Here are the best ways to report bugs or request new features.
+              {translations.requestsDescription}
             </p>
           </div>
 
@@ -176,7 +187,7 @@ export function AboutPage() {
                 {/* Card Body */}
                 <div className="p-6 pt-4">
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                    Steps to follow
+                    {translations.stepsToFollow}
                   </h4>
                   <ul className="space-y-2">
                     {method.steps.map((step, stepIndex) => (
@@ -205,17 +216,10 @@ export function AboutPage() {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-foreground mb-3" style={{ fontFamily: 'var(--font-display)' }}>
-                  Best Practices for Great Feedback
+                  {translations.bestPractices}
                 </h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {[
-                    'Be specific and descriptive',
-                    'Include browser/device info for bugs',
-                    'Search existing issues first',
-                    'One issue per report',
-                    'Use clear, concise titles',
-                    'Attach relevant screenshots',
-                  ].map((practice, index) => (
+                  {bestPractices.map((practice, index) => (
                     <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
                       <ArrowRight className="w-4 h-4 text-accent flex-shrink-0" />
                       {practice}
@@ -234,18 +238,17 @@ export function AboutPage() {
               <Code2 className="w-8 h-8 text-accent" />
             </div>
             <h2 className="text-2xl font-semibold text-foreground mb-4" style={{ fontFamily: 'var(--font-display)' }}>
-              Ready to Get Started?
+              {translations.readyToGetStarted}
             </h2>
             <p className="text-muted-foreground max-w-lg mx-auto mb-6">
-              Create your first project and experience the joy of organized,
-              beautiful project management with Canopy.
+              {translations.createProjectCTA}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
                 className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2 px-6"
                 onClick={() => window.location.href = '/projects/new'}
               >
-                Create a Project
+                {translations.createAProject}
                 <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
@@ -253,7 +256,7 @@ export function AboutPage() {
                 className="gap-2"
                 onClick={() => window.location.href = '/projects'}
               >
-                View All Projects
+                {translations.viewAllProjects}
                 <ExternalLink className="w-4 h-4" />
               </Button>
             </div>
@@ -264,10 +267,10 @@ export function AboutPage() {
         <footer className="mt-16 pt-8 border-t border-border text-center">
           <div className="flex items-center justify-center gap-2 text-muted-foreground mb-2">
             <TreeDeciduous className="w-5 h-5 text-primary" />
-            <span className="font-medium text-foreground" style={{ fontFamily: 'var(--font-display)' }}>Canopy</span>
+            <span className="font-medium text-foreground" style={{ fontFamily: 'var(--font-display)' }}>{translations.appName}</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            Built with <Heart className="w-3 h-3 inline-block text-secondary mx-1" /> for teams who love beautiful tools
+            {translations.builtWithLove}
           </p>
         </footer>
       </div>
