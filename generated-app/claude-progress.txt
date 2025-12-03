@@ -1,6 +1,61 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #36 - Japanese Translation on Individual Pages)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #40 - Confetti Animation)
+
+## Issue #40 - Confetti Animation (COMPLETE)
+Added confetti animation that plays whenever a task is marked as complete.
+
+### Feature Description:
+When a task is marked as complete (moved to "Done" status), a beautiful confetti animation appears on screen to celebrate the accomplishment. The confetti uses the app's color palette (ruby red, coral, yellow, rose) for a cohesive visual experience.
+
+### Implementation Details:
+The confetti animation triggers in three scenarios:
+1. **Dragging to Done column** - When a user drags an issue card to the "Done" column on the Kanban board
+2. **Status dropdown change** - When a user changes the status to "Done" via the dropdown in the issue detail panel
+3. **Sub-task checkbox** - When a user checks a sub-task checkbox to mark it complete (smaller confetti burst)
+
+### New Files Created:
+- src/lib/confetti.ts - Confetti utility functions using canvas-confetti library
+  - `triggerConfetti()` - Main confetti burst for task completion (3 sequential bursts)
+  - `triggerSmallConfetti()` - Smaller confetti for sub-task completion
+
+### Files Modified:
+- package.json - Added canvas-confetti and @types/canvas-confetti dependencies
+- src/pages/BoardPage.tsx - Added confetti trigger when dragging issues to Done column
+- src/components/board/IssueDetailPanel.tsx - Added confetti trigger when:
+  - Changing status dropdown to Done
+  - Checking sub-task checkbox to complete
+
+### Confetti Design:
+- Colors: Ruby red (#7B2332), Coral (#E8A87C), Rose (#C25B6A), Yellow (#E9C46A), Dusty Rose (#B85C6E)
+- Animation: 3 sequential bursts from center, left, and right
+- Particle count: 50 (main burst) + 30 (left) + 30 (right) = 110 particles total
+- Gravity and drift effects for natural falling motion
+
+### New Tests Added (test-266 through test-267):
+- test-266: Confetti animation plays when a task is marked as complete ✅
+- test-267: Confetti animation plays when changing task status to Done via dropdown ✅
+
+### E2E Tests Created:
+- e2e-tests/confetti-test-v2.spec.ts - Main confetti verification test
+- e2e-tests/confetti-full-test.spec.ts - Full workflow test
+- e2e-tests/confetti-verify.spec.ts - Step-by-step verification
+- e2e-tests/confetti-final.spec.ts - Final test variant
+
+### Build Status:
+- `npm run build` succeeds without errors ✅
+- All new tests pass (2/2) ✅
+- All console logs show NO_CONSOLE_ERRORS ✅
+- Application loads correctly ✅
+
+### Screenshots Captured (Issue #40):
+- test-266-confetti-visible.png: Confetti animation visible on screen with colorful particles
+- test-267-step3-confetti.png: Confetti triggered after status dropdown change to Done
+- test-266-final-board.png: Board showing task in Done column with confetti still visible
+- test-267-step1.png: Detail panel showing task before status change
+- test-267-step2.png: Status dropdown open showing Done option
+
+---
 
 ## Issue #36 - Japanese Translation on Individual Pages (COMPLETE)
 Added Japanese translations for individual pages (About, Team, Epics) that previously had hardcoded English strings.

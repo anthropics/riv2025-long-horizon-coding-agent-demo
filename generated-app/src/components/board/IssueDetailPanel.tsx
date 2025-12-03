@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { db, updateIssue, deleteIssue, addComment, createIssue } from '@/lib/db';
+import { triggerConfetti, triggerSmallConfetti } from '@/lib/confetti';
 import { useApp } from '@/context/AppContext';
 import { IssueTypeIcon } from '@/components/common/IssueTypeIcon';
 import { PriorityIcon } from '@/components/common/PriorityIcon';
@@ -289,7 +290,20 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
           <div className="mb-6">
             <Select
               value={issue.status}
-              onValueChange={(value) => handleUpdate({ status: value })}
+              onValueChange={(value) => {
+                const currentColumn = board?.columns.find(c => c.id === issue.status);
+                const newColumn = board?.columns.find(c => c.id === value);
+
+                // Check if moving to "done" status from non-done status
+                const isMovedToDone = newColumn?.statusCategory === 'done' && currentColumn?.statusCategory !== 'done';
+
+                handleUpdate({ status: value });
+
+                if (isMovedToDone) {
+                  // Trigger confetti animation!
+                  triggerConfetti();
+                }
+              }}
             >
               <SelectTrigger className="w-40">
                 <SelectValue />
@@ -401,11 +415,16 @@ export function IssueDetailPanel({ issue, onClose }: IssueDetailPanelProps) {
                           if (!currentUser) return;
                           const doneColumn = board?.columns.find(c => c.statusCategory === 'done');
                           const todoColumn = board?.columns.find(c => c.statusCategory === 'todo');
+                          const movingToDone = !isComplete; // If not currently complete, we're moving to done
                           await updateIssue(
                             task.id,
                             { status: isComplete ? todoColumn?.id : doneColumn?.id },
                             currentUser.id
                           );
+                          // Trigger small confetti for sub-task completion
+                          if (movingToDone) {
+                            triggerSmallConfetti();
+                          }
                         }}
                         className="h-4 w-4 rounded border-gray-300"
                       />

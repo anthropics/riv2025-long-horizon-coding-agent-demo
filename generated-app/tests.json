@@ -3779,5 +3779,41 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-266",
+    "category": "functional",
+    "description": "Confetti animation plays when a task is marked as complete",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Create a project if none exists",
+      "Navigate to the project board",
+      "Create an issue if none exists",
+      "Drag the issue to 'Done' column or change status to Done",
+      "Take a screenshot",
+      "Verify confetti animation appears on screen with colorful particles",
+      "Verify the task is moved to Done status",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-267",
+    "category": "functional",
+    "description": "Confetti animation plays when changing task status to Done via dropdown",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Create a project if none exists",
+      "Navigate to the project board",
+      "Create an issue if none exists",
+      "Click on an issue to open the detail panel",
+      "Change the status dropdown from 'To Do' to 'Done'",
+      "Take a screenshot",
+      "Verify confetti animation appears on screen with colorful particles",
+      "Verify the status is updated to Done",
+      "Verify activity log shows 'status changed status from todo to done'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

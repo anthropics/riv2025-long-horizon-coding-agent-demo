@@ -22,6 +22,7 @@ import { Plus, Filter, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { db, updateIssue } from '@/lib/db';
+import { triggerConfetti } from '@/lib/confetti';
 import { useApp } from '@/context/AppContext';
 import { BoardColumn } from '@/components/board/BoardColumn';
 import { IssueCard } from '@/components/board/IssueCard';
@@ -191,6 +192,16 @@ export function BoardPage() {
 
         if (targetColumnId !== activeIssue.status) {
           const column = board?.columns.find((c) => c.id === targetColumnId);
+          const previousColumn = board?.columns.find((c) => c.id === activeIssue.status);
+
+          // Check if the issue was moved to a "done" column from a non-done column
+          const isMovedToDone = column?.statusCategory === 'done' && previousColumn?.statusCategory !== 'done';
+
+          if (isMovedToDone) {
+            // Trigger confetti animation!
+            triggerConfetti();
+          }
+
           toast.success(`Moved to ${column?.name ?? targetColumnId}`);
         }
       } catch (error) {
