@@ -25,12 +25,15 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { db } from '@/lib/db';
 import { useApp } from '@/context/AppContext';
+import { useAuth } from '@/context/AuthContext';
 import { CreateIssueModal } from '@/components/modals/CreateIssueModal';
 import { GlobalSearchModal } from '@/components/modals/GlobalSearchModal';
 import type { Project } from '@/types';
+import { toast } from 'sonner';
 
 export function Header() {
   const { currentUser, currentProject, setCurrentProject, theme, setTheme } = useApp();
+  const { authUser, signOut: handleSignOut, requiresAuth } = useAuth();
   const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -211,8 +214,8 @@ export function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <div className="px-2 py-1.5">
-              <p className="text-sm font-medium">{currentUser?.name}</p>
-              <p className="text-xs text-muted-foreground">{currentUser?.email}</p>
+              <p className="text-sm font-medium">{authUser?.name || currentUser?.name}</p>
+              <p className="text-xs text-muted-foreground">{authUser?.email || currentUser?.email}</p>
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate('/settings')}>
@@ -237,11 +240,27 @@ export function Header() {
                 </>
               )}
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </DropdownMenuItem>
+            {requiresAuth && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={async () => {
+                    try {
+                      await handleSignOut();
+                      toast.success('Signed out successfully');
+                      navigate('/login');
+                    } catch (error) {
+                      toast.error('Failed to sign out');
+                    }
+                  }}
+                  data-testid="sign-out-button"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </header>

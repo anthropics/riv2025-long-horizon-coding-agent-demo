@@ -3855,5 +3855,74 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-270",
+    "category": "functional",
+    "description": "Login page displays with email and password fields",
+    "steps": [
+      "Navigate to http://localhost:6174/login",
+      "Take a screenshot",
+      "Verify Canopy logo is displayed",
+      "Verify Welcome Back heading is displayed",
+      "Verify email input field with data-testid=auth-email-input is visible",
+      "Verify password input field with data-testid=auth-password-input is visible",
+      "Verify Sign In button with data-testid=auth-submit-button is visible",
+      "Verify Sign up link with data-testid=auth-toggle-mode is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-271",
+    "category": "functional",
+    "description": "Signup form displays when clicking Sign up link",
+    "steps": [
+      "Navigate to http://localhost:6174/login",
+      "Click the Sign up link",
+      "Take a screenshot",
+      "Verify Create Account heading is displayed",
+      "Verify name input field with data-testid=auth-name-input is visible",
+      "Verify email input field with data-testid=auth-email-input is visible",
+      "Verify password input field with data-testid=auth-password-input is visible",
+      "Verify confirm password input field with data-testid=auth-confirm-password-input is visible",
+      "Verify Create Account button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-272",
+    "category": "functional",
+    "description": "User can create an account and access the application",
+    "steps": [
+      "Navigate to http://localhost:6174/login",
+      "Click the Sign up link",
+      "Enter Test User in the name field",
+      "Enter test@example.com in the email field",
+      "Enter password123 in the password field",
+      "Enter password123 in the confirm password field",
+      "Click the Create Account button",
+      "Take a screenshot",
+      "Verify user is redirected to the home page",
+      "Verify Canopy header is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-273",
+    "category": "functional",
+    "description": "Authenticated user can sign out",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Click the user avatar in the header to open user menu",
+      "Verify Sign Out option is visible with data-testid=sign-out-button",
+      "Click Sign Out",
+      "Take a screenshot",
+      "Verify user is redirected to the login page",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

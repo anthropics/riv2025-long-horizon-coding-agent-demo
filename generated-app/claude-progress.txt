@@ -1,6 +1,81 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #41 - Story of Completion)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #42 - User Space with Authentication)
+
+## Issue #42 - User Space with Authentication (COMPLETE)
+Added user authentication system allowing users to create accounts, sign in/out, and have their work persisted across sessions.
+
+### Feature Description:
+Users can now:
+1. Create an account with email, password, and name
+2. Sign in with existing credentials
+3. Sign out from the user menu
+4. Have their settings, preferences, and work persisted to their account
+5. Access protected routes only when authenticated (after first user exists)
+
+### Implementation Details:
+The authentication system uses IndexedDB (via Dexie.js) to store:
+- **AuthUser**: User credentials (email, password hash, name, settings)
+- **AuthSession**: Session tokens with expiration (30 days)
+
+Authentication flow:
+- First-time users see the main app directly (no auth required until first account is created)
+- Once an account exists, users must sign in to access the app
+- Sessions are validated on page load
+- Sign out clears the session and redirects to login
+
+### New Files Created:
+- src/context/AuthContext.tsx - Authentication context provider with signUp, signIn, signOut functions
+- src/pages/AuthPage.tsx - Beautiful login/signup page with animations and responsive design
+- e2e-tests/signup-form.spec.ts - Playwright test for signup form
+- e2e-tests/signup-screenshot.spec.ts - Screenshot capture for signup form
+- e2e-tests/auth-flow.spec.ts - Full authentication flow tests
+
+### Files Modified:
+- src/types/index.ts - Added AuthUser and AuthSession types, added ownerId to Project and User types
+- src/lib/db.ts - Added authUsers and authSessions tables (v4 schema), authentication helper functions (signUp, signIn, signOut, validateSession, getCurrentAuthUser, hasAuthUsers)
+- src/App.tsx - Added AuthProvider wrapper, ProtectedRoute and AuthRoute components, /login route
+- src/components/layout/Header.tsx - Added auth integration with sign out functionality in user menu
+- src/lib/translations.ts - Added 30 new auth-related translations in all 5 languages (EN, JA, ZH, AR, ES)
+
+### Login/Signup Page Features:
+- Canopy branding with leaf logo
+- "Welcome Back" (login) / "Create Account" (signup) headings
+- Email input with mail icon
+- Password input with show/hide toggle
+- Confirm Password field for signup
+- Full Name field for signup
+- Animated background with gradient blurs
+- Feature highlights (Kanban boards, Sprint planning, Team collaboration)
+- Toggle between login and signup modes
+- Form validation with toast notifications
+- Loading states on submit
+
+### Security Features:
+- Password hashing using SHA-256 (via Web Crypto API)
+- Session tokens with 30-day expiration
+- Automatic session validation on app load
+- Session cleanup on sign out
+
+### New Tests Added (test-270 through test-273):
+- test-270: Login page displays with email and password fields ✅
+- test-271: Signup form displays when clicking Sign up link ✅
+- test-272: User can create an account and access the application ✅
+- test-273: Authenticated user can sign out ✅
+
+### Build Status:
+- `npm run build` succeeds without errors ✅
+- All new tests pass (4/4) ✅
+- All console logs show NO_CONSOLE_ERRORS ✅
+- Application loads correctly ✅
+
+### Screenshots Captured (Issue #42):
+- test-270-74668.png: Login page with email/password fields and Sign In button
+- test-271-12345.png: Signup form with name, email, password, confirm password fields
+- test-272-12345.png: Home page after successful signup showing user avatar "TU"
+- test-273-83284.png: Login page displayed after successful sign out
+
+---
 
 ## Issue #41 - Story of Completion (COMPLETE)
 Added an engaging sardonic story modal that appears at the end of each task completion to celebrate the accomplishment.

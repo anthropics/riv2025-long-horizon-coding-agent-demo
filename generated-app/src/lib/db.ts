@@ -16,6 +16,8 @@ import type {
   BoardColumn,
   Workflow,
   TeamMember,
+  AuthUser,
+  AuthSession,
 } from '@/types';
 
 // Define the Dexie database
@@ -34,6 +36,8 @@ export class CanopyDB extends Dexie {
   settings!: Table<AppSettings>;
   workflows!: Table<Workflow>;
   teamMembers!: Table<TeamMember>;
+  authUsers!: Table<AuthUser>;
+  authSessions!: Table<AuthSession>;
 
   constructor() {
     super('CanopyDB');
@@ -84,6 +88,26 @@ export class CanopyDB extends Dexie {
       settings: 'key',
       workflows: 'id, name, isDefault, createdAt',
       teamMembers: 'id, projectId, userId, name, [projectId+userId]',
+    });
+
+    // Version 4: Add authentication tables and ownerId to all entities
+    this.version(4).stores({
+      projects: 'id, key, name, isArchived, createdAt, workflowId, ownerId',
+      issues: 'id, projectId, key, type, status, priority, assigneeId, epicId, parentId, sprintId, createdAt, [projectId+status], [projectId+sprintId], [projectId+epicId]',
+      sprints: 'id, projectId, status, startDate, endDate',
+      boards: 'id, projectId',
+      users: 'id, email, name, ownerId',
+      labels: 'id, projectId, name',
+      components: 'id, projectId, name',
+      comments: 'id, issueId, authorId, createdAt',
+      activityLog: 'id, issueId, timestamp',
+      filters: 'id, ownerId, projectId',
+      customFields: 'id, projectId',
+      settings: 'key',
+      workflows: 'id, name, isDefault, createdAt, ownerId',
+      teamMembers: 'id, projectId, userId, name, [projectId+userId]',
+      authUsers: 'id, email',
+      authSessions: 'id, userId, token, expiresAt',
     });
   }
 }
@@ -673,4 +697,181 @@ export async function deleteTeamMember(id: string): Promise<void> {
 
 export async function getTeamMembersForProject(projectId: string): Promise<TeamMember[]> {
   return await db.teamMembers.where('projectId').equals(projectId).toArray();
+}
+
+// =============================================================================
+// Authentication helpers
+// =============================================================================
+
+// Simple hash function for password (not cryptographically secure, but works for demo)
+// In production, use bcrypt or similar
+async function hashPassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verifyPassword(password: string, hash: string): Promise<boolean> {
+  const passwordHash = await hashPassword(password);
+  return passwordHash === hash;
+}
+
+function generateToken(): string {
+  return uuidv4() + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).substring(2);
+}
+
+// Create a new auth user (sign up)
+export async function signUp(email: string, password: string, name: string): Promise<{ user: AuthUser; session: AuthSession }> {
+  // Check if email already exists
+  const existingUser = await db.authUsers.where('email').equals(email.toLowerCase()).first();
+  if (existingUser) {
+    throw new Error('Email already registered');
+  }
+
+  const now = new Date();
+  const passwordHash = await hashPassword(password);
+
+  const authUser: AuthUser = {
+    id: uuidv4(),
+    email: email.toLowerCase(),
+    passwordHash,
+    name,
+    color: USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)],
+    createdAt: now,
+    lastLoginAt: now,
+    settings: {
+      theme: 'light',
+      colorTheme: 'ruby',
+      language: 'en',
+      sidebarCollapsed: false,
+    },
+  };
+
+  await db.authUsers.add(authUser);
+
+  // Create a session
+  const session = await createSession(authUser.id);
+
+  // Also create a default "user" profile for backward compatibility
+  const userProfile: User = {
+    id: uuidv4(),
+    name: authUser.name,
+    email: authUser.email,
+    color: authUser.color,
+    role: 'admin',
+    createdAt: now,
+    settings: authUser.settings,
+    ownerId: authUser.id,
+  };
+  await db.users.add(userProfile);
+
+  // Set the current user
+  await db.settings.put({ key: 'currentUserId', value: userProfile.id });
+
+  return { user: authUser, session };
+}
+
+// Sign in an existing user
+export async function signIn(email: string, password: string): Promise<{ user: AuthUser; session: AuthSession }> {
+  const authUser = await db.authUsers.where('email').equals(email.toLowerCase()).first();
+  if (!authUser) {
+    throw new Error('Invalid email or password');
+  }
+
+  const isValid = await verifyPassword(password, authUser.passwordHash);
+  if (!isValid) {
+    throw new Error('Invalid email or password');
+  }
+
+  // Update last login
+  await db.authUsers.update(authUser.id, { lastLoginAt: new Date() });
+
+  // Create a session
+  const session = await createSession(authUser.id);
+
+  // Find the user profile for this auth user
+  const userProfile = await db.users.where('ownerId').equals(authUser.id).first();
+  if (userProfile) {
+    await db.settings.put({ key: 'currentUserId', value: userProfile.id });
+  }
+
+  return { user: authUser, session };
+}
+
+// Sign out
+export async function signOut(sessionToken?: string): Promise<void> {
+  if (sessionToken) {
+    await db.authSessions.where('token').equals(sessionToken).delete();
+  }
+  await db.settings.delete('currentAuthUserId');
+  await db.settings.delete('currentSessionToken');
+}
+
+// Create a session
+async function createSession(userId: string): Promise<AuthSession> {
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+
+  const session: AuthSession = {
+    id: uuidv4(),
+    userId,
+    token: generateToken(),
+    createdAt: now,
+    expiresAt,
+  };
+
+  await db.authSessions.add(session);
+  await db.settings.put({ key: 'currentAuthUserId', value: userId });
+  await db.settings.put({ key: 'currentSessionToken', value: session.token });
+
+  return session;
+}
+
+// Validate session
+export async function validateSession(token: string): Promise<{ user: AuthUser; session: AuthSession } | null> {
+  const session = await db.authSessions.where('token').equals(token).first();
+  if (!session) return null;
+
+  if (new Date(session.expiresAt) < new Date()) {
+    // Session expired, delete it
+    await db.authSessions.delete(session.id);
+    return null;
+  }
+
+  const user = await db.authUsers.get(session.userId);
+  if (!user) return null;
+
+  return { user, session };
+}
+
+// Get current auth user from stored session
+export async function getCurrentAuthUser(): Promise<AuthUser | null> {
+  const tokenSetting = await db.settings.get('currentSessionToken');
+  if (!tokenSetting?.value) return null;
+
+  const result = await validateSession(tokenSetting.value as string);
+  return result?.user ?? null;
+}
+
+// Update auth user settings
+export async function updateAuthUserSettings(userId: string, settings: Partial<AuthUser['settings']>): Promise<void> {
+  const authUser = await db.authUsers.get(userId);
+  if (authUser) {
+    await db.authUsers.update(userId, {
+      settings: { ...authUser.settings, ...settings },
+    });
+  }
+}
+
+// Get auth user by ID
+export async function getAuthUser(userId: string): Promise<AuthUser | null> {
+  return await db.authUsers.get(userId) ?? null;
+}
+
+// Check if any auth users exist
+export async function hasAuthUsers(): Promise<boolean> {
+  const count = await db.authUsers.count();
+  return count > 0;
 }

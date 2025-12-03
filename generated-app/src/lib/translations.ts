@@ -355,6 +355,34 @@ export interface Translations {
   // Completion Story
   completionStoryTitle: string;
   continueConquering: string;
+
+  // Authentication
+  signIn: string;
+  signUp: string;
+  signOut: string;
+  welcomeBack: string;
+  createAccount: string;
+  signInToAccessWorkspace: string;
+  signUpToStart: string;
+  fullName: string;
+  emailAddress: string;
+  password: string;
+  confirmPassword: string;
+  atLeast6Characters: string;
+  enterYourPassword: string;
+  confirmYourPassword: string;
+  dontHaveAccount: string;
+  alreadyHaveAccount: string;
+  signingIn: string;
+  creatingAccount: string;
+  passwordsDoNotMatch: string;
+  passwordTooShort: string;
+  authNameRequired: string;
+  accountCreated: string;
+  welcomeBackToast: string;
+  authFailed: string;
+  signedOutSuccess: string;
+  signOutFailed: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -713,6 +741,34 @@ const translations: Record<Language, Translations> = {
     // Completion Story
     completionStoryTitle: 'Task Complete!',
     continueConquering: 'Continue Conquering',
+
+    // Authentication
+    signIn: 'Sign In',
+    signUp: 'Sign Up',
+    signOut: 'Sign Out',
+    welcomeBack: 'Welcome Back',
+    createAccount: 'Create Account',
+    signInToAccessWorkspace: 'Sign in to access your workspace',
+    signUpToStart: 'Sign up to start managing your projects',
+    fullName: 'Full Name',
+    emailAddress: 'Email Address',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    atLeast6Characters: 'At least 6 characters',
+    enterYourPassword: 'Enter your password',
+    confirmYourPassword: 'Confirm your password',
+    dontHaveAccount: "Don't have an account?",
+    alreadyHaveAccount: 'Already have an account?',
+    signingIn: 'Signing in...',
+    creatingAccount: 'Creating account...',
+    passwordsDoNotMatch: 'Passwords do not match',
+    passwordTooShort: 'Password must be at least 6 characters',
+    authNameRequired: 'Name is required',
+    accountCreated: 'Account created successfully!',
+    welcomeBackToast: 'Welcome back!',
+    authFailed: 'Authentication failed',
+    signedOutSuccess: 'Signed out successfully',
+    signOutFailed: 'Failed to sign out',
   },
 
   ja: {
@@ -1070,6 +1126,34 @@ const translations: Record<Language, Translations> = {
     // Completion Story
     completionStoryTitle: 'タスク完了！',
     continueConquering: '次の挑戦へ',
+
+    // Authentication
+    signIn: 'サインイン',
+    signUp: 'サインアップ',
+    signOut: 'サインアウト',
+    welcomeBack: 'おかえりなさい',
+    createAccount: 'アカウント作成',
+    signInToAccessWorkspace: 'ワークスペースにアクセスするにはサインインしてください',
+    signUpToStart: 'プロジェクト管理を始めるにはサインアップしてください',
+    fullName: '氏名',
+    emailAddress: 'メールアドレス',
+    password: 'パスワード',
+    confirmPassword: 'パスワード確認',
+    atLeast6Characters: '6文字以上',
+    enterYourPassword: 'パスワードを入力',
+    confirmYourPassword: 'パスワードを確認',
+    dontHaveAccount: 'アカウントをお持ちでないですか？',
+    alreadyHaveAccount: 'すでにアカウントをお持ちですか？',
+    signingIn: 'サインイン中...',
+    creatingAccount: 'アカウント作成中...',
+    passwordsDoNotMatch: 'パスワードが一致しません',
+    passwordTooShort: 'パスワードは6文字以上にしてください',
+    authNameRequired: '名前は必須です',
+    accountCreated: 'アカウントが作成されました！',
+    welcomeBackToast: 'おかえりなさい！',
+    authFailed: '認証に失敗しました',
+    signedOutSuccess: 'サインアウトしました',
+    signOutFailed: 'サインアウトに失敗しました',
   },
 
   zh: {
@@ -1427,6 +1511,34 @@ const translations: Record<Language, Translations> = {
     // Completion Story
     completionStoryTitle: '任务完成！',
     continueConquering: '继续征服',
+
+    // Authentication
+    signIn: '登录',
+    signUp: '注册',
+    signOut: '退出登录',
+    welcomeBack: '欢迎回来',
+    createAccount: '创建账户',
+    signInToAccessWorkspace: '登录以访问您的工作区',
+    signUpToStart: '注册以开始管理您的项目',
+    fullName: '全名',
+    emailAddress: '电子邮件地址',
+    password: '密码',
+    confirmPassword: '确认密码',
+    atLeast6Characters: '至少6个字符',
+    enterYourPassword: '输入您的密码',
+    confirmYourPassword: '确认您的密码',
+    dontHaveAccount: '还没有账户？',
+    alreadyHaveAccount: '已有账户？',
+    signingIn: '登录中...',
+    creatingAccount: '创建账户中...',
+    passwordsDoNotMatch: '密码不匹配',
+    passwordTooShort: '密码必须至少6个字符',
+    authNameRequired: '名称为必填项',
+    accountCreated: '账户创建成功！',
+    welcomeBackToast: '欢迎回来！',
+    authFailed: '认证失败',
+    signedOutSuccess: '已成功退出登录',
+    signOutFailed: '退出登录失败',
   },
 
   ar: {
@@ -1784,6 +1896,34 @@ const translations: Record<Language, Translations> = {
     // Completion Story
     completionStoryTitle: 'اكتملت المهمة!',
     continueConquering: 'استمر في الفتح',
+
+    // Authentication
+    signIn: 'تسجيل الدخول',
+    signUp: 'إنشاء حساب',
+    signOut: 'تسجيل الخروج',
+    welcomeBack: 'مرحباً بعودتك',
+    createAccount: 'إنشاء حساب',
+    signInToAccessWorkspace: 'سجل الدخول للوصول إلى مساحة عملك',
+    signUpToStart: 'أنشئ حساباً لبدء إدارة مشاريعك',
+    fullName: 'الاسم الكامل',
+    emailAddress: 'عنوان البريد الإلكتروني',
+    password: 'كلمة المرور',
+    confirmPassword: 'تأكيد كلمة المرور',
+    atLeast6Characters: '6 أحرف على الأقل',
+    enterYourPassword: 'أدخل كلمة المرور',
+    confirmYourPassword: 'أكد كلمة المرور',
+    dontHaveAccount: 'ليس لديك حساب؟',
+    alreadyHaveAccount: 'لديك حساب بالفعل؟',
+    signingIn: 'جاري تسجيل الدخول...',
+    creatingAccount: 'جاري إنشاء الحساب...',
+    passwordsDoNotMatch: 'كلمات المرور غير متطابقة',
+    passwordTooShort: 'يجب أن تكون كلمة المرور 6 أحرف على الأقل',
+    authNameRequired: 'الاسم مطلوب',
+    accountCreated: 'تم إنشاء الحساب بنجاح!',
+    welcomeBackToast: 'مرحباً بعودتك!',
+    authFailed: 'فشل التحقق',
+    signedOutSuccess: 'تم تسجيل الخروج بنجاح',
+    signOutFailed: 'فشل تسجيل الخروج',
   },
 
   es: {
@@ -2141,6 +2281,34 @@ const translations: Record<Language, Translations> = {
     // Completion Story
     completionStoryTitle: '¡Tarea Completada!',
     continueConquering: 'Seguir Conquistando',
+
+    // Authentication
+    signIn: 'Iniciar Sesión',
+    signUp: 'Registrarse',
+    signOut: 'Cerrar Sesión',
+    welcomeBack: 'Bienvenido de Nuevo',
+    createAccount: 'Crear Cuenta',
+    signInToAccessWorkspace: 'Inicia sesión para acceder a tu espacio de trabajo',
+    signUpToStart: 'Regístrate para comenzar a gestionar tus proyectos',
+    fullName: 'Nombre Completo',
+    emailAddress: 'Correo Electrónico',
+    password: 'Contraseña',
+    confirmPassword: 'Confirmar Contraseña',
+    atLeast6Characters: 'Al menos 6 caracteres',
+    enterYourPassword: 'Ingresa tu contraseña',
+    confirmYourPassword: 'Confirma tu contraseña',
+    dontHaveAccount: '¿No tienes una cuenta?',
+    alreadyHaveAccount: '¿Ya tienes una cuenta?',
+    signingIn: 'Iniciando sesión...',
+    creatingAccount: 'Creando cuenta...',
+    passwordsDoNotMatch: 'Las contraseñas no coinciden',
+    passwordTooShort: 'La contraseña debe tener al menos 6 caracteres',
+    authNameRequired: 'El nombre es obligatorio',
+    accountCreated: '¡Cuenta creada exitosamente!',
+    welcomeBackToast: '¡Bienvenido de nuevo!',
+    authFailed: 'Autenticación fallida',
+    signedOutSuccess: 'Sesión cerrada exitosamente',
+    signOutFailed: 'Error al cerrar sesión',
   },
 };
 

@@ -6,6 +6,26 @@ export type StatusCategory = 'todo' | 'in_progress' | 'done';
 export type SprintStatus = 'future' | 'active' | 'completed';
 export type UserRole = 'admin' | 'member' | 'viewer';
 export type CustomFieldType = 'text' | 'number' | 'date' | 'select' | 'multiselect' | 'user';
+
+// Authentication types
+export interface AuthUser {
+  id: string;
+  email: string;
+  passwordHash: string;
+  name: string;
+  color: string;
+  createdAt: Date;
+  lastLoginAt?: Date;
+  settings?: UserSettings;
+}
+
+export interface AuthSession {
+  id: string;
+  userId: string;
+  token: string;
+  createdAt: Date;
+  expiresAt: Date;
+}
 export type ActivityAction =
   | 'created'
   | 'status_changed'
@@ -38,6 +58,7 @@ export interface Project {
   isArchived: boolean;
   settings?: ProjectSettings;
   workflowId?: string;
+  ownerId?: string; // The auth user who owns this project
 }
 
 export interface ProjectSettings {
@@ -112,6 +133,7 @@ export interface User {
   role: UserRole;
   createdAt: Date;
   settings?: UserSettings;
+  ownerId?: string; // The auth user who owns this user profile
 }
 
 export type ThemeMode = 'light' | 'dark' | 'system';
