@@ -1,6 +1,3 @@
-# Copyright 2025-present Anthropic PBC.
-# Licensed under Apache 2.0
-
 # #!/usr/bin/env python3
 """Claude Code Multi-Project Implementation.
 
