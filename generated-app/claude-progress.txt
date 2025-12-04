@@ -1,6 +1,8 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #39 - Language Settings Translate All Pages)
+## Project Status: ✅ COMPLETE AND COMMITTED (Issue #39 - Language Settings Translate All Pages)
+
+### Commit: 349727a - fix: Language settings now translate all pages (#39)
 
 ## Issue #39 - Language Settings Translate All Pages (COMPLETE)
 Fixed the bug where language settings were only translating the Profile Settings page but not all other pages in the application.
