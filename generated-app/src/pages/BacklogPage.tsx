@@ -43,7 +43,7 @@ import type { Issue, Sprint } from '@/types';
 
 export function BacklogPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject, currentUser } = useApp();
+  const { currentProject, setCurrentProject, currentUser, translations: t } = useApp();
   const [quickFilter, setQuickFilter] = useState('');
   const [createIssueOpen, setCreateIssueOpen] = useState(false);
   const [createSprintOpen, setCreateSprintOpen] = useState(false);
@@ -156,7 +156,7 @@ export function BacklogPage() {
 
       if (activeIssue.sprintId !== newSprintId) {
         await updateIssue(activeIssue.id, { sprintId: newSprintId }, currentUser.id);
-        toast.success(newSprintId ? 'Added to sprint' : 'Moved to backlog');
+        toast.success(newSprintId ? t.addedToSprint : t.movedToBacklog);
       }
     }
   }, [issues, currentUser]);
@@ -173,23 +173,23 @@ export function BacklogPage() {
   const handleStartSprint = async (sprintId: string) => {
     try {
       await startSprint(sprintId);
-      toast.success('Sprint started');
+      toast.success(t.sprintStarted);
     } catch (error) {
-      toast.error('Failed to start sprint');
+      toast.error(t.failedToStartSprint);
     }
   };
 
   const handleCompleteSprint = async (sprintId: string) => {
     try {
       await completeSprint(sprintId, 'backlog');
-      toast.success('Sprint completed');
+      toast.success(t.sprintCompleted);
     } catch (error) {
-      toast.error('Failed to complete sprint');
+      toast.error(t.failedToCompleteSprint);
     }
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   // Sort sprints: active first, then future, then completed
@@ -205,22 +205,22 @@ export function BacklogPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-              Backlog
+              {t.backlog}
             </h1>
             <p className="text-sm text-muted-foreground">
-              {issues.length} issues • {getStoryPoints(issues)} story points
+              {issues.length} {t.issues} • {getStoryPoints(issues)} {t.storyPoints}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <Input
-              placeholder="Filter issues..."
+              placeholder={t.quickFilter}
               value={quickFilter}
               onChange={(e) => setQuickFilter(e.target.value)}
               className="w-48 h-9"
             />
             <Button variant="outline" size="sm" onClick={() => setCreateSprintOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
-              Sprint
+              {t.sprint}
             </Button>
             <Button
               size="sm"
@@ -228,7 +228,7 @@ export function BacklogPage() {
               className="bg-[#E8A87C] hover:bg-[#d4946d] text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Issue
+              {t.issue}
             </Button>
           </div>
         </div>
@@ -261,7 +261,7 @@ export function BacklogPage() {
                             <div className="flex items-center gap-2">
                               <span className="font-medium">{sprint.name}</span>
                               {sprint.status === 'active' && (
-                                <Badge className="bg-[#C25B6A] text-white">Active</Badge>
+                                <Badge className="bg-[#C25B6A] text-white">{t.activeSprint}</Badge>
                               )}
                             </div>
                             <div className="text-xs text-muted-foreground">
@@ -271,7 +271,7 @@ export function BacklogPage() {
                                 </span>
                               )}
                               {' • '}
-                              {sprintIssueList.length} issues • {completedPoints}/{totalPoints} points
+                              {sprintIssueList.length} {t.issues} • {completedPoints}/{totalPoints} {t.storyPoints}
                             </div>
                           </div>
                         </div>
@@ -279,13 +279,13 @@ export function BacklogPage() {
                           {sprint.status === 'future' && (
                             <Button size="sm" variant="outline" onClick={() => handleStartSprint(sprint.id)}>
                               <Play className="w-3 h-3 mr-1" />
-                              Start
+                              {t.startSprint}
                             </Button>
                           )}
                           {sprint.status === 'active' && (
                             <Button size="sm" variant="outline" onClick={() => handleCompleteSprint(sprint.id)}>
                               <Check className="w-3 h-3 mr-1" />
-                              Complete
+                              {t.completeSprint}
                             </Button>
                           )}
                         </div>
@@ -309,7 +309,7 @@ export function BacklogPage() {
                             ))
                           ) : (
                             <div className="text-sm text-muted-foreground text-center py-4">
-                              Drag issues here to add to sprint
+                              {t.dragToOrder}
                             </div>
                           )}
                         </SortableContext>
@@ -328,9 +328,9 @@ export function BacklogPage() {
                     <div className="flex items-center gap-3">
                       {expandedSprints.has('backlog') ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                       <div>
-                        <span className="font-medium">Backlog</span>
+                        <span className="font-medium">{t.backlog}</span>
                         <div className="text-xs text-muted-foreground">
-                          {backlogIssues.length} issues • {getStoryPoints(backlogIssues)} story points
+                          {backlogIssues.length} {t.issues} • {getStoryPoints(backlogIssues)} {t.storyPoints}
                         </div>
                       </div>
                     </div>
@@ -354,7 +354,7 @@ export function BacklogPage() {
                         ))
                       ) : (
                         <div className="text-sm text-muted-foreground text-center py-8">
-                          No issues in backlog
+                          {t.emptyBacklog}
                         </div>
                       )}
                     </SortableContext>

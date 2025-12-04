@@ -11,7 +11,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 export function HomePage() {
   const navigate = useNavigate();
-  const { currentUser, setCurrentProject } = useApp();
+  const { currentUser, setCurrentProject, translations: t } = useApp();
 
   // Live queries for dashboard data
   const projects = useLiveQuery(
@@ -77,11 +77,10 @@ export function HomePage() {
             className="text-3xl font-semibold mb-3"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Welcome to Canopy
+            {t.welcomeMessage}
           </h1>
           <p className="text-muted-foreground mb-8">
-            Your agile project management tool. Create your first project to get started
-            with boards, sprints, and issue tracking.
+            {t.noProjectsMessage}
           </p>
           <Button
             size="lg"
@@ -89,7 +88,7 @@ export function HomePage() {
             className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
           >
             <Plus className="w-5 h-5" />
-            Create your first project
+            {t.createYourFirstProject}
           </Button>
         </div>
       </div>

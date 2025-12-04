@@ -35,7 +35,7 @@ import { toast } from 'sonner';
 export function BoardPage() {
   const { projectKey } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { currentProject, setCurrentProject, currentUser } = useApp();
+  const { currentProject, setCurrentProject, currentUser, translations: t } = useApp();
 
   const [quickFilter, setQuickFilter] = useState('');
   const [activeIssueId, setActiveIssueId] = useState<string | null>(null);
@@ -216,11 +216,11 @@ export function BoardPage() {
             });
           }
 
-          toast.success(`Moved to ${column?.name ?? targetColumnId}`);
+          toast.success(`${t.movedTo} ${column?.name ?? targetColumnId}`);
         }
       } catch (error) {
         console.error('Failed to update issue:', error);
-        toast.error('Failed to move issue');
+        toast.error(t.failedToMoveIssue);
       }
     },
     [issues, board, currentUser, getColumnIssues]
@@ -249,7 +249,7 @@ export function BoardPage() {
   if (!project || !board) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading board...</div>
+        <div className="text-muted-foreground">{t.loading}</div>
       </div>
     );
   }
@@ -264,19 +264,19 @@ export function BoardPage() {
               className="text-xl font-semibold mb-2"
               style={{ fontFamily: 'var(--font-display)' }}
             >
-              Your board is empty
+              {t.emptyBoard}
             </h2>
             <p className="text-muted-foreground mb-6">
               {activeSprint
-                ? `No issues in ${activeSprint.name}. Add issues to the sprint from the backlog.`
-                : 'Create your first issue to get started with the board.'}
+                ? `${activeSprint.name} - ${t.emptyBoardDescription}`
+                : t.emptyBoardDescription}
             </p>
             <Button
               onClick={() => setCreateModalOpen(true)}
               className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
             >
               <Plus className="w-4 h-4" />
-              Create Issue
+              {t.createIssue}
             </Button>
           </div>
         </div>
@@ -315,14 +315,14 @@ export function BoardPage() {
 
           <div className="flex items-center gap-3">
             <Input
-              placeholder="Quick filter..."
+              placeholder={t.quickFilter}
               value={quickFilter}
               onChange={(e) => setQuickFilter(e.target.value)}
               className="w-48 h-9"
             />
             <Button variant="outline" size="sm" className="gap-2">
               <Filter className="w-4 h-4" />
-              Filter
+              {t.quickFilter}
             </Button>
             <Button
               variant="ghost"

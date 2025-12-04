@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 export function RoadmapPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
   const [viewMode, setViewMode] = useState<'week' | 'month' | 'quarter'>('month');
   const [startDate, setStartDate] = useState(startOfMonth(new Date()));
 
@@ -75,7 +75,7 @@ export function RoadmapPage() {
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   const getBarStyle = (epic: typeof epics extends (infer T)[] | undefined ? T : never) => {
@@ -98,15 +98,15 @@ export function RoadmapPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            Roadmap
+            {t.roadmap}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {epics?.length ?? 0} epics
+            {epics?.length ?? 0} {t.epics}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setStartDate(startOfMonth(new Date()))}>
-            Today
+            {t.today}
           </Button>
           <Button variant="outline" size="icon" onClick={() => navigateTimeline('prev')}>
             <ChevronLeft className="w-4 h-4" />
@@ -119,9 +119,9 @@ export function RoadmapPage() {
             onChange={(e) => setViewMode(e.target.value as 'week' | 'month' | 'quarter')}
             className="h-9 px-3 border rounded-md text-sm"
           >
-            <option value="week">Week</option>
-            <option value="month">Month</option>
-            <option value="quarter">Quarter</option>
+            <option value="week">{t.weeks}</option>
+            <option value="month">{t.months}</option>
+            <option value="quarter">{t.quarters}</option>
           </select>
         </div>
       </div>
@@ -130,7 +130,7 @@ export function RoadmapPage() {
       <div className="border rounded-lg overflow-hidden">
         {/* Timeline header */}
         <div className="flex bg-muted border-b">
-          <div className="w-64 flex-shrink-0 p-2 border-r font-medium text-sm">Epic</div>
+          <div className="w-64 flex-shrink-0 p-2 border-r font-medium text-sm">{t.epic}</div>
           <div className="flex-1 flex">
             {timelineDays.map((day, i) => (
               <div
@@ -185,7 +185,7 @@ export function RoadmapPage() {
           })
         ) : (
           <div className="p-8 text-center text-muted-foreground">
-            No epics yet. Create an epic to see it on the roadmap.
+            {t.noEpics}
           </div>
         )}
       </div>

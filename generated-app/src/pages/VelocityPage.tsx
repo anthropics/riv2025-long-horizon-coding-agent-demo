@@ -24,7 +24,8 @@ interface VelocityDataPoint {
 
 export function VelocityPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
+  // Using translations
 
   useEffect(() => {
     async function loadProject() {
@@ -114,7 +115,7 @@ export function VelocityPage() {
   }, [velocityData]);
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   return (
@@ -122,35 +123,35 @@ export function VelocityPage() {
       {/* Header */}
       <div>
         <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-          Velocity Chart
+          {t.velocityChart}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Track team velocity across sprints
+          {t.trackTeamVelocity}
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-muted/50 rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Average Velocity</p>
+          <p className="text-sm text-muted-foreground">{t.averageVelocity}</p>
           <p className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            {averageVelocity} <span className="text-sm font-normal text-muted-foreground">pts/sprint</span>
+            {averageVelocity} <span className="text-sm font-normal text-muted-foreground">{t.ptsPerSprint}</span>
           </p>
         </div>
         <div className="bg-muted/50 rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Commitment Reliability</p>
+          <p className="text-sm text-muted-foreground">{t.commitmentReliability}</p>
           <p className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
             {commitmentReliability}%
           </p>
         </div>
         <div className="bg-muted/50 rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Sprints Completed</p>
+          <p className="text-sm text-muted-foreground">{t.sprintsCompleted}</p>
           <p className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
             {completedSprints.length}
           </p>
         </div>
         <div className="bg-muted/50 rounded-lg p-4">
-          <p className="text-sm text-muted-foreground">Velocity Trend</p>
+          <p className="text-sm text-muted-foreground">{t.velocityTrend}</p>
           <p className={`text-2xl font-semibold ${velocityTrend > 0 ? 'text-[#A83B4C]' : velocityTrend < 0 ? 'text-destructive' : ''}`} style={{ fontFamily: 'var(--font-display)' }}>
             {velocityTrend > 0 ? '+' : ''}{velocityTrend}%
           </p>
@@ -188,7 +189,7 @@ export function VelocityPage() {
           </ResponsiveContainer>
         ) : (
           <div className="flex items-center justify-center h-[400px] text-muted-foreground">
-            Complete sprints to see velocity data
+            {t.completeSprintsToSeeVelocity}
           </div>
         )}
       </div>
@@ -199,18 +200,18 @@ export function VelocityPage() {
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr>
-                <th className="text-left p-3 font-medium">Sprint</th>
-                <th className="text-right p-3 font-medium">Committed</th>
-                <th className="text-right p-3 font-medium">Completed</th>
-                <th className="text-right p-3 font-medium">Completion Rate</th>
+                <th className="text-left p-3 font-medium">{t.sprint}</th>
+                <th className="text-right p-3 font-medium">{t.committed}</th>
+                <th className="text-right p-3 font-medium">{t.done}</th>
+                <th className="text-right p-3 font-medium">{t.completionRate}</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {velocityData.map((data, index) => (
                 <tr key={index} className="hover:bg-muted/30">
                   <td className="p-3">{data.name}</td>
-                  <td className="p-3 text-right">{data.committed} pts</td>
-                  <td className="p-3 text-right text-[#A83B4C]">{data.completed} pts</td>
+                  <td className="p-3 text-right">{data.committed} {t.pts}</td>
+                  <td className="p-3 text-right text-[#A83B4C]">{data.completed} {t.pts}</td>
                   <td className="p-3 text-right">
                     {data.committed > 0 ? Math.round((data.completed / data.committed) * 100) : 0}%
                   </td>
@@ -224,50 +225,50 @@ export function VelocityPage() {
       {/* Insights */}
       <div className="grid grid-cols-2 gap-4">
         <div className="border rounded-lg p-4">
-          <h3 className="font-medium mb-2">Recommendations</h3>
+          <h3 className="font-medium mb-2">{t.recommendations}</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {commitmentReliability < 80 && (
               <li className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
-                Consider reducing sprint commitment. Current reliability is below 80%.
+                {t.reduceCommitmentWarning}
               </li>
             )}
             {velocityTrend < -10 && (
               <li className="flex items-start gap-2">
                 <span className="text-destructive">•</span>
-                Velocity is trending downward. Review potential blockers with the team.
+                {t.velocityTrendingDown}
               </li>
             )}
             {velocityTrend > 10 && (
               <li className="flex items-start gap-2">
                 <span className="text-[#A83B4C]">•</span>
-                Great progress! Velocity is improving. Consider slightly increasing commitment.
+                {t.velocityImproving}
               </li>
             )}
             {velocityData.length < 3 && (
               <li className="flex items-start gap-2">
                 <span className="text-muted-foreground">•</span>
-                Complete more sprints to get accurate velocity predictions.
+                {t.moreSprintsNeeded}
               </li>
             )}
             {velocityData.length >= 3 && commitmentReliability >= 80 && velocityTrend >= -10 && (
               <li className="flex items-start gap-2">
                 <span className="text-[#A83B4C]">•</span>
-                Team velocity is stable. Keep up the good work!
+                {t.teamVelocityStable}
               </li>
             )}
           </ul>
         </div>
         <div className="border rounded-lg p-4">
-          <h3 className="font-medium mb-2">Sprint Planning Suggestion</h3>
+          <h3 className="font-medium mb-2">{t.sprintPlanningSuggestion}</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            Based on your team's velocity, the recommended commitment for the next sprint:
+            {t.recommendedCommitment}
           </p>
           <p className="text-3xl font-semibold text-[#A83B4C]" style={{ fontFamily: 'var(--font-display)' }}>
-            {Math.round(averageVelocity * 0.9)} - {Math.round(averageVelocity * 1.1)} pts
+            {Math.round(averageVelocity * 0.9)} - {Math.round(averageVelocity * 1.1)} {t.pts}
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            This range accounts for typical sprint-to-sprint variation.
+            {t.accountsForVariation}
           </p>
         </div>
       </div>

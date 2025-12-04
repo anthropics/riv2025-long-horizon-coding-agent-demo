@@ -38,7 +38,7 @@ const TYPE_COLORS = {
 
 export function SprintReportPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
   const [selectedSprintId, setSelectedSprintId] = useState<string>('');
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export function SprintReportPage() {
   }, [stats]);
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   const getUserName = (userId: string) => {
@@ -173,20 +173,20 @@ export function SprintReportPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            Sprint Report
+            {t.sprintReport}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Detailed breakdown of sprint progress
+            {t.detailedBreakdown}
           </p>
         </div>
         <Select value={selectedSprintId} onValueChange={setSelectedSprintId}>
           <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Select sprint" />
+            <SelectValue placeholder={t.selectSprint} />
           </SelectTrigger>
           <SelectContent>
             {allSelectableSprints.map((sprint) => (
               <SelectItem key={sprint.id} value={sprint.id}>
-                {sprint.name} {sprint.status === 'active' && '(Active)'}
+                {sprint.name} {sprint.status === 'active' && `(${t.activeSprint})`}
               </SelectItem>
             ))}
           </SelectContent>
@@ -198,25 +198,25 @@ export function SprintReportPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-4 gap-4">
             <div className="bg-muted/50 rounded-lg p-4">
-              <p className="text-sm text-muted-foreground">Total Issues</p>
+              <p className="text-sm text-muted-foreground">{t.totalIssues}</p>
               <p className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
                 {stats.totalIssues}
               </p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4">
-              <p className="text-sm text-muted-foreground">Story Points</p>
+              <p className="text-sm text-muted-foreground">{t.storyPoints}</p>
               <p className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
                 {stats.totalPoints}
               </p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4">
-              <p className="text-sm text-muted-foreground">Completed</p>
+              <p className="text-sm text-muted-foreground">{t.done}</p>
               <p className="text-2xl font-semibold text-[#A83B4C]" style={{ fontFamily: 'var(--font-display)' }}>
-                {stats.byStatus.done.length} issues
+                {stats.byStatus.done.length} {t.issues}
               </p>
             </div>
             <div className="bg-muted/50 rounded-lg p-4">
-              <p className="text-sm text-muted-foreground">Completion Rate</p>
+              <p className="text-sm text-muted-foreground">{t.completionRate}</p>
               <p className={`text-2xl font-semibold ${stats.completionRate >= 80 ? 'text-[#A83B4C]' : stats.completionRate >= 50 ? 'text-[#E8A87C]' : 'text-destructive'}`} style={{ fontFamily: 'var(--font-display)' }}>
                 {stats.completionRate}%
               </p>
@@ -227,7 +227,7 @@ export function SprintReportPage() {
           <div className="grid grid-cols-2 gap-6">
             {/* Status Distribution */}
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-4">Status Distribution</h3>
+              <h3 className="font-medium mb-4">{t.statusDistribution}</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie
@@ -251,7 +251,7 @@ export function SprintReportPage() {
 
             {/* Type Distribution */}
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-4">Issue Type Distribution</h3>
+              <h3 className="font-medium mb-4">{t.issueTypeDistribution}</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie
@@ -276,7 +276,7 @@ export function SprintReportPage() {
 
           {/* Team Breakdown */}
           <div className="border rounded-lg p-4">
-            <h3 className="font-medium mb-4">Team Performance</h3>
+            <h3 className="font-medium mb-4">{t.teamPerformance}</h3>
             <div className="space-y-3">
               {Array.from(stats.byAssignee.entries()).map(([assigneeId, issues]) => {
                 const completedIssues = issues.filter(i => board?.columns.find(c => c.name === i.status)?.statusCategory === 'done');
@@ -313,7 +313,7 @@ export function SprintReportPage() {
           {/* Issues List */}
           <div className="border rounded-lg overflow-hidden">
             <div className="bg-muted/50 p-3 font-medium">
-              Sprint Issues
+              {t.sprintIssues}
             </div>
             <div className="divide-y max-h-[400px] overflow-auto">
               {sprintIssues?.map((issue) => (
@@ -327,7 +327,7 @@ export function SprintReportPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     {issue.storyPoints !== undefined && (
-                      <Badge variant="outline">{issue.storyPoints} pts</Badge>
+                      <Badge variant="outline">{issue.storyPoints} {t.pts}</Badge>
                     )}
                     <Badge
                       style={{
@@ -351,32 +351,32 @@ export function SprintReportPage() {
           {/* Sprint Details */}
           <div className="grid grid-cols-2 gap-4">
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-2">Sprint Details</h3>
+              <h3 className="font-medium mb-2">{t.sprintDetails}</h3>
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Duration</dt>
+                  <dt className="text-muted-foreground">{t.duration}</dt>
                   <dd>
                     {selectedSprint.startDate && selectedSprint.endDate
                       ? `${new Date(selectedSprint.startDate).toLocaleDateString()} - ${new Date(selectedSprint.endDate).toLocaleDateString()}`
-                      : 'Not set'}
+                      : t.notSet}
                   </dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Status</dt>
+                  <dt className="text-muted-foreground">{t.status}</dt>
                   <dd className="capitalize">{selectedSprint.status}</dd>
                 </div>
                 {selectedSprint.completedAt && (
                   <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Completed</dt>
+                    <dt className="text-muted-foreground">{t.done}</dt>
                     <dd>{new Date(selectedSprint.completedAt).toLocaleDateString()}</dd>
                   </div>
                 )}
               </dl>
             </div>
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-2">Sprint Goal</h3>
+              <h3 className="font-medium mb-2">{t.sprintGoal}</h3>
               <p className="text-sm text-muted-foreground">
-                {selectedSprint.goal || 'No goal set for this sprint'}
+                {selectedSprint.goal || t.noGoalSet}
               </p>
             </div>
           </div>
@@ -385,7 +385,7 @@ export function SprintReportPage() {
 
       {!selectedSprint && (
         <div className="flex items-center justify-center h-64 text-muted-foreground">
-          Select a sprint to view its report
+          {t.selectSprintToViewReport}
         </div>
       )}
     </div>

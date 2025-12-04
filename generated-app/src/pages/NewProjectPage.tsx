@@ -25,7 +25,7 @@ const PROJECT_COLORS = [
 
 export function NewProjectPage() {
   const navigate = useNavigate();
-  const { setCurrentProject } = useApp();
+  const { setCurrentProject, translations: t } = useApp();
 
   const [name, setName] = useState('');
   const [key, setKey] = useState('');
@@ -59,17 +59,17 @@ export function NewProjectPage() {
     const newErrors: { name?: string; key?: string } = {};
 
     if (!name.trim()) {
-      newErrors.name = 'Project name is required';
+      newErrors.name = t.projectNameRequired;
     }
 
     const finalKey = keyManuallySet ? key : generatedKey;
     if (!finalKey) {
-      newErrors.key = 'Project key is required';
+      newErrors.key = t.projectKeyRequired;
     } else {
       // Check for duplicate key
       const existingProject = await db.projects.where('key').equals(finalKey).first();
       if (existingProject) {
-        newErrors.key = 'This project key is already in use';
+        newErrors.key = t.projectKeyInUse;
       }
     }
 
@@ -97,11 +97,11 @@ export function NewProjectPage() {
       });
 
       setCurrentProject(project);
-      toast.success('Project created successfully!');
+      toast.success(t.projectCreatedSuccess);
       navigate(`/project/${project.key}/board`);
     } catch (error) {
       console.error('Failed to create project:', error);
-      toast.error('Failed to create project');
+      toast.error(t.failedToCreateProject);
     } finally {
       setIsSubmitting(false);
     }
@@ -116,20 +116,20 @@ export function NewProjectPage() {
         onClick={() => navigate(-1)}
       >
         <ArrowLeft className="w-4 h-4" />
-        Back
+        {t.back}
       </Button>
 
       <Card>
         <CardHeader>
           <CardTitle style={{ fontFamily: 'var(--font-display)' }}>
-            Create a new project
+            {t.createNewProject}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
             <div className="space-y-2">
-              <Label htmlFor="name">Project Name *</Label>
+              <Label htmlFor="name">{t.projectName} *</Label>
               <Input
                 id="name"
                 value={name}
@@ -144,7 +144,7 @@ export function NewProjectPage() {
 
             {/* Key */}
             <div className="space-y-2">
-              <Label htmlFor="key">Project Key *</Label>
+              <Label htmlFor="key">{t.projectKey} *</Label>
               <Input
                 id="key"
                 value={keyManuallySet ? key : generatedKey}
@@ -154,7 +154,7 @@ export function NewProjectPage() {
                 maxLength={10}
               />
               <p className="text-xs text-muted-foreground">
-                Used as a prefix for issue keys (e.g., {generatedKey || 'KEY'}-1, {generatedKey || 'KEY'}-2)
+                {t.keyPrefix} (e.g., {generatedKey || 'KEY'}-1, {generatedKey || 'KEY'}-2)
               </p>
               {errors.key && (
                 <p className="text-sm text-destructive">{errors.key}</p>
@@ -163,19 +163,19 @@ export function NewProjectPage() {
 
             {/* Description */}
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t.description}</Label>
               <Textarea
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe your project..."
+                placeholder={t.describeYourProject}
                 rows={3}
               />
             </div>
 
             {/* Color */}
             <div className="space-y-2">
-              <Label>Project Color</Label>
+              <Label>{t.projectColor}</Label>
               <div className="flex flex-wrap gap-2">
                 {PROJECT_COLORS.map((c) => (
                   <button
@@ -195,7 +195,7 @@ export function NewProjectPage() {
 
             {/* Preview */}
             <div className="p-4 bg-muted rounded-lg">
-              <p className="text-xs text-muted-foreground mb-2">Preview</p>
+              <p className="text-xs text-muted-foreground mb-2">{t.preview}</p>
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-md flex items-center justify-center text-white font-semibold"
@@ -204,7 +204,7 @@ export function NewProjectPage() {
                   {(keyManuallySet ? key : generatedKey).slice(0, 2) || 'PR'}
                 </div>
                 <div>
-                  <p className="font-medium">{name || 'Project Name'}</p>
+                  <p className="font-medium">{name || t.projectName}</p>
                   <p className="text-xs text-muted-foreground">
                     {keyManuallySet ? key : generatedKey || 'KEY'}
                   </p>
@@ -219,14 +219,14 @@ export function NewProjectPage() {
                 variant="outline"
                 onClick={() => navigate(-1)}
               >
-                Cancel
+                {t.cancel}
               </Button>
               <Button
                 type="submit"
                 disabled={isSubmitting}
                 className="bg-[#E8A87C] hover:bg-[#d4946d] text-white"
               >
-                Create Project
+                {t.createProject}
               </Button>
             </div>
           </form>

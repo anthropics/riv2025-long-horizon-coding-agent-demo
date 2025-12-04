@@ -38,7 +38,7 @@ const PROJECT_COLORS = [
 export function ProjectSettingsPage() {
   const { projectKey } = useParams();
   const navigate = useNavigate();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
 
   const project = useLiveQuery(
     () => db.projects.where('key').equals(projectKey ?? '').first(),
@@ -77,9 +77,9 @@ export function ProjectSettingsPage() {
         color,
         workflowId: workflowId === DEFAULT_WORKFLOW_ID ? undefined : workflowId,
       });
-      toast.success('Settings saved');
+      toast.success(t.settingsSaved);
     } catch (error) {
-      toast.error('Failed to save settings');
+      toast.error(t.failedToSaveSettings);
     }
   };
 
@@ -87,13 +87,13 @@ export function ProjectSettingsPage() {
     if (!project) return;
     try {
       await updateProject(project.id, { isArchived: !project.isArchived });
-      toast.success(project.isArchived ? 'Project restored' : 'Project archived');
+      toast.success(project.isArchived ? t.projectRestored : t.projectArchived);
       if (!project.isArchived) {
         setCurrentProject(null);
         navigate('/projects');
       }
     } catch (error) {
-      toast.error('Failed to update project');
+      toast.error(t.failedToUpdateProject);
     }
   };
 
@@ -101,11 +101,11 @@ export function ProjectSettingsPage() {
     if (!project || deleteConfirmation !== project.key) return;
     try {
       await deleteProject(project.id);
-      toast.success('Project deleted');
+      toast.success(t.projectDeleted);
       setCurrentProject(null);
       navigate('/projects');
     } catch (error) {
-      toast.error('Failed to delete project');
+      toast.error(t.failedToDeleteProject);
     }
   };
 
@@ -120,36 +120,36 @@ export function ProjectSettingsPage() {
       a.download = `${project.key}-export.json`;
       a.click();
       URL.revokeObjectURL(url);
-      toast.success('Project exported');
+      toast.success(t.projectExported);
     } catch (error) {
-      toast.error('Failed to export project');
+      toast.error(t.failedToExport);
     }
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   return (
     <div className="max-w-3xl space-y-6">
       <div>
         <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-          Project Settings
+          {t.projectSettings}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Manage settings for {project.name}
+          {t.manageSettingsFor} {project.name}
         </p>
       </div>
 
       {/* General Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>General</CardTitle>
-          <CardDescription>Basic project information</CardDescription>
+          <CardTitle>{t.general}</CardTitle>
+          <CardDescription>{t.basicProjectInfo}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Project Name</Label>
+            <Label htmlFor="name">{t.projectName}</Label>
             <Input
               id="name"
               value={name}
@@ -158,13 +158,13 @@ export function ProjectSettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Project Key</Label>
+            <Label>{t.projectKey}</Label>
             <Input value={project.key} disabled className="bg-muted" />
-            <p className="text-xs text-muted-foreground">Project key cannot be changed after creation</p>
+            <p className="text-xs text-muted-foreground">{t.projectKeyCannotChange}</p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t.description}</Label>
             <Textarea
               id="description"
               value={description}
@@ -174,7 +174,7 @@ export function ProjectSettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Project Color</Label>
+            <Label>{t.projectColor}</Label>
             <div className="flex flex-wrap gap-2">
               {PROJECT_COLORS.map((c) => (
                 <button
@@ -191,7 +191,7 @@ export function ProjectSettingsPage() {
           </div>
 
           <Button onClick={handleSave} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
-            Save Changes
+            {t.saveChanges}
           </Button>
         </CardContent>
       </Card>
@@ -201,10 +201,10 @@ export function ProjectSettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <GitBranch className="w-5 h-5" />
-            Workflow
+            {t.workflowSection}
           </CardTitle>
           <CardDescription>
-            Assign a workflow to define how issues transition between statuses
+            {t.assignWorkflow}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -224,7 +224,7 @@ export function ProjectSettingsPage() {
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              The workflow determines the available statuses and transitions for issues in this project
+              {t.workflowDeterminesStatuses}
             </p>
           </div>
 
@@ -236,7 +236,7 @@ export function ProjectSettingsPage() {
                 if (!selectedWorkflow) return null;
                 return (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Status flow:</p>
+                    <p className="text-sm font-medium">{t.statusFlow}</p>
                     <div className="flex items-center gap-1 flex-wrap text-xs">
                       {selectedWorkflow.statuses
                         .slice()
@@ -256,10 +256,10 @@ export function ProjectSettingsPage() {
 
           <div className="flex items-center justify-between pt-2">
             <Button onClick={handleSave} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white">
-              Save Workflow
+              {t.saveWorkflow}
             </Button>
             <Link to="/workflows" className="text-sm text-primary hover:underline flex items-center gap-1">
-              Manage Workflows
+              {t.manageWorkflows}
               <ExternalLink className="w-3 h-3" />
             </Link>
           </div>
@@ -269,13 +269,13 @@ export function ProjectSettingsPage() {
       {/* Export */}
       <Card>
         <CardHeader>
-          <CardTitle>Export</CardTitle>
-          <CardDescription>Download project data as JSON</CardDescription>
+          <CardTitle>{t.exportSection}</CardTitle>
+          <CardDescription>{t.downloadProjectJson}</CardDescription>
         </CardHeader>
         <CardContent>
           <Button variant="outline" onClick={handleExport} className="gap-2">
             <Download className="w-4 h-4" />
-            Export Project Data
+            {t.exportProjectData}
           </Button>
         </CardContent>
       </Card>
@@ -285,23 +285,23 @@ export function ProjectSettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-destructive">
             <AlertTriangle className="w-5 h-5" />
-            Danger Zone
+            {t.dangerZone}
           </CardTitle>
-          <CardDescription>Irreversible and destructive actions</CardDescription>
+          <CardDescription>{t.dangerZoneDescription}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between p-4 border rounded-lg">
             <div>
-              <p className="font-medium">{project.isArchived ? 'Restore project' : 'Archive project'}</p>
+              <p className="font-medium">{project.isArchived ? t.restoreProject : t.archiveProject}</p>
               <p className="text-sm text-muted-foreground">
                 {project.isArchived
-                  ? 'Restore this project to make it active again'
-                  : 'Hide this project from the active list'}
+                  ? t.restoreProjectDesc
+                  : t.archiveProjectDesc}
               </p>
             </div>
             <Button variant="outline" onClick={handleArchive}>
               <Archive className="w-4 h-4 mr-2" />
-              {project.isArchived ? 'Restore' : 'Archive'}
+              {project.isArchived ? t.restoreProject : t.archiveProject}
             </Button>
           </div>
 
@@ -309,29 +309,28 @@ export function ProjectSettingsPage() {
 
           <div className="flex items-center justify-between p-4 border border-destructive/50 rounded-lg">
             <div>
-              <p className="font-medium text-destructive">Delete project</p>
+              <p className="font-medium text-destructive">{t.deleteProjectTitle}</p>
               <p className="text-sm text-muted-foreground">
-                Permanently delete this project and all its data
+                {t.deleteProjectWarning}
               </p>
             </div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="destructive">
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
+                  {t.delete}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Project</AlertDialogTitle>
+                  <AlertDialogTitle>{t.deleteProjectTitle}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the project
-                    and all associated data including issues, sprints, and comments.
+                    {t.deleteProjectWarning}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="py-4">
                   <Label htmlFor="confirm">
-                    Type <span className="font-mono font-bold">{project.key}</span> to confirm
+                    {t.typeToConfirm.replace('{key}', '')} <span className="font-mono font-bold">{project.key}</span>
                   </Label>
                   <Input
                     id="confirm"
@@ -341,13 +340,13 @@ export function ProjectSettingsPage() {
                   />
                 </div>
                 <AlertDialogFooter>
-                  <AlertDialogCancel onClick={() => setDeleteConfirmation('')}>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel onClick={() => setDeleteConfirmation('')}>{t.cancel}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleDelete}
                     disabled={deleteConfirmation !== project.key}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    Delete Project
+                    {t.deleteProjectTitle}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

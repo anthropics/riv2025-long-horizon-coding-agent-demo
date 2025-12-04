@@ -31,7 +31,7 @@ interface BurndownDataPoint {
 
 export function BurndownPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
   const [selectedSprintId, setSelectedSprintId] = useState<string>('');
 
   useEffect(() => {
@@ -126,7 +126,7 @@ export function BurndownPage() {
   }, [sprintIssues]);
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   const completedSprints = sprints?.filter(s => s.status === 'completed') || [];
@@ -139,20 +139,20 @@ export function BurndownPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            Burndown Chart
+            {t.burndownChart}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Track sprint progress over time
+            {t.trackSprintProgress}
           </p>
         </div>
         <Select value={selectedSprintId} onValueChange={setSelectedSprintId}>
           <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Select sprint" />
+            <SelectValue placeholder={t.selectSprint} />
           </SelectTrigger>
           <SelectContent>
             {allSelectableSprints.map((sprint) => (
               <SelectItem key={sprint.id} value={sprint.id}>
-                {sprint.name} {sprint.status === 'active' && '(Active)'}
+                {sprint.name} {sprint.status === 'active' && `(${t.activeSprint})`}
               </SelectItem>
             ))}
           </SelectContent>

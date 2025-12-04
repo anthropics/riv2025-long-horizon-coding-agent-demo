@@ -14,7 +14,7 @@ import { format, differenceInDays } from 'date-fns';
 export function SprintsPage() {
   const { projectKey } = useParams();
   const navigate = useNavigate();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
 
   useEffect(() => {
     async function loadProject() {
@@ -55,23 +55,23 @@ export function SprintsPage() {
   const handleStart = async (sprintId: string) => {
     try {
       await startSprint(sprintId);
-      toast.success('Sprint started!');
+      toast.success(t.sprintStarted);
     } catch (error) {
-      toast.error('Failed to start sprint');
+      toast.error(t.failedToStartSprint);
     }
   };
 
   const handleComplete = async (sprintId: string) => {
     try {
       await completeSprint(sprintId, 'backlog');
-      toast.success('Sprint completed!');
+      toast.success(t.sprintCompleted);
     } catch (error) {
-      toast.error('Failed to complete sprint');
+      toast.error(t.failedToCompleteSprint);
     }
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   const activeSprint = sprints?.find(s => s.status === 'active');
@@ -94,10 +94,10 @@ export function SprintsPage() {
       {/* Header */}
       <div>
         <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-          Active Sprints
+          {t.sprints}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Manage your sprints and track progress
+          {t.manageSprintsDesc}
         </p>
       </div>
 

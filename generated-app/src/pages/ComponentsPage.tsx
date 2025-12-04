@@ -25,7 +25,7 @@ import { toast } from 'sonner';
 
 export function ComponentsPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingComponent, setEditingComponent] = useState<{
     id: string;
@@ -121,15 +121,15 @@ export function ComponentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            Components
+            {t.components}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage components for {project.name}
+            {t.manageComponentsFor} {project.name}
           </p>
         </div>
         <Button onClick={() => setIsCreateOpen(true)} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
           <Plus className="w-4 h-4" />
-          Create Component
+          {t.createComponent}
         </Button>
       </div>
 

@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 
 export function ProjectsPage() {
   const navigate = useNavigate();
-  const { setCurrentProject } = useApp();
+  const { setCurrentProject, translations: t } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [showArchived, setShowArchived] = useState(false);
 
@@ -51,9 +51,9 @@ export function ProjectsPage() {
   const handleArchiveProject = async (projectId: string, archive: boolean) => {
     try {
       await updateProject(projectId, { isArchived: archive });
-      toast.success(archive ? 'Project archived' : 'Project restored');
+      toast.success(archive ? t.projectArchived : t.projectRestored);
     } catch (error) {
-      toast.error('Failed to update project');
+      toast.error(t.failedToUpdateProject);
     }
   };
 
@@ -66,10 +66,10 @@ export function ProjectsPage() {
             className="text-2xl font-semibold"
             style={{ fontFamily: 'var(--font-display)' }}
           >
-            Projects
+            {t.projects}
           </h1>
           <p className="text-muted-foreground mt-1">
-            Manage and view all your projects
+            {t.manageViewProjects}
           </p>
         </div>
         <Button
@@ -77,7 +77,7 @@ export function ProjectsPage() {
           className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
         >
           <Plus className="w-4 h-4" />
-          New Project
+          {t.newProject}
         </Button>
       </div>
 
@@ -86,7 +86,7 @@ export function ProjectsPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
-            placeholder="Search projects..."
+            placeholder={t.searchProjectsPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
@@ -99,7 +99,7 @@ export function ProjectsPage() {
           className="gap-2"
         >
           <Archive className="w-4 h-4" />
-          {showArchived ? 'Show Active' : 'Show Archived'}
+          {showArchived ? t.showActive : t.showArchived}
         </Button>
       </div>
 
@@ -142,7 +142,7 @@ export function ProjectsPage() {
                         }}
                       >
                         <Settings className="w-4 h-4 mr-2" />
-                        Settings
+                        {t.settings}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={(e) => {
@@ -151,7 +151,7 @@ export function ProjectsPage() {
                         }}
                       >
                         <Archive className="w-4 h-4 mr-2" />
-                        {project.isArchived ? 'Restore' : 'Archive'}
+                        {project.isArchived ? t.restoreProject : t.archiveProject}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -169,10 +169,10 @@ export function ProjectsPage() {
         <div className="flex flex-col items-center justify-center py-16">
           <p className="text-muted-foreground mb-4">
             {searchQuery
-              ? 'No projects match your search'
+              ? t.noProjectsMatchSearch
               : showArchived
-              ? 'No archived projects'
-              : 'No projects yet'}
+              ? t.noArchivedProjects
+              : t.noProjectsYet}
           </p>
           {!searchQuery && !showArchived && (
             <Button
@@ -180,7 +180,7 @@ export function ProjectsPage() {
               className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2"
             >
               <Plus className="w-4 h-4" />
-              Create your first project
+              {t.createYourFirstProject}
             </Button>
           )}
         </div>

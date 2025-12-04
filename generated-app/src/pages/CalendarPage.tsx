@@ -31,7 +31,7 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function CalendarPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject, openIssueDetail } = useApp();
+  const { currentProject, setCurrentProject, openIssueDetail, translations: t } = useApp();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -141,7 +141,7 @@ export function CalendarPage() {
   if (!project) {
     return (
       <div className="flex items-center justify-center h-64 text-muted-foreground">
-        Loading...
+        {t.loading}
       </div>
     );
   }
@@ -153,7 +153,7 @@ export function CalendarPage() {
         <div>
           <h1 className="text-xl font-semibold flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
             <CalendarDays className="w-6 h-6 text-primary" />
-            Calendar
+            {t.calendar}
           </h1>
           <p className="text-sm text-muted-foreground">
             {stats.total} items with due dates · {stats.overdue} overdue · {stats.upcoming} upcoming
@@ -161,7 +161,7 @@ export function CalendarPage() {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={goToToday}>
-            Today
+            {t.today}
           </Button>
           <div className="flex items-center gap-1">
             <Button variant="outline" size="icon" onClick={() => navigateMonth('prev')}>
@@ -307,7 +307,7 @@ export function CalendarPage() {
             <CalendarDays className="w-4 h-4 text-primary" />
             {format(selectedDate, 'EEEE, MMMM d, yyyy')}
             {isToday(selectedDate) && (
-              <Badge variant="secondary" className="ml-2">Today</Badge>
+              <Badge variant="secondary" className="ml-2">{t.today}</Badge>
             )}
           </h3>
 
@@ -343,7 +343,7 @@ export function CalendarPage() {
                         )}
                         {isCompleted && (
                           <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-success/20 text-success">
-                            Done
+                            {t.done}
                           </Badge>
                         )}
                       </div>

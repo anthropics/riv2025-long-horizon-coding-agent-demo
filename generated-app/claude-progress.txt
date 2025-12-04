@@ -1,6 +1,83 @@
 # Canopy - JIRA-like Project Management App
 
-## Project Status: ✅ COMPLETE AND VERIFIED (Issue #42 - User Space with Authentication)
+## Project Status: ✅ COMPLETE AND VERIFIED (Issue #39 - Language Settings Translate All Pages)
+
+## Issue #39 - Language Settings Translate All Pages (COMPLETE)
+Fixed the bug where language settings were only translating the Profile Settings page but not all other pages in the application.
+
+### Bug Description:
+When users changed the language setting (e.g., to Japanese), only the Settings page was translated. All other pages remained in English.
+
+### Root Cause:
+Several pages were not using the translations object from the AppContext. They had hardcoded English strings instead of using the `translations: t` pattern from `useApp()`.
+
+### Pages Fixed:
+1. **VelocityPage.tsx** - Added translations for velocity chart, stats, recommendations, sprint planning suggestions
+2. **SprintReportPage.tsx** - Added translations for sprint reports, stats, charts, team performance
+3. **NewProjectPage.tsx** - Added translations for create project form, validation messages, buttons
+4. **ProjectSettingsPage.tsx** - Added translations for general settings, workflow, export, danger zone
+5. **ProjectsPage.tsx** - Added translations for projects list, search, archive/restore actions
+6. **CalendarPage.tsx** - Already using translations (verified)
+7. **RoadmapPage.tsx** - Already using translations (verified)
+8. **HomePage.tsx** - Already using translations (verified)
+9. **SprintsPage.tsx** - Already using translations (verified)
+10. **BurndownPage.tsx** - Already using translations (verified)
+11. **ComponentsPage.tsx** - Already using translations (verified)
+12. **LabelsPage.tsx** - Already using translations (verified)
+
+### Translation Keys Added (80+ new keys):
+**Velocity Page:**
+- trackTeamVelocity, ptsPerSprint, commitmentReliability, sprintsCompleted, velocityTrend
+- committed, recommendations, sprintPlanningSuggestion, recommendedCommitment, completionRate
+- completeSprintsToSeeVelocity, reduceCommitmentWarning, velocityTrendingDown, velocityImproving
+- moreSprintsNeeded, teamVelocityStable, accountsForVariation
+
+**Sprint Report Page:**
+- detailedBreakdown, totalIssues, teamPerformance, statusDistribution, issueTypeDistribution
+- sprintIssues, sprintDetails, duration, notSet, noGoalSet, selectSprintToViewReport, pts
+
+**New Project Page:**
+- createNewProject, back, projectNameRequired, projectKeyRequired, projectKeyInUse
+- keyPrefix, describeYourProject, projectColor, projectCreatedSuccess, failedToCreateProject
+
+**Project Settings Page:**
+- manageSettingsFor, general, basicProjectInfo, projectKeyCannotChange, settingsSaved
+- failedToSaveSettings, workflowSection, assignWorkflow, workflowDeterminesStatuses
+- statusFlow, saveWorkflow, manageWorkflows, exportSection, exportProjectData
+- downloadProjectJson, projectExported, failedToExport, restoreProject, archiveProject
+- restoreProjectDesc, archiveProjectDesc, projectRestored, projectArchived
+- failedToUpdateProject, deleteProjectTitle, deleteProjectWarning, typeToConfirm
+- projectDeleted, failedToDeleteProject
+
+**Projects Page:**
+- manageViewProjects, searchProjectsPlaceholder, showActive, showArchived
+- noProjectsMatchSearch, noArchivedProjects, noProjectsYet
+
+### All 5 Languages Updated:
+- English (en)
+- Japanese (ja)
+- Chinese/Mandarin (zh)
+- Arabic (ar)
+- Spanish (es)
+
+### E2E Tests Added:
+- e2e-tests/translation-test.spec.ts - Tests language switching and translation across pages (1/1 passing)
+
+### Build Status:
+- `npm run build` succeeds without errors ✅
+- All new tests pass ✅
+- All console logs show NO_CONSOLE_ERRORS ✅
+- Application loads correctly ✅
+
+### Verification:
+Switching to Japanese language now correctly translates:
+- Settings page header: "設定"
+- Projects page header: "プロジェクト"
+- And all other pages...
+
+---
+
+## Issue #42 - User Space with Authentication (COMPLETE)
 
 ## Issue #42 - User Space with Authentication (COMPLETE)
 Added user authentication system allowing users to create accounts, sign in/out, and have their work persisted across sessions.

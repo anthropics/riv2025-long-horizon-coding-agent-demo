@@ -23,7 +23,7 @@ const LABEL_COLORS = [
 
 export function LabelsPage() {
   const { projectKey } = useParams();
-  const { currentProject, setCurrentProject } = useApp();
+  const { currentProject, setCurrentProject, translations: t } = useApp();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingLabel, setEditingLabel] = useState<{ id: string; name: string; color: string } | null>(null);
   const [newName, setNewName] = useState('');
@@ -90,7 +90,7 @@ export function LabelsPage() {
   };
 
   if (!project) {
-    return <div className="flex items-center justify-center h-64 text-muted-foreground">Loading...</div>;
+    return <div className="flex items-center justify-center h-64 text-muted-foreground">{t.loading}</div>;
   }
 
   return (
@@ -99,15 +99,15 @@ export function LabelsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-            Labels
+            {t.labels}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Manage labels for {project.name}
+            {t.manageLabelsFor} {project.name}
           </p>
         </div>
         <Button onClick={() => setIsCreateOpen(true)} className="bg-[#E8A87C] hover:bg-[#d4946d] text-white gap-2">
           <Plus className="w-4 h-4" />
-          Create Label
+          {t.createLabel}
         </Button>
       </div>
 

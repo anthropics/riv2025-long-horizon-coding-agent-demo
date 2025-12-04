@@ -25,6 +25,8 @@ export interface Translations {
   burndownChart: string;
   velocityChart: string;
   sprintReport: string;
+  trackSprintProgress: string;
+  selectSprint: string;
   project: string;
   projectSettings: string;
   components: string;
@@ -160,6 +162,13 @@ export interface Translations {
   activeSprint: string;
   completedSprint: string;
   noSprints: string;
+  addedToSprint: string;
+  movedToBacklog: string;
+  sprintStarted: string;
+  sprintCompleted: string;
+  failedToStartSprint: string;
+  failedToCompleteSprint: string;
+  manageSprintsDesc: string;
 
   // Epics
   epicsView: string;
@@ -204,6 +213,7 @@ export interface Translations {
   componentName: string;
   componentDescription: string;
   componentLead: string;
+  manageComponentsFor: string;
 
   // Labels
   labelsView: string;
@@ -212,6 +222,7 @@ export interface Translations {
   labelName: string;
   labelColor: string;
   labelDescription: string;
+  manageLabelsFor: string;
 
   // Workflows
   workflowsView: string;
@@ -238,6 +249,8 @@ export interface Translations {
   dataExported: string;
   dataImported: string;
   importError: string;
+  movedTo: string;
+  failedToMoveIssue: string;
 
   // About
   about: string;
@@ -383,6 +396,91 @@ export interface Translations {
   authFailed: string;
   signedOutSuccess: string;
   signOutFailed: string;
+
+  // Velocity Page
+  trackTeamVelocity: string;
+  ptsPerSprint: string;
+  commitmentReliability: string;
+  sprintsCompleted: string;
+  velocityTrend: string;
+  committed: string;
+  recommendations: string;
+  sprintPlanningSuggestion: string;
+  recommendedCommitment: string;
+  completionRate: string;
+  completeSprintsToSeeVelocity: string;
+  reduceCommitmentWarning: string;
+  velocityTrendingDown: string;
+  velocityImproving: string;
+  moreSprintsNeeded: string;
+  teamVelocityStable: string;
+  accountsForVariation: string;
+
+  // Sprint Report Page
+  detailedBreakdown: string;
+  totalIssues: string;
+  teamPerformance: string;
+  statusDistribution: string;
+  issueTypeDistribution: string;
+  sprintIssues: string;
+  sprintDetails: string;
+  duration: string;
+  notSet: string;
+  noGoalSet: string;
+  selectSprintToViewReport: string;
+  pts: string;
+
+  // New Project Page
+  createNewProject: string;
+  back: string;
+  projectNameRequired: string;
+  projectKeyRequired: string;
+  projectKeyInUse: string;
+  keyPrefix: string;
+  describeYourProject: string;
+  projectColor: string;
+  projectCreatedSuccess: string;
+  failedToCreateProject: string;
+
+  // Project Settings Page
+  manageSettingsFor: string;
+  general: string;
+  basicProjectInfo: string;
+  projectKeyCannotChange: string;
+  settingsSaved: string;
+  failedToSaveSettings: string;
+  workflowSection: string;
+  assignWorkflow: string;
+  workflowDeterminesStatuses: string;
+  statusFlow: string;
+  saveWorkflow: string;
+  manageWorkflows: string;
+  exportSection: string;
+  exportProjectData: string;
+  downloadProjectJson: string;
+  projectExported: string;
+  failedToExport: string;
+  restoreProject: string;
+  archiveProject: string;
+  restoreProjectDesc: string;
+  archiveProjectDesc: string;
+  projectRestored: string;
+  projectArchived: string;
+  failedToUpdateProject: string;
+  deleteProjectTitle: string;
+  deleteProjectWarning: string;
+  typeToConfirm: string;
+  projectDeleted: string;
+  failedToDeleteProject: string;
+
+  // Projects Page
+  manageViewProjects: string;
+  searchProjectsPlaceholder: string;
+  showActive: string;
+  showArchived: string;
+  noProjectsMatchSearch: string;
+  noArchivedProjects: string;
+  noProjectsYet: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -411,6 +509,8 @@ const translations: Record<Language, Translations> = {
     burndownChart: 'Burndown Chart',
     velocityChart: 'Velocity Chart',
     sprintReport: 'Sprint Report',
+    trackSprintProgress: 'Track sprint progress over time',
+    selectSprint: 'Select sprint',
     project: 'Project',
     projectSettings: 'Project Settings',
     components: 'Components',
@@ -546,6 +646,13 @@ const translations: Record<Language, Translations> = {
     activeSprint: 'Active',
     completedSprint: 'Completed',
     noSprints: 'No sprints yet',
+    addedToSprint: 'Added to sprint',
+    movedToBacklog: 'Moved to backlog',
+    sprintStarted: 'Sprint started',
+    sprintCompleted: 'Sprint completed',
+    failedToStartSprint: 'Failed to start sprint',
+    failedToCompleteSprint: 'Failed to complete sprint',
+    manageSprintsDesc: 'Manage your sprints and track progress',
 
     // Epics
     epicsView: 'Epics',
@@ -590,6 +697,7 @@ const translations: Record<Language, Translations> = {
     componentName: 'Component Name',
     componentDescription: 'Component Description',
     componentLead: 'Component Lead',
+    manageComponentsFor: 'Manage components for',
 
     // Labels
     labelsView: 'Labels',
@@ -598,6 +706,7 @@ const translations: Record<Language, Translations> = {
     labelName: 'Label Name',
     labelColor: 'Label Color',
     labelDescription: 'Label Description',
+    manageLabelsFor: 'Manage labels for',
 
     // Workflows
     workflowsView: 'Workflows',
@@ -624,6 +733,8 @@ const translations: Record<Language, Translations> = {
     dataExported: 'Data exported successfully',
     dataImported: 'Data imported successfully',
     importError: 'Failed to import data. Please check the file format.',
+    movedTo: 'Moved to',
+    failedToMoveIssue: 'Failed to move issue',
 
     // About
     about: 'About',
@@ -769,6 +880,91 @@ const translations: Record<Language, Translations> = {
     authFailed: 'Authentication failed',
     signedOutSuccess: 'Signed out successfully',
     signOutFailed: 'Failed to sign out',
+
+    // Velocity Page
+    trackTeamVelocity: 'Track team velocity across sprints',
+    ptsPerSprint: 'pts/sprint',
+    commitmentReliability: 'Commitment Reliability',
+    sprintsCompleted: 'Sprints Completed',
+    velocityTrend: 'Velocity Trend',
+    committed: 'Committed',
+    recommendations: 'Recommendations',
+    sprintPlanningSuggestion: 'Sprint Planning Suggestion',
+    recommendedCommitment: 'Based on your team\'s velocity, the recommended commitment for the next sprint:',
+    completionRate: 'Completion Rate',
+    completeSprintsToSeeVelocity: 'Complete sprints to see velocity data',
+    reduceCommitmentWarning: 'Consider reducing sprint commitment. Current reliability is below 80%.',
+    velocityTrendingDown: 'Velocity is trending downward. Review potential blockers with the team.',
+    velocityImproving: 'Great progress! Velocity is improving. Consider slightly increasing commitment.',
+    moreSprintsNeeded: 'Complete more sprints to get accurate velocity predictions.',
+    teamVelocityStable: 'Team velocity is stable. Keep up the good work!',
+    accountsForVariation: 'This range accounts for typical sprint-to-sprint variation.',
+
+    // Sprint Report Page
+    detailedBreakdown: 'Detailed breakdown of sprint progress',
+    totalIssues: 'Total Issues',
+    teamPerformance: 'Team Performance',
+    statusDistribution: 'Status Distribution',
+    issueTypeDistribution: 'Issue Type Distribution',
+    sprintIssues: 'Sprint Issues',
+    sprintDetails: 'Sprint Details',
+    duration: 'Duration',
+    notSet: 'Not set',
+    noGoalSet: 'No goal set for this sprint',
+    selectSprintToViewReport: 'Select a sprint to view its report',
+    pts: 'pts',
+
+    // New Project Page
+    createNewProject: 'Create a new project',
+    back: 'Back',
+    projectNameRequired: 'Project name is required',
+    projectKeyRequired: 'Project key is required',
+    projectKeyInUse: 'This project key is already in use',
+    keyPrefix: 'Used as a prefix for issue keys',
+    describeYourProject: 'Describe your project...',
+    projectColor: 'Project Color',
+    projectCreatedSuccess: 'Project created successfully!',
+    failedToCreateProject: 'Failed to create project',
+
+    // Project Settings Page
+    manageSettingsFor: 'Manage settings for',
+    general: 'General',
+    basicProjectInfo: 'Basic project information',
+    projectKeyCannotChange: 'Project key cannot be changed after creation',
+    settingsSaved: 'Settings saved',
+    failedToSaveSettings: 'Failed to save settings',
+    workflowSection: 'Workflow',
+    assignWorkflow: 'Assign a workflow to define how issues transition between statuses',
+    workflowDeterminesStatuses: 'The workflow determines the available statuses and transitions for issues in this project',
+    statusFlow: 'Status flow:',
+    saveWorkflow: 'Save Workflow',
+    manageWorkflows: 'Manage Workflows',
+    exportSection: 'Export',
+    exportProjectData: 'Export Project Data',
+    downloadProjectJson: 'Download project data as JSON',
+    projectExported: 'Project exported',
+    failedToExport: 'Failed to export project',
+    restoreProject: 'Restore project',
+    archiveProject: 'Archive project',
+    restoreProjectDesc: 'Restore this project to make it active again',
+    archiveProjectDesc: 'Hide this project from the active list',
+    projectRestored: 'Project restored',
+    projectArchived: 'Project archived',
+    failedToUpdateProject: 'Failed to update project',
+    deleteProjectTitle: 'Delete Project',
+    deleteProjectWarning: 'This action cannot be undone. This will permanently delete the project and all associated data including issues, sprints, and comments.',
+    typeToConfirm: 'Type {key} to confirm',
+    projectDeleted: 'Project deleted',
+    failedToDeleteProject: 'Failed to delete project',
+
+    // Projects Page
+    manageViewProjects: 'Manage and view all your projects',
+    searchProjectsPlaceholder: 'Search projects...',
+    showActive: 'Show Active',
+    showArchived: 'Show Archived',
+    noProjectsMatchSearch: 'No projects match your search',
+    noArchivedProjects: 'No archived projects',
+    noProjectsYet: 'No projects yet',
   },
 
   ja: {
@@ -796,6 +992,8 @@ const translations: Record<Language, Translations> = {
     burndownChart: 'バーンダウンチャート',
     velocityChart: 'ベロシティチャート',
     sprintReport: 'スプリントレポート',
+    trackSprintProgress: 'スプリントの進捗を時系列で追跡',
+    selectSprint: 'スプリントを選択',
     project: 'プロジェクト',
     projectSettings: 'プロジェクト設定',
     components: 'コンポーネント',
@@ -931,6 +1129,13 @@ const translations: Record<Language, Translations> = {
     activeSprint: 'アクティブ',
     completedSprint: '完了',
     noSprints: 'スプリントがありません',
+    addedToSprint: 'スプリントに追加しました',
+    movedToBacklog: 'バックログに移動しました',
+    sprintStarted: 'スプリントを開始しました',
+    sprintCompleted: 'スプリントを完了しました',
+    failedToStartSprint: 'スプリントの開始に失敗しました',
+    failedToCompleteSprint: 'スプリントの完了に失敗しました',
+    manageSprintsDesc: 'スプリントを管理し、進捗を追跡します',
 
     // Epics
     epicsView: 'エピック',
@@ -975,6 +1180,7 @@ const translations: Record<Language, Translations> = {
     componentName: 'コンポーネント名',
     componentDescription: 'コンポーネントの説明',
     componentLead: 'コンポーネントリード',
+    manageComponentsFor: 'コンポーネントを管理',
 
     // Labels
     labelsView: 'ラベル',
@@ -983,6 +1189,7 @@ const translations: Record<Language, Translations> = {
     labelName: 'ラベル名',
     labelColor: 'ラベルカラー',
     labelDescription: 'ラベルの説明',
+    manageLabelsFor: 'ラベルを管理',
 
     // Workflows
     workflowsView: 'ワークフロー',
@@ -1009,6 +1216,8 @@ const translations: Record<Language, Translations> = {
     dataExported: 'データのエクスポートに成功しました',
     dataImported: 'データのインポートに成功しました',
     importError: 'データのインポートに失敗しました。ファイル形式を確認してください。',
+    movedTo: '移動先',
+    failedToMoveIssue: '課題の移動に失敗しました',
 
     // About
     about: '情報',
@@ -1154,6 +1363,91 @@ const translations: Record<Language, Translations> = {
     authFailed: '認証に失敗しました',
     signedOutSuccess: 'サインアウトしました',
     signOutFailed: 'サインアウトに失敗しました',
+
+    // Velocity Page
+    trackTeamVelocity: 'スプリント間のチームベロシティを追跡',
+    ptsPerSprint: 'ポイント/スプリント',
+    commitmentReliability: 'コミットメント達成率',
+    sprintsCompleted: '完了スプリント数',
+    velocityTrend: 'ベロシティトレンド',
+    committed: 'コミット済み',
+    recommendations: '推奨事項',
+    sprintPlanningSuggestion: 'スプリント計画の提案',
+    recommendedCommitment: 'チームのベロシティに基づく次のスプリントの推奨コミットメント:',
+    completionRate: '完了率',
+    completeSprintsToSeeVelocity: 'ベロシティデータを表示するにはスプリントを完了してください',
+    reduceCommitmentWarning: 'スプリントコミットメントの削減を検討してください。現在の達成率は80%未満です。',
+    velocityTrendingDown: 'ベロシティが低下傾向にあります。チームとブロッカーを確認してください。',
+    velocityImproving: '素晴らしい進捗です！ベロシティが向上しています。コミットメントの増加を検討してください。',
+    moreSprintsNeeded: '正確なベロシティ予測にはより多くのスプリントの完了が必要です。',
+    teamVelocityStable: 'チームベロシティは安定しています。この調子を維持してください！',
+    accountsForVariation: 'この範囲はスプリント間の典型的な変動を考慮しています。',
+
+    // Sprint Report Page
+    detailedBreakdown: 'スプリント進捗の詳細内訳',
+    totalIssues: '総課題数',
+    teamPerformance: 'チームパフォーマンス',
+    statusDistribution: 'ステータス分布',
+    issueTypeDistribution: '課題タイプ分布',
+    sprintIssues: 'スプリント課題',
+    sprintDetails: 'スプリント詳細',
+    duration: '期間',
+    notSet: '未設定',
+    noGoalSet: 'このスプリントにはゴールが設定されていません',
+    selectSprintToViewReport: 'レポートを表示するスプリントを選択',
+    pts: 'ポイント',
+
+    // New Project Page
+    createNewProject: '新規プロジェクトを作成',
+    back: '戻る',
+    projectNameRequired: 'プロジェクト名は必須です',
+    projectKeyRequired: 'プロジェクトキーは必須です',
+    projectKeyInUse: 'このプロジェクトキーは既に使用されています',
+    keyPrefix: '課題キーのプレフィックスとして使用',
+    describeYourProject: 'プロジェクトを説明してください...',
+    projectColor: 'プロジェクトカラー',
+    projectCreatedSuccess: 'プロジェクトが正常に作成されました！',
+    failedToCreateProject: 'プロジェクトの作成に失敗しました',
+
+    // Project Settings Page
+    manageSettingsFor: '設定を管理:',
+    general: '一般',
+    basicProjectInfo: '基本的なプロジェクト情報',
+    projectKeyCannotChange: 'プロジェクトキーは作成後に変更できません',
+    settingsSaved: '設定が保存されました',
+    failedToSaveSettings: '設定の保存に失敗しました',
+    workflowSection: 'ワークフロー',
+    assignWorkflow: '課題のステータス遷移を定義するワークフローを割り当て',
+    workflowDeterminesStatuses: 'ワークフローはこのプロジェクトの課題で利用可能なステータスと遷移を決定します',
+    statusFlow: 'ステータスフロー:',
+    saveWorkflow: 'ワークフローを保存',
+    manageWorkflows: 'ワークフローを管理',
+    exportSection: 'エクスポート',
+    exportProjectData: 'プロジェクトデータをエクスポート',
+    downloadProjectJson: 'プロジェクトデータをJSONとしてダウンロード',
+    projectExported: 'プロジェクトがエクスポートされました',
+    failedToExport: 'エクスポートに失敗しました',
+    restoreProject: 'プロジェクトを復元',
+    archiveProject: 'プロジェクトをアーカイブ',
+    restoreProjectDesc: 'このプロジェクトを復元してアクティブにします',
+    archiveProjectDesc: 'このプロジェクトをアクティブリストから非表示にします',
+    projectRestored: 'プロジェクトが復元されました',
+    projectArchived: 'プロジェクトがアーカイブされました',
+    failedToUpdateProject: 'プロジェクトの更新に失敗しました',
+    deleteProjectTitle: 'プロジェクトを削除',
+    deleteProjectWarning: 'この操作は元に戻せません。プロジェクトと関連するすべてのデータ（課題、スプリント、コメントを含む）が完全に削除されます。',
+    typeToConfirm: '確認のため {key} を入力',
+    projectDeleted: 'プロジェクトが削除されました',
+    failedToDeleteProject: 'プロジェクトの削除に失敗しました',
+
+    // Projects Page
+    manageViewProjects: 'すべてのプロジェクトを管理・表示',
+    searchProjectsPlaceholder: 'プロジェクトを検索...',
+    showActive: 'アクティブを表示',
+    showArchived: 'アーカイブを表示',
+    noProjectsMatchSearch: '検索に一致するプロジェクトがありません',
+    noArchivedProjects: 'アーカイブされたプロジェクトはありません',
+    noProjectsYet: 'まだプロジェクトがありません',
   },
 
   zh: {
@@ -1181,6 +1475,8 @@ const translations: Record<Language, Translations> = {
     burndownChart: '燃尽图',
     velocityChart: '速度图',
     sprintReport: '冲刺报告',
+    trackSprintProgress: '跟踪冲刺进度',
+    selectSprint: '选择冲刺',
     project: '项目',
     projectSettings: '项目设置',
     components: '组件',
@@ -1316,6 +1612,13 @@ const translations: Record<Language, Translations> = {
     activeSprint: '活动',
     completedSprint: '已完成',
     noSprints: '暂无冲刺',
+    addedToSprint: '已添加到冲刺',
+    movedToBacklog: '已移至待办事项',
+    sprintStarted: '冲刺已开始',
+    sprintCompleted: '冲刺已完成',
+    failedToStartSprint: '开始冲刺失败',
+    failedToCompleteSprint: '完成冲刺失败',
+    manageSprintsDesc: '管理冲刺并跟踪进度',
 
     // Epics
     epicsView: '史诗',
@@ -1360,6 +1663,7 @@ const translations: Record<Language, Translations> = {
     componentName: '组件名称',
     componentDescription: '组件描述',
     componentLead: '组件负责人',
+    manageComponentsFor: '管理组件',
 
     // Labels
     labelsView: '标签',
@@ -1368,6 +1672,7 @@ const translations: Record<Language, Translations> = {
     labelName: '标签名称',
     labelColor: '标签颜色',
     labelDescription: '标签描述',
+    manageLabelsFor: '管理标签',
 
     // Workflows
     workflowsView: '工作流',
@@ -1394,6 +1699,8 @@ const translations: Record<Language, Translations> = {
     dataExported: '数据导出成功',
     dataImported: '数据导入成功',
     importError: '数据导入失败，请检查文件格式。',
+    movedTo: '已移至',
+    failedToMoveIssue: '移动问题失败',
 
     // About
     about: '关于',
@@ -1539,6 +1846,91 @@ const translations: Record<Language, Translations> = {
     authFailed: '认证失败',
     signedOutSuccess: '已成功退出登录',
     signOutFailed: '退出登录失败',
+
+    // Velocity Page
+    trackTeamVelocity: '跟踪冲刺间的团队速度',
+    ptsPerSprint: '点/冲刺',
+    commitmentReliability: '承诺可靠性',
+    sprintsCompleted: '已完成冲刺',
+    velocityTrend: '速度趋势',
+    committed: '已承诺',
+    recommendations: '建议',
+    sprintPlanningSuggestion: '冲刺规划建议',
+    recommendedCommitment: '根据团队速度，下一个冲刺的建议承诺：',
+    completionRate: '完成率',
+    completeSprintsToSeeVelocity: '完成冲刺以查看速度数据',
+    reduceCommitmentWarning: '考虑减少冲刺承诺。当前可靠性低于80%。',
+    velocityTrendingDown: '速度呈下降趋势。与团队审查潜在阻碍因素。',
+    velocityImproving: '进展顺利！速度正在提高。考虑适当增加承诺。',
+    moreSprintsNeeded: '完成更多冲刺以获得准确的速度预测。',
+    teamVelocityStable: '团队速度稳定。继续保持！',
+    accountsForVariation: '此范围考虑了冲刺间的典型变化。',
+
+    // Sprint Report Page
+    detailedBreakdown: '冲刺进度详细分解',
+    totalIssues: '总问题数',
+    teamPerformance: '团队绩效',
+    statusDistribution: '状态分布',
+    issueTypeDistribution: '问题类型分布',
+    sprintIssues: '冲刺问题',
+    sprintDetails: '冲刺详情',
+    duration: '持续时间',
+    notSet: '未设置',
+    noGoalSet: '此冲刺未设置目标',
+    selectSprintToViewReport: '选择冲刺以查看报告',
+    pts: '点',
+
+    // New Project Page
+    createNewProject: '创建新项目',
+    back: '返回',
+    projectNameRequired: '项目名称为必填项',
+    projectKeyRequired: '项目键为必填项',
+    projectKeyInUse: '此项目键已被使用',
+    keyPrefix: '用作问题键的前缀',
+    describeYourProject: '描述您的项目...',
+    projectColor: '项目颜色',
+    projectCreatedSuccess: '项目创建成功！',
+    failedToCreateProject: '创建项目失败',
+
+    // Project Settings Page
+    manageSettingsFor: '管理设置：',
+    general: '常规',
+    basicProjectInfo: '基本项目信息',
+    projectKeyCannotChange: '项目键创建后无法更改',
+    settingsSaved: '设置已保存',
+    failedToSaveSettings: '保存设置失败',
+    workflowSection: '工作流',
+    assignWorkflow: '分配工作流以定义问题如何在状态之间转换',
+    workflowDeterminesStatuses: '工作流决定此项目中问题可用的状态和转换',
+    statusFlow: '状态流：',
+    saveWorkflow: '保存工作流',
+    manageWorkflows: '管理工作流',
+    exportSection: '导出',
+    exportProjectData: '导出项目数据',
+    downloadProjectJson: '将项目数据下载为JSON',
+    projectExported: '项目已导出',
+    failedToExport: '导出失败',
+    restoreProject: '恢复项目',
+    archiveProject: '归档项目',
+    restoreProjectDesc: '恢复此项目使其再次活跃',
+    archiveProjectDesc: '从活跃列表中隐藏此项目',
+    projectRestored: '项目已恢复',
+    projectArchived: '项目已归档',
+    failedToUpdateProject: '更新项目失败',
+    deleteProjectTitle: '删除项目',
+    deleteProjectWarning: '此操作无法撤销。这将永久删除项目及所有相关数据，包括问题、冲刺和评论。',
+    typeToConfirm: '输入 {key} 以确认',
+    projectDeleted: '项目已删除',
+    failedToDeleteProject: '删除项目失败',
+
+    // Projects Page
+    manageViewProjects: '管理和查看所有项目',
+    searchProjectsPlaceholder: '搜索项目...',
+    showActive: '显示活跃',
+    showArchived: '显示已归档',
+    noProjectsMatchSearch: '没有匹配搜索的项目',
+    noArchivedProjects: '没有已归档的项目',
+    noProjectsYet: '暂无项目',
   },
 
   ar: {
@@ -1566,6 +1958,8 @@ const translations: Record<Language, Translations> = {
     burndownChart: 'مخطط الإنجاز',
     velocityChart: 'مخطط السرعة',
     sprintReport: 'تقرير السباق',
+    trackSprintProgress: 'تتبع تقدم السباق بمرور الوقت',
+    selectSprint: 'اختر السباق',
     project: 'المشروع',
     projectSettings: 'إعدادات المشروع',
     components: 'المكونات',
@@ -1701,6 +2095,13 @@ const translations: Record<Language, Translations> = {
     activeSprint: 'نشط',
     completedSprint: 'مكتمل',
     noSprints: 'لا توجد سباقات بعد',
+    addedToSprint: 'تمت الإضافة إلى السباق',
+    movedToBacklog: 'تم النقل إلى قائمة المهام',
+    sprintStarted: 'بدأ السباق',
+    sprintCompleted: 'اكتمل السباق',
+    failedToStartSprint: 'فشل بدء السباق',
+    failedToCompleteSprint: 'فشل إنهاء السباق',
+    manageSprintsDesc: 'إدارة السباقات وتتبع التقدم',
 
     // Epics
     epicsView: 'الملاحم',
@@ -1745,6 +2146,7 @@ const translations: Record<Language, Translations> = {
     componentName: 'اسم المكون',
     componentDescription: 'وصف المكون',
     componentLead: 'قائد المكون',
+    manageComponentsFor: 'إدارة المكونات لـ',
 
     // Labels
     labelsView: 'التسميات',
@@ -1753,6 +2155,7 @@ const translations: Record<Language, Translations> = {
     labelName: 'اسم التسمية',
     labelColor: 'لون التسمية',
     labelDescription: 'وصف التسمية',
+    manageLabelsFor: 'إدارة التسميات لـ',
 
     // Workflows
     workflowsView: 'سير العمل',
@@ -1779,6 +2182,8 @@ const translations: Record<Language, Translations> = {
     dataExported: 'تم تصدير البيانات بنجاح',
     dataImported: 'تم استيراد البيانات بنجاح',
     importError: 'فشل استيراد البيانات. يرجى التحقق من صيغة الملف.',
+    movedTo: 'تم النقل إلى',
+    failedToMoveIssue: 'فشل نقل المهمة',
 
     // About
     about: 'حول',
@@ -1924,6 +2329,91 @@ const translations: Record<Language, Translations> = {
     authFailed: 'فشل التحقق',
     signedOutSuccess: 'تم تسجيل الخروج بنجاح',
     signOutFailed: 'فشل تسجيل الخروج',
+
+    // Velocity Page
+    trackTeamVelocity: 'تتبع سرعة الفريق عبر السبرنتات',
+    ptsPerSprint: 'نقطة/سبرنت',
+    commitmentReliability: 'موثوقية الالتزام',
+    sprintsCompleted: 'السبرنتات المكتملة',
+    velocityTrend: 'اتجاه السرعة',
+    committed: 'ملتزم',
+    recommendations: 'التوصيات',
+    sprintPlanningSuggestion: 'اقتراح تخطيط السبرنت',
+    recommendedCommitment: 'بناءً على سرعة فريقك، الالتزام الموصى به للسبرنت القادم:',
+    completionRate: 'معدل الإكمال',
+    completeSprintsToSeeVelocity: 'أكمل السبرنتات لرؤية بيانات السرعة',
+    reduceCommitmentWarning: 'فكر في تقليل التزام السبرنت. الموثوقية الحالية أقل من 80%.',
+    velocityTrendingDown: 'السرعة في اتجاه تنازلي. راجع العوائق المحتملة مع الفريق.',
+    velocityImproving: 'تقدم رائع! السرعة تتحسن. فكر في زيادة الالتزام قليلاً.',
+    moreSprintsNeeded: 'أكمل المزيد من السبرنتات للحصول على توقعات دقيقة للسرعة.',
+    teamVelocityStable: 'سرعة الفريق مستقرة. استمروا في العمل الجيد!',
+    accountsForVariation: 'هذا النطاق يأخذ في الاعتبار التباين النموذجي بين السبرنتات.',
+
+    // Sprint Report Page
+    detailedBreakdown: 'تفصيل مفصل لتقدم السبرنت',
+    totalIssues: 'إجمالي المهام',
+    teamPerformance: 'أداء الفريق',
+    statusDistribution: 'توزيع الحالة',
+    issueTypeDistribution: 'توزيع نوع المهام',
+    sprintIssues: 'مهام السبرنت',
+    sprintDetails: 'تفاصيل السبرنت',
+    duration: 'المدة',
+    notSet: 'غير محدد',
+    noGoalSet: 'لم يتم تحديد هدف لهذا السبرنت',
+    selectSprintToViewReport: 'اختر سبرنت لعرض تقريره',
+    pts: 'نقاط',
+
+    // New Project Page
+    createNewProject: 'إنشاء مشروع جديد',
+    back: 'رجوع',
+    projectNameRequired: 'اسم المشروع مطلوب',
+    projectKeyRequired: 'مفتاح المشروع مطلوب',
+    projectKeyInUse: 'مفتاح المشروع هذا مستخدم بالفعل',
+    keyPrefix: 'يستخدم كبادئة لمفاتيح المهام',
+    describeYourProject: 'صف مشروعك...',
+    projectColor: 'لون المشروع',
+    projectCreatedSuccess: 'تم إنشاء المشروع بنجاح!',
+    failedToCreateProject: 'فشل إنشاء المشروع',
+
+    // Project Settings Page
+    manageSettingsFor: 'إدارة إعدادات',
+    general: 'عام',
+    basicProjectInfo: 'معلومات المشروع الأساسية',
+    projectKeyCannotChange: 'لا يمكن تغيير مفتاح المشروع بعد الإنشاء',
+    settingsSaved: 'تم حفظ الإعدادات',
+    failedToSaveSettings: 'فشل حفظ الإعدادات',
+    workflowSection: 'سير العمل',
+    assignWorkflow: 'تعيين سير عمل لتحديد كيفية انتقال المهام بين الحالات',
+    workflowDeterminesStatuses: 'يحدد سير العمل الحالات والانتقالات المتاحة للمهام في هذا المشروع',
+    statusFlow: 'تدفق الحالة:',
+    saveWorkflow: 'حفظ سير العمل',
+    manageWorkflows: 'إدارة سير العمل',
+    exportSection: 'تصدير',
+    exportProjectData: 'تصدير بيانات المشروع',
+    downloadProjectJson: 'تحميل بيانات المشروع كـ JSON',
+    projectExported: 'تم تصدير المشروع',
+    failedToExport: 'فشل التصدير',
+    restoreProject: 'استعادة المشروع',
+    archiveProject: 'أرشفة المشروع',
+    restoreProjectDesc: 'استعادة هذا المشروع لجعله نشطاً مرة أخرى',
+    archiveProjectDesc: 'إخفاء هذا المشروع من القائمة النشطة',
+    projectRestored: 'تم استعادة المشروع',
+    projectArchived: 'تم أرشفة المشروع',
+    failedToUpdateProject: 'فشل تحديث المشروع',
+    deleteProjectTitle: 'حذف المشروع',
+    deleteProjectWarning: 'لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف المشروع وجميع البيانات المرتبطة بشكل دائم بما في ذلك المهام والسبرنتات والتعليقات.',
+    typeToConfirm: 'اكتب {key} للتأكيد',
+    projectDeleted: 'تم حذف المشروع',
+    failedToDeleteProject: 'فشل حذف المشروع',
+
+    // Projects Page
+    manageViewProjects: 'إدارة وعرض جميع مشاريعك',
+    searchProjectsPlaceholder: 'البحث في المشاريع...',
+    showActive: 'عرض النشطة',
+    showArchived: 'عرض المؤرشفة',
+    noProjectsMatchSearch: 'لا توجد مشاريع تطابق بحثك',
+    noArchivedProjects: 'لا توجد مشاريع مؤرشفة',
+    noProjectsYet: 'لا توجد مشاريع بعد',
   },
 
   es: {
@@ -1951,6 +2441,8 @@ const translations: Record<Language, Translations> = {
     burndownChart: 'Gráfico de Burndown',
     velocityChart: 'Gráfico de Velocidad',
     sprintReport: 'Informe de Sprint',
+    trackSprintProgress: 'Seguir progreso del sprint en el tiempo',
+    selectSprint: 'Seleccionar sprint',
     project: 'Proyecto',
     projectSettings: 'Configuración del Proyecto',
     components: 'Componentes',
@@ -2086,6 +2578,13 @@ const translations: Record<Language, Translations> = {
     activeSprint: 'Activo',
     completedSprint: 'Completado',
     noSprints: 'No hay sprints aún',
+    addedToSprint: 'Agregado al sprint',
+    movedToBacklog: 'Movido al backlog',
+    sprintStarted: 'Sprint iniciado',
+    sprintCompleted: 'Sprint completado',
+    failedToStartSprint: 'Error al iniciar sprint',
+    failedToCompleteSprint: 'Error al completar sprint',
+    manageSprintsDesc: 'Gestiona tus sprints y sigue el progreso',
 
     // Epics
     epicsView: 'Épicas',
@@ -2130,6 +2629,7 @@ const translations: Record<Language, Translations> = {
     componentName: 'Nombre del Componente',
     componentDescription: 'Descripción del Componente',
     componentLead: 'Líder del Componente',
+    manageComponentsFor: 'Gestionar componentes para',
 
     // Labels
     labelsView: 'Etiquetas',
@@ -2138,6 +2638,7 @@ const translations: Record<Language, Translations> = {
     labelName: 'Nombre de la Etiqueta',
     labelColor: 'Color de la Etiqueta',
     labelDescription: 'Descripción de la Etiqueta',
+    manageLabelsFor: 'Gestionar etiquetas para',
 
     // Workflows
     workflowsView: 'Flujos de Trabajo',
@@ -2164,6 +2665,8 @@ const translations: Record<Language, Translations> = {
     dataExported: 'Datos exportados exitosamente',
     dataImported: 'Datos importados exitosamente',
     importError: 'Error al importar datos. Por favor verifica el formato del archivo.',
+    movedTo: 'Movido a',
+    failedToMoveIssue: 'Error al mover el problema',
 
     // About
     about: 'Acerca de',
@@ -2309,6 +2812,91 @@ const translations: Record<Language, Translations> = {
     authFailed: 'Autenticación fallida',
     signedOutSuccess: 'Sesión cerrada exitosamente',
     signOutFailed: 'Error al cerrar sesión',
+
+    // Velocity Page
+    trackTeamVelocity: 'Seguimiento de la velocidad del equipo en sprints',
+    ptsPerSprint: 'pts/sprint',
+    commitmentReliability: 'Fiabilidad del compromiso',
+    sprintsCompleted: 'Sprints completados',
+    velocityTrend: 'Tendencia de velocidad',
+    committed: 'Comprometido',
+    recommendations: 'Recomendaciones',
+    sprintPlanningSuggestion: 'Sugerencia de planificación de sprint',
+    recommendedCommitment: 'Basado en la velocidad de tu equipo, el compromiso recomendado para el próximo sprint:',
+    completionRate: 'Tasa de finalización',
+    completeSprintsToSeeVelocity: 'Completa sprints para ver los datos de velocidad',
+    reduceCommitmentWarning: 'Considera reducir el compromiso del sprint. La fiabilidad actual es inferior al 80%.',
+    velocityTrendingDown: 'La velocidad está en tendencia descendente. Revisa los posibles bloqueadores con el equipo.',
+    velocityImproving: '¡Gran progreso! La velocidad está mejorando. Considera aumentar ligeramente el compromiso.',
+    moreSprintsNeeded: 'Completa más sprints para obtener predicciones de velocidad precisas.',
+    teamVelocityStable: 'La velocidad del equipo es estable. ¡Sigan así!',
+    accountsForVariation: 'Este rango tiene en cuenta la variación típica entre sprints.',
+
+    // Sprint Report Page
+    detailedBreakdown: 'Desglose detallado del progreso del sprint',
+    totalIssues: 'Total de incidencias',
+    teamPerformance: 'Rendimiento del equipo',
+    statusDistribution: 'Distribución de estados',
+    issueTypeDistribution: 'Distribución de tipos de incidencias',
+    sprintIssues: 'Incidencias del sprint',
+    sprintDetails: 'Detalles del sprint',
+    duration: 'Duración',
+    notSet: 'No establecido',
+    noGoalSet: 'No se ha establecido objetivo para este sprint',
+    selectSprintToViewReport: 'Selecciona un sprint para ver su informe',
+    pts: 'pts',
+
+    // New Project Page
+    createNewProject: 'Crear un nuevo proyecto',
+    back: 'Volver',
+    projectNameRequired: 'El nombre del proyecto es obligatorio',
+    projectKeyRequired: 'La clave del proyecto es obligatoria',
+    projectKeyInUse: 'Esta clave de proyecto ya está en uso',
+    keyPrefix: 'Se usa como prefijo para las claves de incidencias',
+    describeYourProject: 'Describe tu proyecto...',
+    projectColor: 'Color del proyecto',
+    projectCreatedSuccess: '¡Proyecto creado exitosamente!',
+    failedToCreateProject: 'Error al crear el proyecto',
+
+    // Project Settings Page
+    manageSettingsFor: 'Gestionar configuración de',
+    general: 'General',
+    basicProjectInfo: 'Información básica del proyecto',
+    projectKeyCannotChange: 'La clave del proyecto no se puede cambiar después de la creación',
+    settingsSaved: 'Configuración guardada',
+    failedToSaveSettings: 'Error al guardar la configuración',
+    workflowSection: 'Flujo de trabajo',
+    assignWorkflow: 'Asigna un flujo de trabajo para definir cómo las incidencias transicionan entre estados',
+    workflowDeterminesStatuses: 'El flujo de trabajo determina los estados y transiciones disponibles para las incidencias en este proyecto',
+    statusFlow: 'Flujo de estados:',
+    saveWorkflow: 'Guardar flujo de trabajo',
+    manageWorkflows: 'Gestionar flujos de trabajo',
+    exportSection: 'Exportar',
+    exportProjectData: 'Exportar datos del proyecto',
+    downloadProjectJson: 'Descargar datos del proyecto como JSON',
+    projectExported: 'Proyecto exportado',
+    failedToExport: 'Error al exportar',
+    restoreProject: 'Restaurar proyecto',
+    archiveProject: 'Archivar proyecto',
+    restoreProjectDesc: 'Restaurar este proyecto para hacerlo activo de nuevo',
+    archiveProjectDesc: 'Ocultar este proyecto de la lista activa',
+    projectRestored: 'Proyecto restaurado',
+    projectArchived: 'Proyecto archivado',
+    failedToUpdateProject: 'Error al actualizar el proyecto',
+    deleteProjectTitle: 'Eliminar proyecto',
+    deleteProjectWarning: 'Esta acción no se puede deshacer. Se eliminará permanentemente el proyecto y todos los datos asociados, incluyendo incidencias, sprints y comentarios.',
+    typeToConfirm: 'Escribe {key} para confirmar',
+    projectDeleted: 'Proyecto eliminado',
+    failedToDeleteProject: 'Error al eliminar el proyecto',
+
+    // Projects Page
+    manageViewProjects: 'Gestiona y visualiza todos tus proyectos',
+    searchProjectsPlaceholder: 'Buscar proyectos...',
+    showActive: 'Mostrar activos',
+    showArchived: 'Mostrar archivados',
+    noProjectsMatchSearch: 'Ningún proyecto coincide con tu búsqueda',
+    noArchivedProjects: 'No hay proyectos archivados',
+    noProjectsYet: 'Aún no hay proyectos',
   },
 };
 
