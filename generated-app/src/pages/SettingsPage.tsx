@@ -40,6 +40,12 @@ const LANGUAGES: { id: Language; name: string; nativeName: string; flag: string 
 // Theme configuration
 const COLOR_THEMES: { id: ColorTheme; name: string; description: string; colors: { primary: string; secondary: string; accent: string } }[] = [
   {
+    id: 'aws',
+    name: 'AWS',
+    description: 'Amazon Web Services brand colors',
+    colors: { primary: '#232F3E', secondary: '#37475A', accent: '#FF9900' }
+  },
+  {
     id: 'ruby',
     name: 'Ruby',
     description: 'Classic red theme with warm coral accents',

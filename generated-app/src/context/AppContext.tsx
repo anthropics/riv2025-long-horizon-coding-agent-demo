@@ -32,7 +32,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [sidebarCollapsed, setSidebarCollapsedState] = useState(false);
   const [theme, setThemeState] = useState<ThemeMode>('light');
-  const [colorTheme, setColorThemeState] = useState<ColorTheme>('ruby');
+  const [colorTheme, setColorThemeState] = useState<ColorTheme>('aws');
   const [language, setLanguageState] = useState<Language>('en');
   const [translations, setTranslations] = useState<Translations>(getTranslations('en'));
   const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +50,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setCurrentUserState(user);
         setSidebarCollapsedState(user.settings?.sidebarCollapsed ?? false);
         setThemeState(user.settings?.theme ?? 'light');
-        setColorThemeState(user.settings?.colorTheme ?? 'ruby');
+        setColorThemeState(user.settings?.colorTheme ?? 'aws');
         const userLang = user.settings?.language ?? 'en';
         setLanguageState(userLang);
         setTranslations(getTranslations(userLang));
@@ -76,7 +76,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (liveUser) {
       setCurrentUserState(liveUser);
       setThemeState(liveUser.settings?.theme ?? 'light');
-      setColorThemeState(liveUser.settings?.colorTheme ?? 'ruby');
+      setColorThemeState(liveUser.settings?.colorTheme ?? 'aws');
       const userLang = liveUser.settings?.language ?? 'en';
       setLanguageState(userLang);
       setTranslations(getTranslations(userLang));
@@ -100,11 +100,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Remove old color theme classes
-    const colorThemeClasses = ['theme-ruby', 'theme-ocean', 'theme-forest', 'theme-sunset', 'theme-lavender', 'theme-cyberpunk', 'theme-retro'];
+    const colorThemeClasses = ['theme-ruby', 'theme-ocean', 'theme-forest', 'theme-sunset', 'theme-lavender', 'theme-cyberpunk', 'theme-retro', 'theme-aws'];
     colorThemeClasses.forEach(cls => root.classList.remove(cls));
 
-    // Apply color theme (ruby is the default, which doesn't need a class)
-    if (colorTheme && colorTheme !== 'ruby') {
+    // Apply color theme (aws is the default)
+    if (colorTheme) {
       root.classList.add(`theme-${colorTheme}`);
     }
   }, [theme, colorTheme]);

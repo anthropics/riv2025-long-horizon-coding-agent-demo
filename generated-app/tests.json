@@ -3924,5 +3924,21 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-274",
+    "category": "style",
+    "description": "AWS theme is the default color theme with AWS brand colors displayed",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify the page uses AWS brand colors (dark sidebar with #232F3E, orange accent #FF9900)",
+      "Verify the sidebar has dark AWS color scheme",
+      "Navigate to http://localhost:6174/settings",
+      "Verify AWS theme is selected in the color theme picker (first theme option)",
+      "Verify AWS theme shows colors: primary #232F3E, secondary #37475A, accent #FF9900",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

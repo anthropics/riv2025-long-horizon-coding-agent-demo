@@ -687,6 +687,96 @@
   --chart-5: #C85A38;
 }
 
+/* AWS Theme - Amazon Web Services brand colors */
+.theme-aws {
+  --background: #F5F7FA;
+  --foreground: #232F3E;
+  --card: #FFFFFF;
+  --card-foreground: #232F3E;
+  --popover: #FFFFFF;
+  --popover-foreground: #232F3E;
+
+  --primary: #232F3E;
+  --primary-foreground: #FFFFFF;
+  --secondary: #37475A;
+  --secondary-foreground: #FFFFFF;
+  --accent: #FF9900;
+  --accent-foreground: #232F3E;
+
+  --muted: #EAEDED;
+  --muted-foreground: #545B64;
+  --destructive: #D13212;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #D5DBDB;
+  --input: transparent;
+  --input-background: #FFFFFF;
+  --switch-background: #D5DBDB;
+  --ring: #FF9900;
+
+  --sidebar: #232F3E;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #FF9900;
+  --sidebar-primary-foreground: #232F3E;
+  --sidebar-accent: rgba(255, 153, 0, 0.15);
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #37475A;
+  --sidebar-ring: #FF9900;
+
+  --success: #1D8102;
+  --warning: #FF9900;
+  --error: #D13212;
+  --info: #0073BB;
+
+  --chart-1: #232F3E;
+  --chart-2: #FF9900;
+  --chart-3: #0073BB;
+  --chart-4: #1D8102;
+  --chart-5: #37475A;
+}
+
+.theme-aws.dark {
+  --background: #161E2D;
+  --foreground: #F5F7FA;
+  --card: #1A242F;
+  --card-foreground: #F5F7FA;
+  --popover: #1A242F;
+  --popover-foreground: #F5F7FA;
+
+  --primary: #FF9900;
+  --primary-foreground: #161E2D;
+  --secondary: #FFAB40;
+  --secondary-foreground: #161E2D;
+  --accent: #FFB84D;
+  --accent-foreground: #161E2D;
+
+  --muted: #232F3E;
+  --muted-foreground: #AAB7B8;
+  --destructive: #FF5252;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #37475A;
+  --input: #232F3E;
+  --input-background: #1A242F;
+  --switch-background: #37475A;
+  --ring: #FFB84D;
+
+  --sidebar: #0D1117;
+  --sidebar-foreground: #F5F7FA;
+  --sidebar-primary: #FF9900;
+  --sidebar-primary-foreground: #161E2D;
+  --sidebar-accent: rgba(255, 153, 0, 0.2);
+  --sidebar-accent-foreground: #F5F7FA;
+  --sidebar-border: #37475A;
+  --sidebar-ring: #FFB84D;
+
+  --chart-1: #FF9900;
+  --chart-2: #0073BB;
+  --chart-3: #FFB84D;
+  --chart-4: #1D8102;
+  --chart-5: #FFAB40;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
