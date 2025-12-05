@@ -4007,5 +4007,55 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-279",
+    "category": "functional",
+    "description": "Settings page displays Korean language option with all other languages",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Take a screenshot",
+      "Verify Language section is visible with Globe icon",
+      "Verify Korean option (한국어) is displayed alongside English, Japanese, Arabic, Mandarin, and Spanish",
+      "Verify Korean option shows the Korean flag (🇰🇷) and native name '한국어'",
+      "Verify all 6 language options are visible in the language selector grid",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-280",
+    "category": "functional",
+    "description": "User can switch to Korean language and UI updates",
+    "steps": [
+      "Navigate to http://localhost:6174/settings",
+      "Click on the Korean language option (한국어)",
+      "Take a screenshot",
+      "Verify page heading changes to '설정' (Settings in Korean)",
+      "Verify 'Profile' section shows '프로필'",
+      "Verify 'Language' section shows '언어'",
+      "Verify 'Choose your preferred language' shows '선호하는 언어 선택'",
+      "Verify Korean option is now selected (highlighted with checkmark)",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-281",
+    "category": "functional",
+    "description": "Korean language reflects in sidebar navigation",
+    "steps": [
+      "Set language to Korean from settings page by clicking 한국어",
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify sidebar shows '프로젝트' (Projects) link",
+      "Verify sidebar shows '워크플로우' (Workflows) link",
+      "Verify sidebar shows '소개' (About Us) link",
+      "Verify sidebar shows '이모지 만들기' (Emoji Creator) link",
+      "Verify 'Create Project' button shows '프로젝트 생성'",
+      "Verify welcome message shows 'Canopy에 오신 것을 환영합니다'",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

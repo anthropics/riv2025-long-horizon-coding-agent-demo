@@ -35,6 +35,7 @@ const LANGUAGES: { id: Language; name: string; nativeName: string; flag: string 
   { id: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
   { id: 'zh', name: 'Mandarin', nativeName: '中文', flag: '🇨🇳' },
   { id: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
+  { id: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷' },
 ];
 
 // Theme configuration
