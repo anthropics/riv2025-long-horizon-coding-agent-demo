@@ -3940,5 +3940,72 @@
       "Verify NO_CONSOLE_ERRORS in console"
     ],
     "passes": true
+  },
+  {
+    "id": "test-275",
+    "category": "functional",
+    "description": "Emoji Creator page displays with empty state when no emojis exist",
+    "steps": [
+      "Navigate to http://localhost:6174/emoji-creator",
+      "Take a screenshot",
+      "Verify Emoji Creator title is displayed",
+      "Verify Create Emoji button with data-testid=create-emoji-button is visible",
+      "Verify empty state message No custom emojis yet is displayed",
+      "Verify Create Your First Emoji button with data-testid=create-first-emoji-button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-276",
+    "category": "functional",
+    "description": "Emoji Creator link appears in sidebar navigation",
+    "steps": [
+      "Navigate to http://localhost:6174",
+      "Take a screenshot",
+      "Verify Emojis link with data-testid=emoji-creator-link is visible in sidebar",
+      "Click the Emojis link",
+      "Verify user is redirected to /emoji-creator page",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-277",
+    "category": "functional",
+    "description": "Create Emoji dialog opens when clicking Create Emoji button",
+    "steps": [
+      "Navigate to http://localhost:6174/emoji-creator",
+      "Click the Create Emoji button with data-testid=create-emoji-button",
+      "Take a screenshot",
+      "Verify Create emoji dialog with data-testid=create-emoji-dialog is visible",
+      "Verify emoji name input field with data-testid=emoji-name-input is visible",
+      "Verify shape select with data-testid=shape-select is visible",
+      "Verify expression select with data-testid=expression-select is visible",
+      "Verify accessory select with data-testid=accessory-select is visible",
+      "Verify emoji preview area with data-testid=emoji-preview is visible",
+      "Verify Save emoji button with data-testid=save-emoji-button is visible",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
+  },
+  {
+    "id": "test-278",
+    "category": "functional",
+    "description": "User can create a custom emoji with name and design options",
+    "steps": [
+      "Navigate to http://localhost:6174/emoji-creator",
+      "Click the Create Emoji button",
+      "Enter Happy Sun in the emoji name input field",
+      "Select Circle shape from shape dropdown",
+      "Select Happy expression from expression dropdown",
+      "Select Sunglasses accessory from accessory dropdown",
+      "Click a face color to select it",
+      "Click the Create Emoji button in the dialog",
+      "Take a screenshot",
+      "Verify the new emoji Happy Sun appears in the emoji gallery",
+      "Verify NO_CONSOLE_ERRORS in console"
+    ],
+    "passes": true
   }
 ]

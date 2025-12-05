@@ -285,3 +285,22 @@ export interface TeamMemberWithStats extends TeamMember {
   totalStoryPoints: number;
   completedStoryPoints: number;
 }
+
+// Custom Emoji types
+export type EmojiShape = 'circle' | 'square' | 'rounded-square' | 'heart' | 'star';
+export type EmojiExpression = 'happy' | 'sad' | 'angry' | 'surprised' | 'cool' | 'love' | 'wink' | 'thinking' | 'neutral' | 'excited';
+export type EmojiAccessory = 'none' | 'glasses' | 'sunglasses' | 'hat' | 'crown' | 'bow' | 'headphones' | 'mustache';
+
+export interface CustomEmoji {
+  id: string;
+  name: string;
+  shape: EmojiShape;
+  expression: EmojiExpression;
+  accessory: EmojiAccessory;
+  faceColor: string;
+  accentColor: string;
+  svgData: string; // The generated SVG string
+  createdAt: Date;
+  updatedAt: Date;
+  ownerId?: string; // The auth user who created this emoji
+}

@@ -22,6 +22,7 @@ import { AboutPage } from '@/pages/AboutPage';
 import { WorkflowsPage } from '@/pages/WorkflowsPage';
 import { TeamPage } from '@/pages/TeamPage';
 import { AdminDashboardPage } from '@/pages/AdminDashboardPage';
+import { EmojiCreatorPage } from '@/pages/EmojiCreatorPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { AuthPage } from '@/pages/AuthPage';
 
@@ -127,6 +128,9 @@ function AppRoutes() {
 
         {/* Admin */}
         <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+
+        {/* Emoji Creator */}
+        <Route path="/emoji-creator" element={<EmojiCreatorPage />} />
 
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />

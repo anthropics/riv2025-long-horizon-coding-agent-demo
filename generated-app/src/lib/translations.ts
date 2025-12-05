@@ -481,6 +481,24 @@ export interface Translations {
   noProjectsMatchSearch: string;
   noArchivedProjects: string;
   noProjectsYet: string;
+
+  // Emoji Creator
+  emojiCreator: string;
+  emojiCreatorDescription: string;
+  createEmoji: string;
+  createFirstEmoji: string;
+  noEmojisYet: string;
+  noEmojisDescription: string;
+  designYourEmoji: string;
+  emojiDesignDescription: string;
+  emojiName: string;
+  emojiNamePlaceholder: string;
+  shape: string;
+  expression: string;
+  accessory: string;
+  faceColor: string;
+  accentColor: string;
+  livePreview: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -965,6 +983,24 @@ const translations: Record<Language, Translations> = {
     noProjectsMatchSearch: 'No projects match your search',
     noArchivedProjects: 'No archived projects',
     noProjectsYet: 'No projects yet',
+
+    // Emoji Creator
+    emojiCreator: 'Emoji Creator',
+    emojiCreatorDescription: 'Design custom emojis for your chats and reactions',
+    createEmoji: 'Create Emoji',
+    createFirstEmoji: 'Create Your First Emoji',
+    noEmojisYet: 'No custom emojis yet',
+    noEmojisDescription: 'Create your first custom emoji to use in chats and reactions. Choose a shape, expression, and colors!',
+    designYourEmoji: 'Design Your Emoji',
+    emojiDesignDescription: 'Customize your emoji with different shapes, expressions, and accessories',
+    emojiName: 'Emoji Name',
+    emojiNamePlaceholder: 'e.g., Happy Sun',
+    shape: 'Shape',
+    expression: 'Expression',
+    accessory: 'Accessory',
+    faceColor: 'Face Color',
+    accentColor: 'Accent Color (Eyes, Mouth)',
+    livePreview: 'Live Preview',
   },
 
   ja: {
@@ -1448,6 +1484,24 @@ const translations: Record<Language, Translations> = {
     noProjectsMatchSearch: '検索に一致するプロジェクトがありません',
     noArchivedProjects: 'アーカイブされたプロジェクトはありません',
     noProjectsYet: 'まだプロジェクトがありません',
+
+    // Emoji Creator
+    emojiCreator: '絵文字クリエイター',
+    emojiCreatorDescription: 'チャットやリアクション用のカスタム絵文字をデザイン',
+    createEmoji: '絵文字を作成',
+    createFirstEmoji: '最初の絵文字を作成',
+    noEmojisYet: 'カスタム絵文字はまだありません',
+    noEmojisDescription: 'チャットやリアクションで使うカスタム絵文字を作成しましょう。形、表情、色を選択してください！',
+    designYourEmoji: '絵文字をデザイン',
+    emojiDesignDescription: 'さまざまな形、表情、アクセサリーで絵文字をカスタマイズ',
+    emojiName: '絵文字の名前',
+    emojiNamePlaceholder: '例：ハッピーサン',
+    shape: '形',
+    expression: '表情',
+    accessory: 'アクセサリー',
+    faceColor: '顔の色',
+    accentColor: 'アクセントカラー（目、口）',
+    livePreview: 'ライブプレビュー',
   },
 
   zh: {
@@ -1931,6 +1985,24 @@ const translations: Record<Language, Translations> = {
     noProjectsMatchSearch: '没有匹配搜索的项目',
     noArchivedProjects: '没有已归档的项目',
     noProjectsYet: '暂无项目',
+
+    // Emoji Creator
+    emojiCreator: '表情创建器',
+    emojiCreatorDescription: '为聊天和反应设计自定义表情',
+    createEmoji: '创建表情',
+    createFirstEmoji: '创建您的第一个表情',
+    noEmojisYet: '还没有自定义表情',
+    noEmojisDescription: '创建您的第一个自定义表情用于聊天和反应。选择形状、表情和颜色！',
+    designYourEmoji: '设计您的表情',
+    emojiDesignDescription: '使用不同的形状、表情和配饰自定义您的表情',
+    emojiName: '表情名称',
+    emojiNamePlaceholder: '例如：快乐的太阳',
+    shape: '形状',
+    expression: '表情',
+    accessory: '配饰',
+    faceColor: '脸部颜色',
+    accentColor: '强调色（眼睛、嘴巴）',
+    livePreview: '实时预览',
   },
 
   ar: {
@@ -2414,6 +2486,24 @@ const translations: Record<Language, Translations> = {
     noProjectsMatchSearch: 'لا توجد مشاريع تطابق بحثك',
     noArchivedProjects: 'لا توجد مشاريع مؤرشفة',
     noProjectsYet: 'لا توجد مشاريع بعد',
+
+    // Emoji Creator
+    emojiCreator: 'منشئ الرموز التعبيرية',
+    emojiCreatorDescription: 'صمم رموز تعبيرية مخصصة لمحادثاتك وردود فعلك',
+    createEmoji: 'إنشاء رمز تعبيري',
+    createFirstEmoji: 'أنشئ أول رمز تعبيري',
+    noEmojisYet: 'لا توجد رموز تعبيرية مخصصة بعد',
+    noEmojisDescription: 'أنشئ أول رمز تعبيري مخصص لاستخدامه في المحادثات وردود الفعل. اختر الشكل والتعبير والألوان!',
+    designYourEmoji: 'صمم رمزك التعبيري',
+    emojiDesignDescription: 'خصص رمزك التعبيري بأشكال وتعبيرات وإكسسوارات مختلفة',
+    emojiName: 'اسم الرمز التعبيري',
+    emojiNamePlaceholder: 'مثال: شمس سعيدة',
+    shape: 'الشكل',
+    expression: 'التعبير',
+    accessory: 'الإكسسوار',
+    faceColor: 'لون الوجه',
+    accentColor: 'لون التمييز (العيون، الفم)',
+    livePreview: 'معاينة مباشرة',
   },
 
   es: {
@@ -2897,6 +2987,24 @@ const translations: Record<Language, Translations> = {
     noProjectsMatchSearch: 'Ningún proyecto coincide con tu búsqueda',
     noArchivedProjects: 'No hay proyectos archivados',
     noProjectsYet: 'Aún no hay proyectos',
+
+    // Emoji Creator
+    emojiCreator: 'Creador de Emojis',
+    emojiCreatorDescription: 'Diseña emojis personalizados para tus chats y reacciones',
+    createEmoji: 'Crear Emoji',
+    createFirstEmoji: 'Crea Tu Primer Emoji',
+    noEmojisYet: 'Aún no hay emojis personalizados',
+    noEmojisDescription: 'Crea tu primer emoji personalizado para usar en chats y reacciones. ¡Elige una forma, expresión y colores!',
+    designYourEmoji: 'Diseña Tu Emoji',
+    emojiDesignDescription: 'Personaliza tu emoji con diferentes formas, expresiones y accesorios',
+    emojiName: 'Nombre del Emoji',
+    emojiNamePlaceholder: 'ej., Sol Feliz',
+    shape: 'Forma',
+    expression: 'Expresión',
+    accessory: 'Accesorio',
+    faceColor: 'Color de Cara',
+    accentColor: 'Color de Acento (Ojos, Boca)',
+    livePreview: 'Vista Previa',
   },
 };
 

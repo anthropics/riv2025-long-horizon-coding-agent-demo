@@ -18,6 +18,7 @@ import type {
   TeamMember,
   AuthUser,
   AuthSession,
+  CustomEmoji,
 } from '@/types';
 
 // Define the Dexie database
@@ -38,6 +39,7 @@ export class CanopyDB extends Dexie {
   teamMembers!: Table<TeamMember>;
   authUsers!: Table<AuthUser>;
   authSessions!: Table<AuthSession>;
+  emojis!: Table<CustomEmoji>;
 
   constructor() {
     super('CanopyDB');
@@ -108,6 +110,27 @@ export class CanopyDB extends Dexie {
       teamMembers: 'id, projectId, userId, name, [projectId+userId]',
       authUsers: 'id, email',
       authSessions: 'id, userId, token, expiresAt',
+    });
+
+    // Version 5: Add custom emojis table
+    this.version(5).stores({
+      projects: 'id, key, name, isArchived, createdAt, workflowId, ownerId',
+      issues: 'id, projectId, key, type, status, priority, assigneeId, epicId, parentId, sprintId, createdAt, [projectId+status], [projectId+sprintId], [projectId+epicId]',
+      sprints: 'id, projectId, status, startDate, endDate',
+      boards: 'id, projectId',
+      users: 'id, email, name, ownerId',
+      labels: 'id, projectId, name',
+      components: 'id, projectId, name',
+      comments: 'id, issueId, authorId, createdAt',
+      activityLog: 'id, issueId, timestamp',
+      filters: 'id, ownerId, projectId',
+      customFields: 'id, projectId',
+      settings: 'key',
+      workflows: 'id, name, isDefault, createdAt, ownerId',
+      teamMembers: 'id, projectId, userId, name, [projectId+userId]',
+      authUsers: 'id, email',
+      authSessions: 'id, userId, token, expiresAt',
+      emojis: 'id, name, createdAt, ownerId',
     });
   }
 }
@@ -874,4 +897,39 @@ export async function getAuthUser(userId: string): Promise<AuthUser | null> {
 export async function hasAuthUsers(): Promise<boolean> {
   const count = await db.authUsers.count();
   return count > 0;
+}
+
+// =============================================================================
+// Custom Emoji helpers
+// =============================================================================
+
+export async function createEmoji(data: Omit<CustomEmoji, 'id' | 'createdAt' | 'updatedAt'>): Promise<CustomEmoji> {
+  const now = new Date();
+  const emoji: CustomEmoji = {
+    ...data,
+    id: uuidv4(),
+    createdAt: now,
+    updatedAt: now,
+  };
+  await db.emojis.add(emoji);
+  return emoji;
+}
+
+export async function updateEmoji(id: string, updates: Partial<CustomEmoji>): Promise<void> {
+  await db.emojis.update(id, { ...updates, updatedAt: new Date() });
+}
+
+export async function deleteEmoji(id: string): Promise<void> {
+  await db.emojis.delete(id);
+}
+
+export async function getEmojis(ownerId?: string): Promise<CustomEmoji[]> {
+  if (ownerId) {
+    return await db.emojis.where('ownerId').equals(ownerId).toArray();
+  }
+  return await db.emojis.toArray();
+}
+
+export async function getEmojiById(id: string): Promise<CustomEmoji | undefined> {
+  return await db.emojis.get(id);
 }
