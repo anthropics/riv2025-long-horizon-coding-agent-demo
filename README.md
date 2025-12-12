@@ -135,4 +135,4 @@ aws secretsmanager update-secret \
 
 ## License
 
-MIT
+Apache 2.0
