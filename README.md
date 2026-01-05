@@ -1,6 +1,6 @@
-# Claude Code Agent Demo
+# Chewy
 
-An autonomous agent system that builds React applications from GitHub issues using AWS Bedrock AgentCore and the Claude Agent SDK.
+Autonomous coding agent for eqho.ai that builds applications from GitHub issues using AWS Bedrock AgentCore and the Claude Agent SDK.
 
 ## How It Works
 

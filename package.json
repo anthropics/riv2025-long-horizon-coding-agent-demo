@@ -1,7 +1,7 @@
 {
-  "name": "@anthropic-ai/claude-code-agent-demo",
+  "name": "eqho-claude-code-chewy",
   "version": "1.0.0",
-  "description": "Autonomous coding agent using AWS Bedrock AgentCore and Claude Agent SDK",
+  "description": "Chewy - Autonomous coding agent for eqho.ai using AWS Bedrock AgentCore and Claude Agent SDK",
   "private": true,
   "scripts": {
     "test:e2e": "playwright test --config=playwright.config.staging.ts",

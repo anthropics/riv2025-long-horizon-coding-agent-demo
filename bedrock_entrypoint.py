@@ -1702,7 +1702,7 @@ def run_agent_background(
         else:
             # Full build mode - build from scratch using BUILD_PLAN
             # Use PROJECT_NAME env var if set, otherwise default to canopy
-            project_name = os.environ.get("PROJECT_NAME", "myproject")
+            project_name = os.environ.get("PROJECT_NAME", "chewy")
             cmd = [
                 "python", "/app/claude_code.py",
                 "--project", project_name,
@@ -1716,7 +1716,7 @@ def run_agent_background(
     else:
         # Legacy mode
         cwd = "/app"
-        project = os.environ.get("PROJECT_NAME", "myproject")
+        project = os.environ.get("PROJECT_NAME", "chewy")
 
         cmd = [
             "python", "claude_code.py",
@@ -2027,7 +2027,7 @@ Progress will continue from where the previous session left off.""")
 
     else:
         # Legacy mode: Build from PROJECT_NAME
-        project = os.environ.get("PROJECT_NAME", "myproject")
+        project = os.environ.get("PROJECT_NAME", "chewy")
         print(f"📋 Legacy Mode: Building project {project}")
         github_mode = False
 

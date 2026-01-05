@@ -21,7 +21,7 @@ PUSH_INTERVAL_SECONDS ?= 300
 SCREENSHOT_INTERVAL_SECONDS ?= 300
 SESSION_DURATION_HOURS ?= 1.0
 DEFAULT_MODEL ?= claude-opus-4-5-20251101
-PROJECT_NAME ?= myproject
+PROJECT_NAME ?= chewy
 
 # OpenTelemetry Configuration
 # Based on: https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html
@@ -41,7 +41,7 @@ OTEL_EXPORTER_OTLP_PROTOCOL = http/protobuf
 OTEL_TRACES_EXPORTER = otlp
 
 # Agent metadata for resource attributes
-AGENT_NAME ?= claude_code_agent
+AGENT_NAME ?= chewy_agent
 OTEL_RESOURCE_ATTRIBUTES = service.name=$(AGENT_NAME),aws.log.group.names=/aws/bedrock-agentcore/runtimes/$(AGENT_RUNTIME_ID)
 OTEL_EXPORTER_OTLP_LOGS_HEADERS = x-aws-log-group=/aws/bedrock-agentcore/runtimes/$(AGENT_RUNTIME_ID),x-aws-log-stream=runtime-logs,x-aws-metric-namespace=bedrock-agentcore
 
@@ -52,7 +52,7 @@ SCREENSHOT_CDN_DOMAIN := $(shell aws cloudformation describe-stacks --stack-name
 ECR_URI := $(shell aws cloudformation describe-stacks --stack-name $(STACK_NAME) --region $(CF_REGION) --profile $(AWS_PROFILE) --query "Stacks[0].Outputs[?OutputKey=='EcrRepositoryUri'].OutputValue" --output text 2>/dev/null)
 
 # GitHub configuration
-GITHUB_REPO ?= YOUR_ORG/YOUR_REPO
+GITHUB_REPO ?= eqho-ai/eqho-claude-code-chewy
 
 .PHONY: help launch launch-local deploy-infra status destroy show-config update-runtime-env get-runtime cleanup-test stop-session
 
