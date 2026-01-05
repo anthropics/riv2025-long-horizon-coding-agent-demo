@@ -60,7 +60,7 @@ jobs:
           GITHUB_REPOSITORY = os.environ['GITHUB_REPOSITORY']
           GITHUB_RUN_ID = os.environ['GITHUB_RUN_ID']
           GITHUB_SERVER_URL = os.environ.get('GITHUB_SERVER_URL', 'https://github.com')
-          AGENT_ARN = "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq"
+          AGENT_ARN = "arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID"
 
 
           def extract_session_ids(comments):

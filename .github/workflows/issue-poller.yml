@@ -51,7 +51,7 @@ jobs:
           RESULT=$(aws cloudwatch get-metric-statistics \
             --namespace ClaudeCodeAgent \
             --metric-name SessionHeartbeat \
-            --dimensions Name=Environment,Value=reinvent \
+            --dimensions Name=Environment,Value=prod \
             --start-time "$(date -u -d '15 minutes ago' +%Y-%m-%dT%H:%M:%SZ)" \
             --end-time "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             --period 60 \

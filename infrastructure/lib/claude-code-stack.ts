@@ -174,7 +174,7 @@ export class ClaudeCodeStack extends cdk.Stack {
         'bedrock-agentcore:StopRuntimeSession',
       ],
       resources: [
-        `arn:aws:bedrock-agentcore:${this.region}:${this.account}:runtime/antodo_agent-0UyfaL5NVq`,
+        `arn:aws:bedrock-agentcore:${this.region}:${this.account}:runtime/*`,
         '*',
       ],
     }));
@@ -441,11 +441,12 @@ function handler(event) {
     });
 
     // ========================================================================
-    // CloudWatch Dashboard - Agent Monitoring for re:Invent Demo
+    // CloudWatch Dashboard - Agent Monitoring
     // ========================================================================
     // Note: AgentCore logs go to /aws/bedrock-agentcore/runtimes/{runtime-id}
     // Specify the exact log group name (wildcards not supported in dashboard widgets)
-    const agentLogGroupName = '/aws/bedrock-agentcore/runtimes/antodo_agent-0UyfaL5NVq-DEFAULT';
+    // Update YOUR_AGENT_RUNTIME_ID with your actual AgentCore runtime ID
+    const agentLogGroupName = '/aws/bedrock-agentcore/runtimes/YOUR_AGENT_RUNTIME_ID-DEFAULT';
 
     // Dashboard variable for filtering by Issue Number
     // Use fromSearch with explicit search string that includes ALL dimensions

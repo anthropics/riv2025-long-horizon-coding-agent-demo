@@ -1,6 +1,6 @@
-# 🤖 Long-Horizon Coding Agent Demo
+# Claude Code Agent Demo
 
-An autonomous agent system that builds React applications from GitHub issues using AWS Bedrock AgentCore and the Claude Agent SDK. Demonstrated at AWS re:Invent 2025.
+An autonomous agent system that builds React applications from GitHub issues using AWS Bedrock AgentCore and the Claude Agent SDK.
 
 ## How It Works
 
@@ -97,20 +97,20 @@ The agent reads secrets from AWS Secrets Manager. Required secrets:
 | `claude-code/{env}/github-token` | Default GitHub PAT (fallback) |
 | `claude-code/{env}/github-token-{org}` | Org-specific GitHub PAT (optional) |
 
-Where `{env}` is the environment name (default: `reinvent`) and `{org}` is the GitHub organization name.
+Where `{env}` is the environment name (e.g., `prod`, `staging`) and `{org}` is the GitHub organization name.
 
 **Org-specific tokens** allow separation of concerns when working with multiple GitHub organizations. The agent checks for an org-specific token first, then falls back to the default:
 
 ```bash
 # Create org-specific token (recommended for multi-org setups)
 aws secretsmanager create-secret \
-  --name claude-code/reinvent/github-token-anthropics \
+  --name claude-code/prod/github-token-myorg \
   --secret-string "ghp_your_pat_here" \
   --region us-west-2
 
 # Or update existing default token
 aws secretsmanager update-secret \
-  --secret-id claude-code/reinvent/github-token \
+  --secret-id claude-code/prod/github-token \
   --secret-string "ghp_your_pat_here" \
   --region us-west-2
 ```
@@ -125,7 +125,7 @@ aws secretsmanager update-secret \
 │   ├── github_integration.py  # GitHub API operations
 │   └── git_operations.py      # Git commit/push logic
 ├── prompts/                 # Build plans and system prompts
-│   └── canopy/              # Project Management app build plan
+│   └── {project}/           # Project-specific build plans
 ├── frontend-scaffold-template/  # React + Vite + Tailwind scaffold
 └── .github/workflows/       # GitHub Actions
     ├── issue-poller.yml     # Polls for approved issues

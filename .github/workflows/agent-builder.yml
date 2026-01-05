@@ -44,7 +44,7 @@ permissions:
 
 env:
   AWS_REGION: us-west-2  # AgentCore deployed in us-west-2
-  AGENTCORE_AGENT_ID: antodo_agent-0UyfaL5NVq
+  AGENTCORE_AGENT_ID: YOUR_AGENT_RUNTIME_ID
 
 jobs:
   # Check if the issue is approved and ready to build
@@ -381,7 +381,7 @@ jobs:
           pip install --upgrade boto3 -q
 
           python3 .github/scripts/invoke_agent.py \
-            --agent-arn "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq" \
+            --agent-arn "arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID" \
             --session-id "$SESSION_ID" \
             --payload "$PAYLOAD" \
             --region us-west-2

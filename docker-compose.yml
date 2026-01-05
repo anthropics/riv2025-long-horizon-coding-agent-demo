@@ -10,7 +10,7 @@ services:
     # Command: Pass project, model and ports as CLI arguments
     command: >
       python claude_code.py
-      --project ${PROJECT_NAME:-canopy}
+      --project ${PROJECT_NAME:-myproject}
       --model ${DEFAULT_MODEL:-claude-opus-4-5-20251101}
       --frontend-port ${DEFAULT_FRONTEND_PORT:-6175}
       --backend-port ${DEFAULT_BACKEND_PORT:-3000}

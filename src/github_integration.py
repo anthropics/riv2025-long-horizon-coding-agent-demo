@@ -296,7 +296,7 @@ The issue remains open for retry. Staff can remove the `{LABEL_FAILED}` label an
 
 ## Implementation Instructions
 
-You are enhancing an **existing application** (antodo task manager).
+You are enhancing an **existing application**.
 
 ### Existing Codebase
 

@@ -1,7 +1,7 @@
 {
-  "name": "@anthropic-ai/long-horizon-coding-agent-demo",
+  "name": "@anthropic-ai/claude-code-agent-demo",
   "version": "1.0.0",
-  "description": "AWS re:Invent 2025 - Long Horizon Coding Agent Demo",
+  "description": "Autonomous coding agent using AWS Bedrock AgentCore and Claude Agent SDK",
   "private": true,
   "scripts": {
     "test:e2e": "playwright test --config=playwright.config.staging.ts",

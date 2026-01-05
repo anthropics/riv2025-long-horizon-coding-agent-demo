@@ -103,7 +103,7 @@ def get_secret(secret_name: str) -> Optional[str]:
 
 def get_anthropic_api_key() -> Optional[str]:
     """Fetch Anthropic API key from Secrets Manager."""
-    env = os.environ.get("ENVIRONMENT", "reinvent")
+    env = os.environ.get("ENVIRONMENT", "prod")
     return get_secret(f"claude-code/{env}/anthropic-api-key")
 
 
@@ -117,10 +117,10 @@ def get_github_token(github_repo: Optional[str] = None) -> Optional[str]:
         github_repo: GitHub repo in "org/repo" format. If provided, will check
                      for org-specific token first.
     """
-    env = os.environ.get("ENVIRONMENT", "reinvent")
+    env = os.environ.get("ENVIRONMENT", "prod")
     repo = github_repo or os.environ.get("GITHUB_REPOSITORY", "")
 
-    # Try org-specific token first (e.g., claude-code/reinvent/github-token-anthropics)
+    # Try org-specific token first (e.g., claude-code/prod/github-token-myorg)
     if repo and "/" in repo:
         org = repo.split("/")[0]
         token = get_secret(f"claude-code/{env}/github-token-{org}")
@@ -1702,7 +1702,7 @@ def run_agent_background(
         else:
             # Full build mode - build from scratch using BUILD_PLAN
             # Use PROJECT_NAME env var if set, otherwise default to canopy
-            project_name = os.environ.get("PROJECT_NAME", "canopy")
+            project_name = os.environ.get("PROJECT_NAME", "myproject")
             cmd = [
                 "python", "/app/claude_code.py",
                 "--project", project_name,
@@ -1716,7 +1716,7 @@ def run_agent_background(
     else:
         # Legacy mode
         cwd = "/app"
-        project = os.environ.get("PROJECT_NAME", "canopy")
+        project = os.environ.get("PROJECT_NAME", "myproject")
 
         cmd = [
             "python", "claude_code.py",
@@ -1960,7 +1960,7 @@ Commits should reference this issue: `Ref: #{issue_number}`
             # Post session info to GitHub issue for tracking
             agent_runtime_arn = os.environ.get(
                 "AGENT_RUNTIME_ARN",
-                "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq"
+                "arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID"
             )
 
             # If resuming, post a resume notification instead of new session info
@@ -2027,7 +2027,7 @@ Progress will continue from where the previous session left off.""")
 
     else:
         # Legacy mode: Build from PROJECT_NAME
-        project = os.environ.get("PROJECT_NAME", "canopy")
+        project = os.environ.get("PROJECT_NAME", "myproject")
         print(f"📋 Legacy Mode: Building project {project}")
         github_mode = False
 
@@ -2077,7 +2077,7 @@ Progress will continue from where the previous session left off.""")
     # Screenshot sync configuration
     # Set SCREENSHOT_INTERVAL_SECONDS to 0 to disable screenshot sync
     screenshot_interval = int(os.environ.get("SCREENSHOT_INTERVAL_SECONDS", "300"))
-    screenshot_bucket = os.environ.get("SCREENSHOT_BUCKET", "claude-code-reinvent-screenshots")
+    screenshot_bucket = os.environ.get("SCREENSHOT_BUCKET", "claude-code-screenshots")
     cloudfront_domain = os.environ.get("SCREENSHOT_CDN_DOMAIN", "")
     last_screenshot_time = time.time()
 
@@ -2279,7 +2279,7 @@ Commits should reference this issue: `Ref: #{issue_number}`
                         # Post session info to the new issue
                         agent_runtime_arn = os.environ.get(
                             "AGENT_RUNTIME_ARN",
-                            "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq"
+                            "arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID"
                         )
                         post_session_info_to_issue(
                             github_repo=github_repo,
@@ -2495,7 +2495,7 @@ Commits should reference this issue: `Ref: #{issue_number}`
                         # Post session info to the new issue
                         agent_runtime_arn = os.environ.get(
                             "AGENT_RUNTIME_ARN",
-                            "arn:aws:bedrock-agentcore:us-west-2:128673662201:runtime/antodo_agent-0UyfaL5NVq"
+                            "arn:aws:bedrock-agentcore:us-west-2:YOUR_ACCOUNT_ID:runtime/YOUR_AGENT_RUNTIME_ID"
                         )
                         post_session_info_to_issue(
                             github_repo=github_repo,

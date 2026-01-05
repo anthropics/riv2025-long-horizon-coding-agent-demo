@@ -46,7 +46,7 @@ class MetricsPublisher:
     def _get_dimensions(self):
         """Get base dimensions for all metrics."""
         dims = [
-            {"Name": "Environment", "Value": os.environ.get("ENVIRONMENT", "reinvent")}
+            {"Name": "Environment", "Value": os.environ.get("ENVIRONMENT", "prod")}
         ]
         if self.issue_number:
             dims.append({"Name": "IssueNumber", "Value": str(self.issue_number)})
@@ -183,7 +183,7 @@ class MetricsPublisher:
                         "Unit": "Count",
                         "Timestamp": datetime.now(timezone.utc),
                         "Dimensions": [
-                            {"Name": "Environment", "Value": os.environ.get("ENVIRONMENT", "reinvent")}
+                            {"Name": "Environment", "Value": os.environ.get("ENVIRONMENT", "prod")}
                         ],
                     }
                 ],

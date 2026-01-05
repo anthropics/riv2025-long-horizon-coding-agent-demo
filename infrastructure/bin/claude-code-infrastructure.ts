@@ -13,7 +13,7 @@ const env = {
 };
 
 const projectName = app.node.tryGetContext('projectName') || 'claude-code';
-const environment = app.node.tryGetContext('environment') || 'reinvent';
+const environment = app.node.tryGetContext('environment') || 'prod';
 
 new ClaudeCodeStack(app, `${projectName}-${environment}`, {
   env,
