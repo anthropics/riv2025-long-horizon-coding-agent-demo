@@ -4,8 +4,8 @@ services:
   claude-code-agent:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: claude-code-agent
+      dockerfile: Dockerfile.railway
+    container_name: chewy
 
     # Command: Pass project, model and ports as CLI arguments
     command: >

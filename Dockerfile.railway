@@ -1,0 +1,55 @@
+FROM python:3.12-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    nodejs \
+    npm \
+    procps \
+    ripgrep \
+    jq \
+    chromium \
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    libxshmfence1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY claude_code.py .
+COPY src/ ./src/
+COPY prompts/ ./prompts/
+COPY frontend-scaffold-template/ ./frontend-scaffold-template/
+COPY prompt_template.txt .
+COPY state_management.txt .
+
+# Install Claude Code CLI
+RUN npm install -g @anthropic-ai/claude-code
+
+# Install Playwright
+RUN npx playwright install chromium
+
+# Create workspace
+RUN mkdir -p /app/workspace
+
+ENV PYTHONUNBUFFERED=1
+
+# Default command - can be overridden
+CMD ["python", "claude_code.py", "--project", "chewy"]
