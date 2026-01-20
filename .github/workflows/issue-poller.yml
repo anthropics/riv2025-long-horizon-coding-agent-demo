@@ -8,6 +8,12 @@ on:
   schedule:
     - cron: '*/5 * * * *'  # Every 5 minutes
   workflow_dispatch:  # Manual trigger for testing
+    inputs:
+      parallel_mode:
+        description: 'Enable parallel session mode'
+        required: false
+        type: boolean
+        default: false
 
 # Prevent multiple pollers from running simultaneously
 concurrency:
@@ -162,16 +168,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AUTHORIZED_APPROVERS: ${{ vars.AUTHORIZED_APPROVERS }}
+          PARALLEL_MODE: ${{ github.event.inputs.parallel_mode || vars.PARALLEL_MODE || 'false' }}
+          MAX_PARALLEL_SESSIONS: ${{ vars.MAX_PARALLEL_SESSIONS || '4' }}
         run: |
           python << 'EOF'
           import os
           import json
           from github import Github
 
-          # Authorized approvers who can trigger builds with 🚀
-          # Configure via AUTHORIZED_APPROVERS repository variable (comma-separated)
+          # Configuration
           _approvers_env = os.environ.get("AUTHORIZED_APPROVERS", "")
           AUTHORIZED_APPROVERS = set(a.strip() for a in _approvers_env.split(",") if a.strip())
+          PARALLEL_MODE = os.environ.get("PARALLEL_MODE", "false").lower() == "true"
+          MAX_PARALLEL_SESSIONS = int(os.environ.get("MAX_PARALLEL_SESSIONS", "4"))
+
           ROCKET_EMOJI = "rocket"
           LABEL_BUILDING = "agent-building"
           LABEL_COMPLETE = "agent-complete"
@@ -183,22 +193,52 @@ jobs:
           # Get all open issues
           open_issues = list(repo.get_issues(state='open'))
 
-          # First check if ANY issue has agent-building label (agent already running)
+          # Count currently building issues
+          building_issues = []
           for issue in open_issues:
               labels = [l.name for l in issue.labels]
               if LABEL_BUILDING in labels:
-                  print(f"⏸️ Agent already running on issue #{issue.number} - skipping trigger")
+                  building_issues.append(issue.number)
+
+          active_count = len(building_issues)
+
+          if PARALLEL_MODE:
+              # PARALLEL MODE: Allow up to MAX_PARALLEL_SESSIONS
+              print(f"🌳 PARALLEL MODE enabled")
+              print(f"   Active sessions: {active_count} / {MAX_PARALLEL_SESSIONS}")
+              print(f"   Building issues: {building_issues}")
+
+              available_slots = MAX_PARALLEL_SESSIONS - active_count
+              if available_slots <= 0:
+                  print(f"⏸️ At maximum capacity ({MAX_PARALLEL_SESSIONS} sessions)")
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                      f.write("approved_issues=[]\n")
+                      f.write("has_issues=false\n")
+                      f.write("parallel_mode=true\n")
+                      f.write(f"available_slots=0\n")
+                  exit(0)
+          else:
+              # SEQUENTIAL MODE: Only one build at a time
+              print(f"🔒 SEQUENTIAL MODE")
+              if active_count > 0:
+                  print(f"⏸️ Agent already running on issue #{building_issues[0]} - skipping trigger")
                   print("   The running agent will pick up new issues from the backlog")
                   with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                       f.write("approved_issues=[]\n")
                       f.write("has_issues=false\n")
+                      f.write("parallel_mode=false\n")
                   exit(0)
+              available_slots = 1
 
           approved_issues = []
 
           for issue in open_issues:
-              # Skip if complete or failed
+              # Skip if already building
               labels = [l.name for l in issue.labels]
+              if LABEL_BUILDING in labels:
+                  continue
+
+              # Skip if complete or failed
               if LABEL_COMPLETE in labels:
                   continue
 
@@ -223,14 +263,22 @@ jobs:
           # Sort by votes (highest first), then by issue number as tiebreaker
           approved_issues.sort(key=lambda x: (-x["votes"], x["number"]))
 
-          print(f"\nFound {len(approved_issues)} approved issues to build:")
-          for issue in approved_issues:
+          # Limit to available slots
+          issues_to_build = approved_issues[:available_slots]
+
+          print(f"\nFound {len(approved_issues)} approved issues, will trigger {len(issues_to_build)}:")
+          for issue in issues_to_build:
               print(f"  - Issue #{issue['number']}: {issue['title']} ({issue['votes']} votes)")
+
+          if len(approved_issues) > len(issues_to_build):
+              print(f"\n⏳ {len(approved_issues) - len(issues_to_build)} issues waiting in queue")
 
           # Output for next step
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"approved_issues={json.dumps([i['number'] for i in approved_issues])}\n")
-              f.write(f"has_issues={'true' if approved_issues else 'false'}\n")
+              f.write(f"approved_issues={json.dumps([i['number'] for i in issues_to_build])}\n")
+              f.write(f"has_issues={'true' if issues_to_build else 'false'}\n")
+              f.write(f"parallel_mode={'true' if PARALLEL_MODE else 'false'}\n")
+              f.write(f"available_slots={available_slots}\n")
           EOF
 
       - name: Trigger agent-builder for approved issues
@@ -238,19 +286,43 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPROVED_ISSUES: ${{ steps.poll.outputs.approved_issues }}
+          PARALLEL_MODE: ${{ steps.poll.outputs.parallel_mode }}
         run: |
-          # Only trigger for the FIRST approved issue
-          # The running agent will pick up additional issues via its polling mechanism
-          # This prevents race conditions and reduces unnecessary workflow runs
-          FIRST_ISSUE=$(echo "$APPROVED_ISSUES" | jq -r '.[0]')
+          if [ "$PARALLEL_MODE" = "true" ]; then
+            # PARALLEL MODE: Trigger builds for ALL approved issues (up to available slots)
+            echo "🌳 PARALLEL MODE: Triggering multiple builds"
 
-          if [ -n "$FIRST_ISSUE" ] && [ "$FIRST_ISSUE" != "null" ]; then
-            echo "Triggering build for issue #$FIRST_ISSUE..."
-            echo "(Other approved issues will be picked up by the running agent)"
+            SLOT=0
+            for ISSUE in $(echo "$APPROVED_ISSUES" | jq -r '.[]'); do
+              echo "Triggering build for issue #$ISSUE (slot $SLOT)..."
 
-            gh workflow run agent-builder.yml \
-              -f issue_number=$FIRST_ISSUE \
-              -f force_rebuild=false
+              gh workflow run agent-builder.yml \
+                -f issue_number=$ISSUE \
+                -f force_rebuild=false \
+                -f parallel_mode=true \
+                -f session_slot=$SLOT &
 
-            echo "✅ Triggered agent-builder for issue #$FIRST_ISSUE"
+              SLOT=$((SLOT + 1))
+            done
+
+            # Wait for all triggers to complete
+            wait
+
+            echo "✅ Triggered $(echo "$APPROVED_ISSUES" | jq 'length') parallel builds"
+          else
+            # SEQUENTIAL MODE: Only trigger for the FIRST approved issue
+            # The running agent will pick up additional issues via its polling mechanism
+            FIRST_ISSUE=$(echo "$APPROVED_ISSUES" | jq -r '.[0]')
+
+            if [ -n "$FIRST_ISSUE" ] && [ "$FIRST_ISSUE" != "null" ]; then
+              echo "🔒 SEQUENTIAL MODE: Triggering build for issue #$FIRST_ISSUE..."
+              echo "(Other approved issues will be picked up by the running agent)"
+
+              gh workflow run agent-builder.yml \
+                -f issue_number=$FIRST_ISSUE \
+                -f force_rebuild=false \
+                -f parallel_mode=false
+
+              echo "✅ Triggered agent-builder for issue #$FIRST_ISSUE"
+            fi
           fi

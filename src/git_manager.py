@@ -10,6 +10,7 @@ Key responsibilities:
 - Commit tracking and deduplication
 - Batched notification support
 - Token file management for hooks
+- Session isolation for parallel execution
 """
 
 import builtins
@@ -21,10 +22,25 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Optional
 
+try:
+    from .config import (
+        get_session_token_file,
+        get_session_commits_queue,
+        SESSION_STATE_PATH,
+    )
+except ImportError:
+    # Fallback for direct imports (e.g., from bedrock_entrypoint.py)
+    from config import (
+        get_session_token_file,
+        get_session_commits_queue,
+        SESSION_STATE_PATH,
+    )
+
 
 # Constants
 GIT_USER_NAME = "Claude Code Agent"
 GIT_USER_EMAIL = "agent@anthropic.com"
+# Legacy paths (used when session_id is not provided for backward compatibility)
 GITHUB_TOKEN_FILE = "/tmp/github_token"
 COMMITS_QUEUE_FILE = "/tmp/commits_to_announce.txt"
 DEFAULT_NOTIFICATION_INTERVAL = 300  # 5 minutes
@@ -59,8 +75,10 @@ class GitManager:
     - Commit tracking and deduplication
     - Push operations
     - Batched notification support
+    - Session isolation for parallel execution
 
     Mode-aware: Configured at creation for "local" or "github" mode.
+    Session-aware: When session_id is provided, uses isolated token/queue files.
     """
 
     def __init__(
@@ -68,6 +86,7 @@ class GitManager:
         work_dir: Path,
         mode: Literal["local", "github"] = "local",
         github_config: Optional[GitHubConfig] = None,
+        session_id: Optional[str] = None,
     ):
         """Initialize GitManager.
 
@@ -75,10 +94,21 @@ class GitManager:
             work_dir: Working directory for git operations
             mode: "local" for standalone sessions, "github" for GitHub issue builds
             github_config: Required for github mode, contains repo/token info
+            session_id: Optional session identifier for parallel execution isolation
         """
         self.work_dir = Path(work_dir)
         self.mode = mode
         self.github_config = github_config
+        self.session_id = session_id
+
+        # Session-isolated file paths
+        if session_id:
+            self._token_file = get_session_token_file(session_id)
+            self._commits_queue_file = get_session_commits_queue(session_id)
+        else:
+            # Legacy paths for backward compatibility
+            self._token_file = GITHUB_TOKEN_FILE
+            self._commits_queue_file = COMMITS_QUEUE_FILE
 
         # Validate github mode has config
         if mode == "github" and github_config is None:
@@ -92,6 +122,16 @@ class GitManager:
         # Batched notification tracking
         self._pending_notification_commits: list[str] = []
         self._last_notification_time: float = time.time()
+
+    @property
+    def token_file(self) -> str:
+        """Get the token file path for this session."""
+        return self._token_file
+
+    @property
+    def commits_queue_file(self) -> str:
+        """Get the commits queue file path for this session."""
+        return self._commits_queue_file
 
     # =========================================================================
     # Core Git Operations
@@ -263,6 +303,8 @@ class GitManager:
     def refresh_token_file(self) -> bool:
         """Write GitHub token to file for post-commit hook to read.
 
+        Uses session-isolated path when session_id is set.
+
         Returns:
             True if successful, False otherwise
         """
@@ -270,9 +312,10 @@ class GitManager:
             return False
 
         try:
-            with open(GITHUB_TOKEN_FILE, "w") as f:
+            with open(self._token_file, "w") as f:
                 f.write(self.github_config.token)
-            os.chmod(GITHUB_TOKEN_FILE, 0o600)  # Read/write for owner only
+            os.chmod(self._token_file, 0o600)  # Read/write for owner only
+            builtins.print(f"  ✅ Token file written to {self._token_file}")
             return True
         except Exception as e:
             builtins.print(f"⚠️ Failed to write GitHub token file: {e}")
@@ -283,6 +326,9 @@ class GitManager:
 
         The hook pushes immediately after each commit and writes the SHA
         to a queue file for the runtime to announce to GitHub issues.
+
+        For parallel sessions, the hook detects session ID from the worktree
+        path or session mapping file and uses session-isolated token/queue files.
 
         Args:
             repo_path: Path to git repo (defaults to work_dir)
@@ -300,21 +346,49 @@ class GitManager:
         # Create hooks directory if needed
         hooks_dir.mkdir(parents=True, exist_ok=True)
 
+        # Determine if this is a session-aware hook
+        if self.session_id:
+            # For parallel sessions, use session-specific paths directly
+            # The hook will use the session ID baked in at install time
+            token_file = self._token_file
+            commits_queue = self._commits_queue_file
+            session_detection = f'SESSION_ID="{self.session_id}"'
+        else:
+            # Legacy mode: try to detect session from worktree path at runtime
+            token_file = GITHUB_TOKEN_FILE
+            commits_queue = COMMITS_QUEUE_FILE
+            session_detection = '''# Try to detect session from worktree path or use default
+WORKTREE_PATH=$(git rev-parse --show-toplevel 2>/dev/null)
+ISSUE_NUM=$(basename "$WORKTREE_PATH" 2>/dev/null | sed 's/^issue-//')
+SESSION_FILE="/app/workspace/session-state/issue-${ISSUE_NUM}-session.txt"
+
+if [ -f "$SESSION_FILE" ]; then
+    SESSION_ID=$(cat "$SESSION_FILE")
+    TOKEN_FILE="/tmp/github_token_${SESSION_ID}"
+    COMMITS_QUEUE="/tmp/commits_queue_${SESSION_ID}.txt"
+fi'''
+
         # Post-commit hook script
         hook_script = f'''#!/bin/bash
 # Git post-commit hook - pushes immediately after each commit
 # Installed by GitManager for event-driven push workflow
+# Session-aware for parallel execution
 
 BRANCH_NAME="{self.github_config.branch_name}"
 GITHUB_REPO="{self.github_config.repo}"
-TOKEN_FILE="{GITHUB_TOKEN_FILE}"
-COMMITS_QUEUE="{COMMITS_QUEUE_FILE}"
+
+# Default paths (may be overridden by session detection)
+TOKEN_FILE="{token_file}"
+COMMITS_QUEUE="{commits_queue}"
+
+{session_detection}
 
 # Get the commit SHA that was just made
 COMMIT_SHA=$(git rev-parse HEAD)
 COMMIT_MSG=$(git log -1 --format=%s HEAD)
 
 echo "[post-commit] New commit: ${{COMMIT_SHA:0:12}} - $COMMIT_MSG"
+echo "[post-commit] Using token file: $TOKEN_FILE"
 
 # Read token from file (refreshed by runtime)
 if [ -f "$TOKEN_FILE" ]; then
@@ -420,6 +494,7 @@ exit 0
         """Read and clear commit queue file.
 
         The post-commit hook writes SHAs to this file after successful pushes.
+        Uses session-isolated path when session_id is set.
 
         Returns:
             List of commit SHAs that were pushed
@@ -427,12 +502,12 @@ exit 0
         shas = []
 
         try:
-            if os.path.exists(COMMITS_QUEUE_FILE):
-                with open(COMMITS_QUEUE_FILE, "r") as f:
+            if os.path.exists(self._commits_queue_file):
+                with open(self._commits_queue_file, "r") as f:
                     shas = [line.strip() for line in f if line.strip()]
 
                 # Clear the file
-                with open(COMMITS_QUEUE_FILE, "w") as f:
+                with open(self._commits_queue_file, "w") as f:
                     f.write("")
 
         except Exception as e:

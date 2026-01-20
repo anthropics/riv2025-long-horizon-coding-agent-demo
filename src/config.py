@@ -1,5 +1,7 @@
 """Configuration constants and settings for Claude Code."""
 
+import os
+from pathlib import Path
 from typing import Any
 
 # Model defaults
@@ -8,6 +10,71 @@ DEFAULT_MODEL = "claude-opus-4-5-20251101"
 # Port defaults
 DEFAULT_FRONTEND_PORT = 6174
 DEFAULT_BACKEND_PORT = 4001
+
+# =============================================================================
+# Parallel Session Configuration
+# =============================================================================
+
+# Enable parallel sessions (set via environment variable)
+PARALLEL_MODE_ENABLED = os.getenv("PARALLEL_MODE", "false").lower() == "true"
+
+# Maximum number of parallel agent sessions
+MAX_PARALLEL_SESSIONS = int(os.getenv("MAX_PARALLEL_SESSIONS", "4"))
+
+# Port allocation for parallel sessions
+# Each session gets a unique port offset: session 0 uses base ports,
+# session 1 uses base + 10, session 2 uses base + 20, etc.
+PORT_OFFSET_PER_SESSION = 10
+
+# Workspace paths for parallel sessions
+BASE_WORKSPACE_PATH = Path(os.getenv("WORKSPACE_PATH", "/app/workspace"))
+BASE_REPO_PATH = BASE_WORKSPACE_PATH / "base-repo"
+WORKTREES_PATH = BASE_WORKSPACE_PATH / "worktrees"
+SESSION_STATE_PATH = BASE_WORKSPACE_PATH / "session-state"
+
+# Session-specific file paths (templates - use with session_id)
+SESSION_TOKEN_FILE_TEMPLATE = "/tmp/github_token_{session_id}"
+SESSION_COMMITS_QUEUE_TEMPLATE = "/tmp/commits_queue_{session_id}.txt"
+
+
+def get_session_ports(session_slot: int) -> tuple[int, int]:
+    """Get frontend and backend ports for a session slot.
+
+    Args:
+        session_slot: Session slot number (0 to MAX_PARALLEL_SESSIONS-1)
+
+    Returns:
+        Tuple of (frontend_port, backend_port)
+    """
+    offset = session_slot * PORT_OFFSET_PER_SESSION
+    return (
+        DEFAULT_FRONTEND_PORT + offset,
+        DEFAULT_BACKEND_PORT + offset,
+    )
+
+
+def get_session_token_file(session_id: str) -> str:
+    """Get token file path for a session.
+
+    Args:
+        session_id: Unique session identifier
+
+    Returns:
+        Path to the session's token file
+    """
+    return SESSION_TOKEN_FILE_TEMPLATE.format(session_id=session_id)
+
+
+def get_session_commits_queue(session_id: str) -> str:
+    """Get commits queue file path for a session.
+
+    Args:
+        session_id: Unique session identifier
+
+    Returns:
+        Path to the session's commits queue file
+    """
+    return SESSION_COMMITS_QUEUE_TEMPLATE.format(session_id=session_id)
 
 # Usage limits
 MAX_OUTPUT_TOKENS = 500_000_000
