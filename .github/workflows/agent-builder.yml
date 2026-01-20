@@ -31,8 +31,19 @@ on:
         required: false
         type: boolean
         default: false
+      parallel_mode:
+        description: 'Enable parallel session mode (uses worktrees)'
+        required: false
+        type: boolean
+        default: false
+      session_slot:
+        description: 'Session slot for port allocation (0-3)'
+        required: false
+        type: number
+        default: 0
 
 # Prevent concurrent builds of the same issue
+# Note: Global lock is handled in the acquire-runtime-lock job only when NOT in parallel mode
 concurrency:
   group: agent-build-${{ github.event.inputs.issue_number || github.event.issue.number }}
   cancel-in-progress: false
@@ -188,15 +199,16 @@ jobs:
 
           EOF
 
-  # Acquire a global lock to prevent race conditions
-  # Only one workflow can be in this job at a time across ALL issues
+  # Acquire a global lock to prevent race conditions (sequential mode only)
+  # In parallel mode, we skip the global lock and allow multiple concurrent sessions
   acquire-runtime-lock:
     needs: check-approval
     if: needs.check-approval.outputs.should_build == 'true' && needs.check-approval.outputs.should_invoke == 'true'
     runs-on: ubuntu-latest
-    # GLOBAL concurrency group - only one workflow can be in this job at a time
+    # GLOBAL concurrency group - only applies in sequential mode
+    # In parallel mode, we use a dummy group that doesn't block
     concurrency:
-      group: agentcore-runtime-global-lock
+      group: ${{ github.event.inputs.parallel_mode == 'true' && format('parallel-issue-{0}', github.event.inputs.issue_number) || 'agentcore-runtime-global-lock' }}
       cancel-in-progress: false
     outputs:
       lock_acquired: ${{ steps.acquire.outputs.lock_acquired }}
@@ -207,8 +219,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ needs.check-approval.outputs.issue_number }}
+          PARALLEL_MODE: ${{ github.event.inputs.parallel_mode || 'false' }}
+          MAX_PARALLEL_SESSIONS: ${{ vars.MAX_PARALLEL_SESSIONS || '4' }}
         run: |
-          # CRITICAL: Check for label AND set label atomically while holding the global lock
+          # CRITICAL: Check for label AND set label atomically while holding the lock
           # This prevents race condition where two workflows both pass the check before either sets label
 
           # Re-check if any other issue has agent-building label NOW (inside the lock)
@@ -216,26 +230,52 @@ jobs:
             -q '.[] | select(.labels[].name == "agent-building") | .number' \
             2>/dev/null || echo "")
 
-          if [ -n "$BUILDING_ISSUES" ]; then
-            # Check if any building issue is NOT our issue
-            for ISSUE in $BUILDING_ISSUES; do
-              if [ "$ISSUE" != "$ISSUE_NUMBER" ]; then
-                echo "Another issue #$ISSUE is already building (detected inside lock)"
-                echo "The running agent will pick up issue #$ISSUE_NUMBER automatically"
-                echo "lock_acquired=false" >> $GITHUB_OUTPUT
-                echo "label_set=false" >> $GITHUB_OUTPUT
-                exit 0
-              fi
-            done
+          BUILDING_COUNT=$(echo "$BUILDING_ISSUES" | grep -c . || echo "0")
+
+          if [ "$PARALLEL_MODE" = "true" ]; then
+            # PARALLEL MODE: Allow up to MAX_PARALLEL_SESSIONS concurrent builds
+            echo "🌳 Running in PARALLEL mode"
+
+            # Check if we're at capacity
+            if [ "$BUILDING_COUNT" -ge "$MAX_PARALLEL_SESSIONS" ]; then
+              echo "At maximum parallel capacity ($MAX_PARALLEL_SESSIONS sessions)"
+              echo "lock_acquired=false" >> $GITHUB_OUTPUT
+              echo "label_set=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+
+            # Still have capacity - proceed
+            echo "Active sessions: $BUILDING_COUNT / $MAX_PARALLEL_SESSIONS"
+            echo "Lock acquired - setting agent-building label"
+            gh issue edit $ISSUE_NUMBER --add-label "agent-building" --repo $GITHUB_REPOSITORY
+
+            echo "lock_acquired=true" >> $GITHUB_OUTPUT
+            echo "label_set=true" >> $GITHUB_OUTPUT
+          else
+            # SEQUENTIAL MODE: Original behavior - only one build at a time
+            echo "🔒 Running in SEQUENTIAL mode"
+
+            if [ -n "$BUILDING_ISSUES" ]; then
+              # Check if any building issue is NOT our issue
+              for ISSUE in $BUILDING_ISSUES; do
+                if [ "$ISSUE" != "$ISSUE_NUMBER" ]; then
+                  echo "Another issue #$ISSUE is already building (detected inside lock)"
+                  echo "The running agent will pick up issue #$ISSUE_NUMBER automatically"
+                  echo "lock_acquired=false" >> $GITHUB_OUTPUT
+                  echo "label_set=false" >> $GITHUB_OUTPUT
+                  exit 0
+                fi
+              done
+            fi
+
+            # No other issue is building - SET THE LABEL NOW while we hold the lock
+            # This is the atomic operation that prevents races
+            echo "Lock acquired - setting agent-building label while holding lock"
+            gh issue edit $ISSUE_NUMBER --add-label "agent-building" --repo $GITHUB_REPOSITORY
+
+            echo "lock_acquired=true" >> $GITHUB_OUTPUT
+            echo "label_set=true" >> $GITHUB_OUTPUT
           fi
-
-          # No other issue is building - SET THE LABEL NOW while we hold the lock
-          # This is the atomic operation that prevents races
-          echo "Lock acquired - setting agent-building label while holding lock"
-          gh issue edit $ISSUE_NUMBER --add-label "agent-building" --repo $GITHUB_REPOSITORY
-
-          echo "lock_acquired=true" >> $GITHUB_OUTPUT
-          echo "label_set=true" >> $GITHUB_OUTPUT
 
   # Post comment about build status
   # Label is set atomically in acquire-runtime-lock for should_invoke=true cases
@@ -333,6 +373,8 @@ jobs:
           ISSUE_TITLE: ${{ needs.check-approval.outputs.issue_title }}
           ISSUE_BODY: ${{ needs.check-approval.outputs.issue_body }}
           RESUME_SESSION: ${{ github.event.inputs.resume_session || 'false' }}
+          PARALLEL_MODE: ${{ github.event.inputs.parallel_mode || 'false' }}
+          SESSION_SLOT: ${{ github.event.inputs.session_slot || '0' }}
         run: |
           # Generate a unique session ID (min 33 chars required by AWS)
           SESSION_ID="gh-issue-${ISSUE_NUMBER}-$(date +%Y%m%d-%H%M%S)-${GITHUB_RUN_ID}"
@@ -342,11 +384,21 @@ jobs:
           # Decode the escaped body
           DECODED_BODY=$(echo "$ISSUE_BODY" | sed 's/%0A/\n/g' | sed 's/%0D/\r/g' | sed 's/%25/%/g')
 
-          # Convert resume_session to boolean for JSON
+          # Convert resume_session and parallel_mode to boolean for JSON
           if [ "$RESUME_SESSION" = "true" ]; then
             RESUME_FLAG="true"
           else
             RESUME_FLAG="false"
+          fi
+
+          if [ "$PARALLEL_MODE" = "true" ]; then
+            PARALLEL_FLAG="true"
+            # In parallel mode, use issue-specific branch
+            BRANCH_NAME="issue-${ISSUE_NUMBER}"
+          else
+            PARALLEL_FLAG="false"
+            # In sequential mode, use shared agent-runtime branch
+            BRANCH_NAME="agent-runtime"
           fi
 
           PAYLOAD=$(cat << EOFPAYLOAD
@@ -356,9 +408,11 @@ jobs:
             "issue_title": "$ISSUE_TITLE",
             "issue_body": $(echo "$DECODED_BODY" | jq -Rs .),
             "github_repo": "$GITHUB_REPOSITORY",
-            "branch_name": "agent-runtime",
+            "branch_name": "$BRANCH_NAME",
             "session_id": "$SESSION_ID",
-            "resume_session": $RESUME_FLAG
+            "resume_session": $RESUME_FLAG,
+            "parallel_mode": $PARALLEL_FLAG,
+            "session_slot": $SESSION_SLOT
           }
           EOFPAYLOAD
           )

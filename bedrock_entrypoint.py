@@ -46,6 +46,50 @@ except ImportError:
     GitHubConfig = None
     print("⚠️ GitManager not available (running locally?)")
 
+# Import WorktreeManager for parallel session support
+try:
+    from worktree_manager import WorktreeManager, ensure_base_repo_cloned
+    WORKTREE_MANAGER_AVAILABLE = True
+except ImportError:
+    WORKTREE_MANAGER_AVAILABLE = False
+    WorktreeManager = None
+    ensure_base_repo_cloned = None
+    print("⚠️ WorktreeManager not available (running locally?)")
+
+# Import MergeManager for sequential merge support
+try:
+    from merge_manager import MergeManager
+    MERGE_MANAGER_AVAILABLE = True
+except ImportError:
+    MERGE_MANAGER_AVAILABLE = False
+    MergeManager = None
+    print("⚠️ MergeManager not available (running locally?)")
+
+# Import parallel session config
+try:
+    from config import (
+        PARALLEL_MODE_ENABLED,
+        MAX_PARALLEL_SESSIONS,
+        BASE_REPO_PATH,
+        WORKTREES_PATH,
+        SESSION_STATE_PATH,
+        get_session_ports,
+        get_session_token_file,
+        get_session_commits_queue,
+    )
+    PARALLEL_CONFIG_AVAILABLE = True
+except ImportError:
+    PARALLEL_MODE_ENABLED = False
+    MAX_PARALLEL_SESSIONS = 1
+    BASE_REPO_PATH = None
+    WORKTREES_PATH = None
+    SESSION_STATE_PATH = None
+    get_session_ports = None
+    get_session_token_file = None
+    get_session_commits_queue = None
+    PARALLEL_CONFIG_AVAILABLE = False
+    print("⚠️ Parallel config not available (running locally?)")
+
 # Track uploaded screenshots by content hash (for deduplication)
 uploaded_screenshots: set[str] = set()
 
@@ -521,6 +565,221 @@ def setup_agent_runtime(
 
     print(f"✅ Agent runtime workspace ready at {AGENT_RUNTIME_DIR}")
     return AGENT_RUNTIME_DIR, git_manager
+
+
+def setup_parallel_agent_runtime(
+    github_repo: str,
+    github_token: str,
+    session_id: str,
+    issue_number: int,
+    session_slot: int = 0,
+) -> tuple:
+    """
+    Set up agent-runtime workspace for parallel sessions using git worktrees.
+
+    Each issue gets its own worktree with an isolated branch, allowing multiple
+    agents to work simultaneously without git conflicts.
+
+    Args:
+        github_repo: GitHub repository in owner/repo format
+        github_token: GitHub access token
+        session_id: Unique session identifier
+        issue_number: GitHub issue number
+        session_slot: Slot number for port allocation (0-3)
+
+    Returns:
+        Tuple of (workspace_dir, git_manager, worktree_manager, ports)
+        where ports is (frontend_port, backend_port)
+    """
+    if not WORKTREE_MANAGER_AVAILABLE or not WorktreeManager:
+        raise RuntimeError("WorktreeManager not available - cannot use parallel sessions")
+
+    if not PARALLEL_CONFIG_AVAILABLE:
+        raise RuntimeError("Parallel config not available - cannot use parallel sessions")
+
+    print(f"\n{'='*80}")
+    print(f"🌳 Setting up PARALLEL agent-runtime workspace (worktree mode)")
+    print(f"   Issue: #{issue_number}")
+    print(f"   Session: {session_id}")
+    print(f"   Slot: {session_slot}")
+    print(f"{'='*80}\n")
+
+    # Step 1: Ensure base repo is cloned
+    base_repo_path = BASE_REPO_PATH or Path("/app/workspace/base-repo")
+    print(f"📦 Ensuring base repo exists at {base_repo_path}")
+    ensure_base_repo_cloned(github_repo, github_token, base_repo_path)
+
+    # Step 2: Create worktree manager
+    worktrees_dir = WORKTREES_PATH or Path("/app/workspace/worktrees")
+    session_state_dir = SESSION_STATE_PATH or Path("/app/workspace/session-state")
+
+    worktree_mgr = WorktreeManager(
+        base_repo_path=base_repo_path,
+        worktrees_dir=worktrees_dir,
+        session_state_dir=session_state_dir,
+    )
+
+    # Step 3: Create worktree for this issue
+    print(f"🌿 Creating worktree for issue #{issue_number}")
+    worktree_path = worktree_mgr.create_worktree(
+        issue_number=issue_number,
+        session_id=session_id,
+        base_branch="main",
+    )
+
+    # Step 4: Allocate ports for this session
+    if get_session_ports:
+        frontend_port, backend_port = get_session_ports(session_slot)
+    else:
+        frontend_port = 6174 + (session_slot * 10)
+        backend_port = 4001 + (session_slot * 10)
+
+    print(f"🔌 Allocated ports: frontend={frontend_port}, backend={backend_port}")
+
+    # Step 5: Write session-specific token file
+    if get_session_token_file:
+        token_file = get_session_token_file(session_id)
+    else:
+        token_file = f"/tmp/github_token_{session_id}"
+
+    try:
+        with open(token_file, 'w') as f:
+            f.write(github_token)
+        os.chmod(token_file, 0o600)
+        print(f"✅ Token file written to {token_file}")
+    except Exception as e:
+        print(f"⚠️ Failed to write token file: {e}")
+
+    # Step 6: Ensure generated-app directory exists
+    generated_app_dir = worktree_path / "generated-app"
+    generated_app_dir.mkdir(exist_ok=True)
+
+    # Step 7: Set up GitManager with session isolation
+    branch_name = f"issue-{issue_number}"
+    git_manager = None
+    if GIT_MANAGER_AVAILABLE and GitManager and GitHubConfig:
+        print("🔧 Setting up GitManager with session isolation")
+        github_config = GitHubConfig(
+            repo=github_repo,
+            issue_number=issue_number,
+            token=github_token,
+            branch=branch_name,
+        )
+        git_manager = GitManager(
+            work_dir=worktree_path,
+            mode="github",
+            github_config=github_config,
+            session_id=session_id,  # Enable session isolation
+        )
+        # Install post-commit hook with session-aware paths
+        git_manager.refresh_token_file()
+        git_manager.install_post_commit_hook()
+        print(f"✅ GitManager configured for {branch_name} branch with session isolation")
+
+    print(f"✅ Parallel agent workspace ready at {worktree_path}")
+    return worktree_path, git_manager, worktree_mgr, (frontend_port, backend_port)
+
+
+def get_session_slot_for_issue(issue_number: int) -> int:
+    """
+    Get an available session slot for a new issue.
+
+    Slots are allocated based on active worktrees to avoid port conflicts.
+
+    Args:
+        issue_number: GitHub issue number
+
+    Returns:
+        Available slot number (0 to MAX_PARALLEL_SESSIONS-1)
+    """
+    if not WORKTREE_MANAGER_AVAILABLE or not WorktreeManager:
+        return 0
+
+    base_repo_path = BASE_REPO_PATH or Path("/app/workspace/base-repo")
+    if not base_repo_path.exists():
+        return 0
+
+    try:
+        worktree_mgr = WorktreeManager(base_repo_path=base_repo_path)
+        active = worktree_mgr.list_active_worktrees()
+
+        # Find first available slot
+        used_slots = set()
+        for info in active:
+            # Calculate slot from issue number (simple hash)
+            slot = info.issue_number % MAX_PARALLEL_SESSIONS
+            used_slots.add(slot)
+
+        for slot in range(MAX_PARALLEL_SESSIONS):
+            if slot not in used_slots:
+                return slot
+
+        # All slots used, return based on issue number
+        return issue_number % MAX_PARALLEL_SESSIONS
+    except Exception:
+        return 0
+
+
+def cleanup_parallel_session(
+    session_id: str,
+    issue_number: int,
+    github_token: str,
+    trigger_merge: bool = True,
+) -> bool:
+    """
+    Clean up a parallel session after completion.
+
+    Removes the worktree and optionally triggers the merge queue.
+
+    Args:
+        session_id: Session identifier
+        issue_number: GitHub issue number
+        github_token: GitHub token for merge operations
+        trigger_merge: Whether to add to merge queue
+
+    Returns:
+        True if cleanup succeeded
+    """
+    if not WORKTREE_MANAGER_AVAILABLE or not WorktreeManager:
+        print("⚠️ WorktreeManager not available, skipping parallel cleanup")
+        return False
+
+    base_repo_path = BASE_REPO_PATH or Path("/app/workspace/base-repo")
+
+    try:
+        worktree_mgr = WorktreeManager(base_repo_path=base_repo_path)
+
+        # Add to merge queue if requested
+        if trigger_merge and MERGE_MANAGER_AVAILABLE and MergeManager:
+            print(f"📋 Adding issue #{issue_number} to merge queue")
+            merge_mgr = MergeManager(
+                base_repo=base_repo_path,
+                github_token=github_token,
+            )
+            merge_mgr.queue_for_merge(issue_number)
+
+        # Clean up the worktree
+        print(f"🧹 Cleaning up worktree for issue #{issue_number}")
+        worktree_mgr.cleanup_worktree(issue_number)
+
+        # Clean up session token file
+        if get_session_token_file:
+            token_file = Path(get_session_token_file(session_id))
+            if token_file.exists():
+                token_file.unlink()
+                print(f"✅ Removed session token file")
+
+        # Clean up session commits queue
+        if get_session_commits_queue:
+            queue_file = Path(get_session_commits_queue(session_id))
+            if queue_file.exists():
+                queue_file.unlink()
+                print(f"✅ Removed session commits queue")
+
+        return True
+    except Exception as e:
+        print(f"❌ Parallel session cleanup failed: {e}")
+        return False
 
 
 def claim_github_issue(
