@@ -2,6 +2,8 @@
 
 An autonomous agent system that builds React applications from GitHub issues using AWS Bedrock AgentCore and the Claude Agent SDK. Demonstrated at AWS re:Invent 2025.
 
+> **Using Claude Code or the Agent SDK without AWS?** See [`claude-code-hooks/`](./claude-code-hooks/) for a drop-in `.claude/` config that implements the same primitives as standalone hooks, and the [Effective Harnesses for Long-Running Agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) post for the design write-up.
+
 ## How It Works
 
 ### End-to-End Flow
